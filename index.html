@@ -93,8 +93,7 @@
     <button class="tab-btn active px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="dash">🌈 홈</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="grades">🍎 성적관리</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="memo">🍀 할 일</button>
-    <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="cal">🌼 학사·시간표</button>
-    <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="sch">⏰ 시간표</button>
+    <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="cal">🌼 학사일정</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="ch">🎈 창체 일정</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="budget">🐷 예산</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="rec">🖍️ 기록 작성</button>
@@ -122,10 +121,24 @@
 
   <!-- 대시보드 -->
   <section id="tab-dash" class="tab-panel">
-    <div id="homeCal" class="bg-white rounded-xl border border-slate-200 p-3 md:p-5"></div>
-    <div id="dashToday" class="bg-white rounded-xl border border-slate-200 p-5 mt-5 hidden"></div>
-    <div id="dashTasks" class="bg-white rounded-xl border border-slate-200 p-5 mt-5"></div>
-    <div id="dashLinks" class="grid md:grid-cols-3 gap-5 mt-5"></div>
+    <div class="grid gap-5 lg:grid-cols-2 items-start">
+      <div class="space-y-5 min-w-0">
+        <div id="homeCal" class="bg-white rounded-xl border border-slate-200 p-3 md:p-5"></div>
+        <div id="dashTasks" class="bg-white rounded-xl border border-slate-200 p-5"></div>
+      </div>
+      <div class="space-y-5 min-w-0">
+        <div class="bg-white rounded-xl border border-slate-200 p-4 md:p-5">
+          <div class="flex items-center gap-2 flex-wrap mb-2"><h2 class="font-bold text-lg mr-auto">🧑‍🏫 교사 시간표</h2><select id="schTeacher" class="border border-slate-300 rounded-lg px-2 py-1.5 bg-slate-50 text-sm"></select><button id="schMeBtn" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-2.5 py-1.5 text-xs whitespace-nowrap"></button><button id="schEditT" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-2.5 py-1.5 text-xs whitespace-nowrap"></button><button id="schResetT" type="button" class="text-xs text-slate-600 hover:text-red-600 underline">수정 지우기</button></div>
+          <div class="flex items-center gap-2 flex-wrap text-xs mb-2"><label class="font-bold">📂 교사별 시간표 파일<input id="schFileT" type="file" accept=".xlsx,.xls" class="ml-1 text-xs"></label><span id="schInfoT" class="text-slate-600"></span></div>
+          <div id="schT" class="overflow-x-auto"></div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 md:p-5">
+          <div class="flex items-center gap-2 flex-wrap mb-2"><h2 class="font-bold text-lg mr-auto">🏫 학급 시간표</h2><select id="schClass" class="border border-slate-300 rounded-lg px-2 py-1.5 bg-slate-50 text-sm"></select><button id="schClsBtn" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-2.5 py-1.5 text-xs whitespace-nowrap"></button><button id="schEditC" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-2.5 py-1.5 text-xs whitespace-nowrap"></button><button id="schResetC" type="button" class="text-xs text-slate-600 hover:text-red-600 underline">수정 지우기</button></div>
+          <div class="flex items-center gap-2 flex-wrap text-xs mb-2"><label class="font-bold">📂 전체 학급 시간표 파일<input id="schFileC" type="file" accept=".xlsx,.xls" class="ml-1 text-xs"></label><span id="schInfoC" class="text-slate-600"></span></div>
+          <div id="schC" class="overflow-x-auto"></div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- 스티커 메모 -->
@@ -154,37 +167,20 @@
       </div>
       <p id="nInfo" class="text-xs text-slate-500"></p>
     </div>
-    <div class="grid lg:grid-cols-2 gap-5 mt-5">
+    <div class="grid gap-5 mt-5">
       <div class="bg-white rounded-xl border border-slate-200 p-5">
         <div class="flex items-center gap-2 flex-wrap"><h2 class="font-bold text-lg mr-auto">🗓️ 학사일정</h2><input id="cMonth" type="month" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button id="cLoad" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">나이스에서 불러오기</button></div>
         <form id="cEvForm" class="flex gap-2 mt-3"><input id="evDate" type="date" required class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evEnd" type="date" title="종료일(여러 날일 때)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evTime" type="time" title="시간(선택)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evText" required placeholder="내 일정 추가" class="flex-1 min-w-0 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">추가</button></form>
         <ul id="cList" class="mt-3 divide-y divide-slate-100 text-sm"></ul>
         <p id="cEmpty" class="text-sm text-slate-500 py-6 text-center">표시할 일정이 없습니다.</p>
       </div>
-      <div class="bg-white rounded-xl border border-slate-200 p-5">
+      <div class="hidden" aria-hidden="true">
         <div class="flex items-center gap-2 flex-wrap"><h2 class="font-bold text-lg mr-auto">⏰ 시간표</h2><input id="tGrade" type="number" min="1" max="6" placeholder="학년" class="w-16 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="tClass" type="number" min="1" placeholder="반" class="w-16 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="tDate" type="date" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button id="tLoad" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">불러오기</button></div>
         <div id="tBoard" class="mt-3 overflow-x-auto"></div>
         <h3 class="font-bold text-sm mt-5 mb-2">🧸 내 시간표 (직접 입력)</h3>
         <div id="myTT" class="overflow-x-auto"></div>
       </div>
     </div>
-  </section>
-
-  <!-- 시간표 -->
-  <section id="tab-sch" class="tab-panel hidden">
-    <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-2">
-      <label class="text-sm block">시간표 파일 올리기 (교사별 시간표, 전체 학급 시간표 · 여러 개를 한 번에 골라도 됩니다)<input id="schFile" type="file" accept=".xlsx,.xls" multiple class="block mt-1 text-sm"></label>
-      <p id="schInfo" class="text-xs text-slate-600"></p>
-    </div>
-    <div class="bg-white rounded-xl border border-slate-200 p-5 mt-5">
-      <div class="flex items-center gap-2 flex-wrap mb-3"><h2 class="font-bold text-lg mr-auto">🧑‍🏫 교사 시간표</h2><select id="schTeacher" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></select><button id="schMeBtn" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap"></button><button id="schEditT" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap"></button><button id="schResetT" type="button" class="text-xs text-slate-600 hover:text-red-600 underline">수정 지우기</button></div>
-      <div id="schT" class="overflow-x-auto"></div>
-    </div>
-    <div class="bg-white rounded-xl border border-slate-200 p-5 mt-5">
-      <div class="flex items-center gap-2 flex-wrap mb-3"><h2 class="font-bold text-lg mr-auto">🏫 학급 시간표</h2><select id="schClass" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></select><button id="schClsBtn" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap"></button><button id="schEditC" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap"></button><button id="schResetC" type="button" class="text-xs text-slate-600 hover:text-red-600 underline">수정 지우기</button></div>
-      <div id="schC" class="overflow-x-auto"></div>
-    </div>
-    <p class="text-xs text-slate-600 mt-3">직접 고친 칸은 노란색으로 표시됩니다. 새 파일을 올려도 고친 내용이 남으니, 필요 없으면 수정 지우기를 누르세요.</p>
   </section>
 
   <!-- 창의적체험활동 일정 -->
@@ -1973,7 +1969,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
   $('tab-' + btn.dataset.tab).classList.remove('hidden');
   if (btn.dataset.tab === 'pass') setNow();
-  if (btn.dataset.tab === 'dash') { renderDash(); renderHome(); renderToday(); }
+  if (btn.dataset.tab === 'dash') { renderDash(); renderHome(); renderSch(); }
 }));
 
 /* 드롭다운 */
@@ -2715,7 +2711,7 @@ function renderDash() {
     cb.onchange = () => { m.done = true; store(MEMO_KEY, memos); renderMemos(); renderDash(); };
     row.append(cb, el('span', 'flex-1', m.text), el('span', `text-xs ${m.due < t ? 'text-red-600' : 'text-slate-500'}`, `${m.cat || ''} ${m.due.slice(5).replace('-', '/')}`)); box.appendChild(row);
   });
-  const lk = $('dashLinks'); lk.innerHTML = '';
+  const lk = $('dashLinks'); if (!lk) return; lk.innerHTML = '';
   Object.entries(LINKS).forEach(([g, arr]) => {
     const c = el('div', 'bg-white rounded-xl border border-slate-200 p-5'); c.appendChild(el('h3', 'font-bold mb-2 text-lg', `${GEMO[g]} ${g}`));
     arr.forEach(([k, n]) => { const b = el('button', 'block w-full text-left px-2 py-1.5 rounded hover:bg-slate-50 text-sm', n); b.onclick = () => goTab(k); c.appendChild(b); }); lk.appendChild(c);
@@ -2888,7 +2884,7 @@ function parseTeacherTT(rows) {
       const p = +m[1], tm = /\(([^)]+)\)/.exec(rr[0]); if (tm && !per[p]) per[p] = tm[1];
       cols.forEach((c, d) => { if (rr[c]) cells[`${d}-${p}`] = rr[c]; });
     }
-    out[name] = cells;
+    if (Object.keys(cells).length) out[name] = cells;
   }
   return { teachers: out, periods: per };
 }
@@ -2906,7 +2902,7 @@ function parseClassTT(rows) {
 function schGrid(kind, name, editing) {
   const cells = (kind === 't' ? sch.teachers : sch.classes)[name] || {}, ed = schE[kind][name] || {}, td = (now.getDay() + 6) % 7;
   const maxP = Math.max(7, ...Object.keys(cells).concat(Object.keys(ed)).map(k => +k.split('-')[1] || 0));
-  let h = `<table class="w-full min-w-[560px] text-sm text-center border border-slate-200 table-fixed"><thead class="bg-slate-50"><tr><th class="p-1.5 w-24"></th>${DAYN.map((n, i) => `<th class="p-1.5 font-bold ${i === td ? 'bg-sky-100' : ''}">${n}${i === td ? ' (오늘)' : ''}</th>`).join('')}</tr></thead><tbody>`;
+  let h = `<table class="w-full min-w-[440px] text-xs md:text-sm text-center border border-slate-200 table-fixed"><thead class="bg-slate-50"><tr><th class="p-1.5 w-16"></th>${DAYN.map((n, i) => `<th class="p-1.5 font-bold ${i === td ? 'bg-sky-100' : ''}">${n}${i === td ? ' (오늘)' : ''}</th>`).join('')}</tr></thead><tbody>`;
   for (let p = 1; p <= maxP; p++) {
     h += `<tr class="border-t border-slate-100"><td class="p-1.5 text-xs"><b>${p}교시</b><br><span class="text-slate-600">${esc(sch.periods[p] || '')}</span></td>`;
     DAYN.forEach((n, d) => {
@@ -2931,7 +2927,8 @@ function renderSch() {
   if (!cn.includes(schSelC)) schSelC = cn.includes(sch.myClass) ? sch.myClass : (cn[0] || '');
   const fill = (sel, arr, cur, star) => { sel.innerHTML = ''; arr.forEach(n => { const o = el('option', '', (n === star ? '⭐ ' : '') + n); o.value = n; sel.appendChild(o); }); sel.value = cur; };
   fill($('schTeacher'), tn, schSelT, sch.me); fill($('schClass'), cn, schSelC, sch.myClass);
-  $('schInfo').textContent = `${sch.tFile ? '교사별: ' + sch.tFile : '교사별 시간표 파일 없음'} · ${sch.cFile ? '학급: ' + sch.cFile : '학급 시간표 파일 없음'}`;
+  $('schInfoT').textContent = sch.tFile ? `현재: ${sch.tFile}` : '파일을 올리면 선생님 목록이 나옵니다.';
+  $('schInfoC').textContent = sch.cFile ? `현재: ${sch.cFile}` : '파일을 올리면 학급 목록이 나옵니다.';
   $('schMeBtn').textContent = schSelT && schSelT === sch.me ? '⭐ 내 시간표' : '⭐ 내 시간표로 고정';
   $('schClsBtn').textContent = schSelC && schSelC === sch.myClass ? '⭐ 우리 반' : '⭐ 우리 반으로 고정';
   $('schEditT').textContent = schEdit.t ? '✅ 수정 끝' : '✏️ 수정'; $('schEditC').textContent = schEdit.c ? '✅ 수정 끝' : '✏️ 수정';
@@ -2941,7 +2938,9 @@ function renderSch() {
   if (schEdit.t && schSelT) bindSch(tb, 't', schSelT); if (schEdit.c && schSelC) bindSch(cb, 'c', schSelC);
 }
 function renderToday() {
-  const box = $('dashToday'), d = (now.getDay() + 6) % 7, cells = sch.teachers[sch.me];
+  const box = $('dashToday'); if (!box) return;
+  const d = (now.getDay() + 6) % 7, cells0 = sch.teachers[sch.me];
+  const cells = cells0;
   if (!cells || d > 4) { box.classList.add('hidden'); return; }
   const ed = schE.t[sch.me] || {}, items = [];
   for (let p = 1; p <= 10; p++) { const k = `${d}-${p}`, v = k in ed ? ed[k] : cells[k]; if (v) items.push([p, schFmt(v, 't')]); }
@@ -2956,7 +2955,7 @@ $('schEditT').addEventListener('click', () => { schEdit.t = !schEdit.t; renderSc
 $('schEditC').addEventListener('click', () => { schEdit.c = !schEdit.c; renderSch(); });
 $('schResetT').addEventListener('click', () => { if (schSelT && schE.t[schSelT] && confirm(`${schSelT} 선생님 시간표에서 직접 고친 내용을 지우고 파일 원래대로 돌릴까요?`)) { delete schE.t[schSelT]; saveSchE(); renderSch(); renderToday(); } });
 $('schResetC').addEventListener('click', () => { if (schSelC && schE.c[schSelC] && confirm(`${schSelC} 시간표에서 직접 고친 내용을 지우고 파일 원래대로 돌릴까요?`)) { delete schE.c[schSelC]; saveSchE(); renderSch(); } });
-$('schFile').addEventListener('change', async e => {
+async function schUpload(e, expect) {
   const files = [...e.target.files]; e.target.value = ''; if (!files.length) return;
   if (typeof XLSX === 'undefined') { alert('엑셀 읽기 도구를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'); return; }
   const msg = [];
@@ -2964,23 +2963,25 @@ $('schFile').addEventListener('change', async e => {
     try {
       const wb = XLSX.read(await f.arrayBuffer()); let done = false;
       for (const n of wb.SheetNames) {
-        const rows = XLSX.utils.sheet_to_json(wb.Sheets[n], { header: 1, defval: '' }), cl = parseClassTT(rows);
+        const rows = XLSX.utils.sheet_to_json(wb.Sheets[n], { header: 1, defval: '' }), cl = expect === 't' ? null : parseClassTT(rows);
         if (cl && Object.keys(cl).length) {
           if (Object.keys(schE.c).length && confirm('새 학급 시간표입니다. 이전에 직접 고친 학급 시간표 내용을 지울까요? (취소하면 고친 내용이 남습니다)')) schE.c = {};
           sch.classes = cl; sch.cFile = f.name; msg.push(`${f.name}: 학급 ${Object.keys(cl).length}개를 불러왔습니다.`); done = true; break;
         }
-        const t = parseTeacherTT(rows);
+        const t = expect === 'c' ? { teachers: {}, periods: {} } : parseTeacherTT(rows);
         if (Object.keys(t.teachers).length) {
           if (Object.keys(schE.t).length && confirm('새 교사별 시간표입니다. 이전에 직접 고친 교사 시간표 내용을 지울까요? (취소하면 고친 내용이 남습니다)')) schE.t = {};
           sch.teachers = t.teachers; sch.periods = Object.assign({}, sch.periods, t.periods); sch.tFile = f.name; msg.push(`${f.name}: 선생님 ${Object.keys(t.teachers).length}명을 불러왔습니다.`); done = true; break;
         }
       }
-      if (!done) msg.push(`${f.name}: 시간표 형식을 찾지 못했습니다.`);
+      if (!done) msg.push(`${f.name}: ${expect === 't' ? '교사별' : '전체 학급'} 시간표 형식을 찾지 못했습니다. 올린 칸이 맞는지 확인해 주세요.`);
     } catch (err) { msg.push(`${f.name}: 불러오기 실패 (${err.message})`); }
   }
   saveSch(); saveSchE(); renderSch(); renderToday();
   alert(msg.join('\n') + (!sch.me && Object.keys(sch.teachers).length ? '\n\n교사 시간표에서 본인 이름을 고르고 "내 시간표로 고정"을 눌러 주세요.' : ''));
-});
+}
+$('schFileT').addEventListener('change', e => schUpload(e, 't'));
+$('schFileC').addEventListener('change', e => schUpload(e, 'c'));
 
 /* ===== PC·휴대폰 연동 (구글 Apps Script, 개인정보 없는 자료만) ===== */
 const SYNC_KEY = 'gm-sync';
