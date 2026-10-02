@@ -62,29 +62,6 @@
   #homeCal form input[type=date]::-webkit-date-and-time-value { text-align: left; }
   @supports (-webkit-touch-callout: none) { #homeCal form input[type=date] { -webkit-appearance: none; appearance: none; min-height: 2.6rem; } }
   #printArea { display: none; }
-  /* iPad에서도 왼쪽 달력/메뉴, 오른쪽 교사/학급 시간표 유지 */
-  .dashboard-grid { display:grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap:20px; align-items:stretch; }
-  .dashboard-card { min-width:0; max-height:650px; overflow:auto; }
-  #dashCalendar { grid-column:1; grid-row:1; }
-  #dashTeacher { grid-column:2; grid-row:1; }
-  #dashMenu { grid-column:1; grid-row:2; }
-  #dashClass { grid-column:2; grid-row:2; }
-  .dashboard-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
-  .dashboard-links > div { padding:12px; box-shadow:none!important; }
-  #homeCal .hc-cell { min-height:66px; min-width:0; }
-  #homeCal form > .grid { grid-template-columns:1fr; }
-  .dashboard-toolbar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
-  .dashboard-toolbar select { flex:1; min-width:100px; max-width:100%; }
-  .dashboard-card .sch-table { min-width:0; font-size:12px; }
-  .dashboard-card .sch-table th:first-child { width:58px; }
-  .dashboard-card .sch-table td { overflow-wrap:anywhere; padding:5px 3px; }
-  .dashboard-card .sch-table input { min-width:0; font-size:12px; padding:8px 2px; }
-  .sch-table input { box-sizing:border-box; }
-  @media (max-width:699px) {
-    .dashboard-grid { grid-template-columns:minmax(0,1fr); gap:16px; }
-    #dashCalendar, #dashTeacher, #dashMenu, #dashClass { grid-column:auto; grid-row:auto; }
-    .dashboard-card { max-height:none; }
-  }
   @media print { body > *:not(#printArea) { display: none !important; } #printArea { display: block !important; width: 72mm; border: 1px solid #000; padding: 6mm; margin: 10mm auto 0; font-size: 11pt; line-height: 1.6; } }
 </style>
 </head>
@@ -109,14 +86,15 @@
     <span id="today" class="text-sm text-slate-300"></span>
     <span id="ddays" class="flex gap-2 flex-wrap"></span>
     <button id="lockNow" title="지금 잠그기" class="ml-auto text-xl hover:scale-110 transition" aria-label="잠금">🔒</button>
+    <button id="syncBtn" title="PC·휴대폰 동기화" class="hidden text-xl hover:scale-110 transition" aria-label="동기화">☁️</button>
     <button id="setBtn" title="설정" class="text-xl hover:scale-110 transition" aria-label="설정">⚙️</button>
   </div>
   <nav class="max-w-6xl mx-auto px-6 mt-3 flex gap-1" role="tablist">
     <button class="tab-btn active px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="dash">🌈 홈</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="grades">🍎 성적관리</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="memo">🍀 할 일</button>
-    <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="cal">🌼 학사 일정</button>
-
+    <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="cal">🌼 학사·시간표</button>
+    <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="sch">⏰ 시간표</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="ch">🎈 창체 일정</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="budget">🐷 예산</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="rec">🖍️ 기록 작성</button>
@@ -144,22 +122,10 @@
 
   <!-- 대시보드 -->
   <section id="tab-dash" class="tab-panel">
-    <div class="dashboard-grid">
-      <div id="dashCalendar" class="dashboard-card bg-white rounded-xl border border-slate-200 p-3 md:p-5">
-        <h2 class="font-bold text-lg mb-3">🌼 일정 및 달력</h2>
-        <div id="homeCal"></div>
-      </div>
-      <div id="dashTeacher" class="dashboard-card bg-white rounded-xl border border-slate-200 p-3 md:p-5"></div>
-      <div id="dashMenu" class="dashboard-card bg-white rounded-xl border border-slate-200 p-3 md:p-5">
-        <h2 class="font-bold text-lg mb-3">🧭 메뉴 바로가기</h2>
-        <div id="dashLinks" class="dashboard-links"></div>
-        <div id="dashTasks" class="mt-4 border-t border-slate-200 pt-4"></div>
-      </div>
-      <div id="dashClass" class="dashboard-card bg-white rounded-xl border border-slate-200 p-3 md:p-5"></div>
-    </div>
-    <input id="dashTFile" type="file" accept=".xlsx,.xls,.csv" multiple hidden>
-    <input id="dashCFile" type="file" accept=".xlsx,.xls,.csv" multiple hidden>
-    <p id="dashImportInfo" class="text-sm mt-3 whitespace-pre-line" role="status" aria-live="polite"></p>
+    <div id="homeCal" class="bg-white rounded-xl border border-slate-200 p-3 md:p-5"></div>
+    <div id="dashToday" class="bg-white rounded-xl border border-slate-200 p-5 mt-5 hidden"></div>
+    <div id="dashTasks" class="bg-white rounded-xl border border-slate-200 p-5 mt-5"></div>
+    <div id="dashLinks" class="grid md:grid-cols-3 gap-5 mt-5"></div>
   </section>
 
   <!-- 스티커 메모 -->
@@ -176,7 +142,7 @@
     <p id="mmEmpty" class="text-sm text-slate-500 py-10 text-center">🌱 메모가 없습니다. 위에서 업무 메모를 추가하고, 끝나면 체크하세요.</p>
   </section>
 
-  <!-- 학사 일정 -->
+  <!-- 학사일정·시간표 -->
   <section id="tab-cal" class="tab-panel hidden">
     <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
       <h2 class="font-bold text-lg">🔗 나이스 연동 설정</h2>
@@ -188,14 +154,37 @@
       </div>
       <p id="nInfo" class="text-xs text-slate-500"></p>
     </div>
-    <div class="space-y-5 mt-5">
+    <div class="grid lg:grid-cols-2 gap-5 mt-5">
       <div class="bg-white rounded-xl border border-slate-200 p-5">
         <div class="flex items-center gap-2 flex-wrap"><h2 class="font-bold text-lg mr-auto">🗓️ 학사일정</h2><input id="cMonth" type="month" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button id="cLoad" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">나이스에서 불러오기</button></div>
-        <form id="cEvForm" class="flex flex-wrap gap-2 mt-3"><input id="evDate" type="date" required class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evEnd" type="date" title="종료일(여러 날일 때)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evTime" type="time" title="시간(선택)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evText" required placeholder="내 일정 추가" class="flex-1 min-w-0 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">추가</button></form>
+        <form id="cEvForm" class="flex gap-2 mt-3"><input id="evDate" type="date" required class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evEnd" type="date" title="종료일(여러 날일 때)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evTime" type="time" title="시간(선택)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evText" required placeholder="내 일정 추가" class="flex-1 min-w-0 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">추가</button></form>
         <ul id="cList" class="mt-3 divide-y divide-slate-100 text-sm"></ul>
         <p id="cEmpty" class="text-sm text-slate-500 py-6 text-center">표시할 일정이 없습니다.</p>
       </div>
+      <div class="bg-white rounded-xl border border-slate-200 p-5">
+        <div class="flex items-center gap-2 flex-wrap"><h2 class="font-bold text-lg mr-auto">⏰ 시간표</h2><input id="tGrade" type="number" min="1" max="6" placeholder="학년" class="w-16 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="tClass" type="number" min="1" placeholder="반" class="w-16 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="tDate" type="date" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button id="tLoad" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">불러오기</button></div>
+        <div id="tBoard" class="mt-3 overflow-x-auto"></div>
+        <h3 class="font-bold text-sm mt-5 mb-2">🧸 내 시간표 (직접 입력)</h3>
+        <div id="myTT" class="overflow-x-auto"></div>
+      </div>
     </div>
+  </section>
+
+  <!-- 시간표 -->
+  <section id="tab-sch" class="tab-panel hidden">
+    <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-2">
+      <label class="text-sm block">시간표 파일 올리기 (교사별 시간표, 전체 학급 시간표 · 여러 개를 한 번에 골라도 됩니다)<input id="schFile" type="file" accept=".xlsx,.xls" multiple class="block mt-1 text-sm"></label>
+      <p id="schInfo" class="text-xs text-slate-600"></p>
+    </div>
+    <div class="bg-white rounded-xl border border-slate-200 p-5 mt-5">
+      <div class="flex items-center gap-2 flex-wrap mb-3"><h2 class="font-bold text-lg mr-auto">🧑‍🏫 교사 시간표</h2><select id="schTeacher" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></select><button id="schMeBtn" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap"></button><button id="schEditT" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap"></button><button id="schResetT" type="button" class="text-xs text-slate-600 hover:text-red-600 underline">수정 지우기</button></div>
+      <div id="schT" class="overflow-x-auto"></div>
+    </div>
+    <div class="bg-white rounded-xl border border-slate-200 p-5 mt-5">
+      <div class="flex items-center gap-2 flex-wrap mb-3"><h2 class="font-bold text-lg mr-auto">🏫 학급 시간표</h2><select id="schClass" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></select><button id="schClsBtn" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap"></button><button id="schEditC" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap"></button><button id="schResetC" type="button" class="text-xs text-slate-600 hover:text-red-600 underline">수정 지우기</button></div>
+      <div id="schC" class="overflow-x-auto"></div>
+    </div>
+    <p class="text-xs text-slate-600 mt-3">직접 고친 칸은 노란색으로 표시됩니다. 새 파일을 올려도 고친 내용이 남으니, 필요 없으면 수정 지우기를 누르세요.</p>
   </section>
 
   <!-- 창의적체험활동 일정 -->
@@ -430,6 +419,14 @@
         <input id="cfgSchool" placeholder="학교 이름" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
         <input id="cfgClass" placeholder="담임 학급 (예: 1학년 3반)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
       </div>
+    </section>
+
+    <section>
+      <h3 class="font-bold text-sm mb-2">☁️ PC·휴대폰 연동</h3>
+      <p class="text-xs text-slate-600 mb-2">본인 구글 계정의 Apps Script로 할 일·메모, 내 일정, D-day, 시간표, 창체 일정만 주고받습니다. 학생 명단, 상담, 조퇴, 작성한 기록, 성적, 예산은 연동하지 않습니다.</p>
+      <input id="syncUrl" placeholder="웹 앱 주소 (https://script.google.com/macros/s/.../exec)" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
+      <input id="syncToken" type="password" autocomplete="off" placeholder="연동 암호 (Apps Script에 적은 값과 같게)" class="mt-2 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
+      <div class="flex items-center gap-2 mt-2 flex-wrap"><button id="syncRun" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm font-bold">☁️ 지금 동기화</button><span id="syncMsg" class="text-xs text-slate-600"></span></div>
     </section>
 
     <section>
@@ -1923,7 +1920,7 @@ $('rsFile').addEventListener('change', async e => {
     students = d.students; counsels = d.counsels || []; passes = d.passes || []; if (Array.isArray(d.ddays)) ddays = d.ddays;
     if (Array.isArray(d.memos)) { memos = d.memos; store('gm-memos', memos); }
     if (Array.isArray(d.events)) { evs = d.events; store(EV_KEY, evs); }
-    if (d.timetable) { myTT = d.timetable; store(TT_KEY, myTT); }
+    if (d.timetable) { myTT = d.timetable; store(TT_KEY, myTT); renderMyTT(); }
     if (d.budget) { bg = normBg(d.budget); saveBg(); }
     if (d.recs) { recs = d.recs; store(REC_KEY, recs); }
     if (d.ch) { ch = { sheets: d.ch.sheets || {}, files: d.ch.files || [], sel: d.ch.sel || '' }; saveCh(); }
@@ -1938,7 +1935,7 @@ $('rsFile').addEventListener('change', async e => {
 $('rstBtn').addEventListener('click', () => {
   if (!confirm('학생, 상담, 조퇴 기록을 모두 삭제합니다. 백업 파일을 먼저 저장했나요?')) return;
   if (!confirm('정말 삭제할까요? 되돌릴 수 없습니다.')) return;
-  students = []; counsels = []; passes = []; memos = []; store('gm-memos', memos); evs = []; myTT = {}; store('gm-events', evs); store('gm-tt', myTT);
+  students = []; counsels = []; passes = []; memos = []; store('gm-memos', memos); evs = []; myTT = {}; store('gm-events', evs); store('gm-tt', myTT); renderMyTT();
   bg = { items: [], spends: [] }; ch = { sheets: {}, files: [], sel: '' }; saveCh(); sch = schNorm({ me: sch.me }); schE = { t: {}, c: {} }; saveSch(); saveSchE(); neisCache = {}; store(NC_KEY, {}); recs = {}; subjList = []; clubList = []; saveBg(); store(REC_KEY, recs); store('gm-subj', subjList); store('gm-clubs', clubList);
   store('gm-students', students); store('gm-counsels', counsels); store('gm-pass', passes);
   gAll = {}; curTerm = ''; store(G_KEY, {}); renderAll(); $('dlg').close();
@@ -2500,7 +2497,7 @@ $('mmForm').addEventListener('submit', e => {
   store(MEMO_KEY, memos); $('mmText').value = ''; $('mmDue').value = ''; renderMemos();
 });
 
-/* ===== 학사 일정 (나이스 오픈API) ===== */
+/* ===== 학사일정·시간표 (나이스 오픈API) ===== */
 const NEIS_KEY = 'gm-neis', EV_KEY = 'gm-events', TT_KEY = 'gm-tt';
 const jl = k => { try { return JSON.parse(localStorage.getItem(k)) || {}; } catch (e) { return {}; } };
 let neis = jl(NEIS_KEY), evs = load(EV_KEY), myTT = jl(TT_KEY), fetched = [];
@@ -2556,8 +2553,36 @@ $('cLoad').addEventListener('click', async () => {
   } catch (e) { fail(e); }
 });
 $('cEvForm').addEventListener('submit', e => { e.preventDefault(); evs.push({ id: uid(), date: $('evDate').value, time: $('evTime').value, to: ($('evEnd').value > $('evDate').value ? $('evEnd').value : ''), text: $('evText').value.trim() }); store(EV_KEY, evs); $('evText').value = ''; $('evEnd').value = ''; renderCal(); renderHome(); });
+const DAYS = ['월', '화', '수', '목', '금'];
+function renderTT(rows, mon) {
+  const cell = {}; let maxP = 0;
+  rows.forEach(r => { const di = (new Date(ymdOf(r.ALL_TI_YMD) + 'T00:00:00').getDay() + 6) % 7, p = +r.PERIO; if (di > 4) return; cell[`${di}-${p}`] = r.ITRT_CNTNT; maxP = Math.max(maxP, p); });
+  let h = '<table class="w-full text-sm text-center border border-slate-200"><thead class="bg-slate-50"><tr><th class="p-1.5"></th>' + DAYS.map((n, i) => { const d = new Date(mon); d.setDate(mon.getDate() + i); return `<th class="p-1.5 font-medium">${n}<br><span class="text-xs text-slate-500">${d.getMonth() + 1}/${d.getDate()}</span></th>`; }).join('') + '</tr></thead><tbody>';
+  for (let p = 1; p <= maxP; p++) h += `<tr class="border-t border-slate-100"><td class="p-1.5 text-slate-500">${p}</td>${DAYS.map((n, i) => `<td class="p-1.5">${esc(cell[`${i}-${p}`] || '')}</td>`).join('')}</tr>`;
+  $('tBoard').innerHTML = maxP ? h + '</tbody></table>' : '';
+}
+$('tDate').value = ymd(now); $('tGrade').value = neis.grade || ''; $('tClass').value = neis.cls || '';
+$('tLoad').addEventListener('click', async () => {
+  if (!neis.code) { say('먼저 학교를 검색해서 선택하세요.'); return; }
+  const g = $('tGrade').value, c = $('tClass').value; if (!g || !c) { say('학년과 반을 입력하세요.'); return; }
+  neis.grade = g; neis.cls = c; saveNeis();
+  const d = new Date($('tDate').value + 'T00:00:00'), mon = new Date(d); mon.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+  const fri = new Date(mon); fri.setDate(mon.getDate() + 4);
+  const f = x => `${x.getFullYear()}${pad(x.getMonth() + 1)}${pad(x.getDate())}`;
+  try {
+    say('불러오는 중…');
+    const rows = await neisGet(TT_PATH[neis.kind] || 'hisTimetable', { ATPT_OFCDC_SC_CODE: neis.atpt, SD_SCHUL_CODE: neis.code, GRADE: g, CLASS_NM: c, TI_FROM_YMD: f(mon), TI_TO_YMD: f(fri) });
+    renderTT(rows, mon); say(rows.length ? `${g}학년 ${c}반 시간표를 불러왔습니다.` : '해당 주의 시간표가 없습니다. 학교가 나이스에 시간표를 등록했는지 확인하세요.', rows.length > 0);
+  } catch (e) { fail(e); }
+});
+function renderMyTT() {
+  let h = '<table class="w-full text-sm border border-slate-200"><thead class="bg-slate-50"><tr><th class="p-1"></th>' + DAYS.map(n => `<th class="p-1 font-medium">${n}</th>`).join('') + '</tr></thead><tbody>';
+  for (let p = 1; p <= 8; p++) h += `<tr class="border-t border-slate-100"><td class="p-1 text-center text-slate-500">${p}</td>${DAYS.map((n, i) => `<td class="p-0.5"><input data-k="${i}-${p}" value="${esc(myTT[`${i}-${p}`] || '')}" aria-label="${n} ${p}교시" class="w-full min-w-[64px] px-1.5 py-1 text-center border border-transparent hover:border-slate-300 rounded bg-transparent"></td>`).join('')}</tr>`;
+  $('myTT').innerHTML = h + '</tbody></table>';
+  $('myTT').querySelectorAll('input').forEach(i => i.addEventListener('input', () => { myTT[i.dataset.k] = i.value; store(TT_KEY, myTT); }));
+}
 say(neis.code ? `선택한 학교: ${neis.sname}` : '나이스 인증키를 입력하고 학교를 검색해서 선택하세요.', !!neis.code);
-renderCal();
+renderCal(); renderMyTT();
 
 /* ===== 예산 사용내역 ===== */
 const BEMO = { '소모품비': '✏️', '간식·다과비': '🍪', '행사운영비': '🎉', '도서·교재비': '📚', '교통·체험비': '🚌', '기타': '✨' };
@@ -2679,11 +2704,8 @@ $('recAll').addEventListener('click', async () => {
 
 /* ===== 대시보드: 노션식 바로가기 + 오늘까지 할 일 ===== */
 const GEMO = { 담임: '🧑‍🏫', 수업: '📚', 업무: '💼' };
-const LINKS = { 담임: [['records', '🎒 학생 기록 관리'], ['counsel', '💬 상담 관리자'], ['pass', '🎫 조퇴증 발급'], ['budget', '🐷 학급 예산 사용내역'], ['rec', '🖍️ 행특·자율자치 기록']], 수업: [['grades', '🍎 성적관리'], ['rec', '📖 교과세특 기록'], ['dash', '⏰ 대시보드 시간표']], 업무: [['memo', '🍀 할 일 관리'], ['cal', '🗓️ 학사일정'], ['ch', '🎈 창체 일정'], ['budget', '💰 예산 관리']] };
-const goTab = k => {
-  const btn = document.querySelector(`.tab-btn[data-tab="${k}"]`); if (btn) btn.click();
-  if (k === 'dash') $('dashTeacher').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-};
+const LINKS = { 담임: [['records', '🎒 학생 기록 관리'], ['counsel', '💬 상담 관리자'], ['pass', '🎫 조퇴증 발급'], ['budget', '🐷 학급 예산 사용내역'], ['rec', '🖍️ 행특·자율자치 기록']], 수업: [['grades', '🍎 성적관리'], ['rec', '📖 교과세특 기록'], ['cal', '⏰ 시간표']], 업무: [['memo', '🍀 할 일 관리'], ['cal', '🗓️ 학사일정'], ['ch', '🎈 창체 일정'], ['budget', '💰 예산 관리']] };
+const goTab = k => document.querySelector(`.tab-btn[data-tab="${k}"]`).click();
 function renderDash() {
   const t = ymd(now), due = memos.filter(m => !m.done && m.due && m.due <= t).sort((a, b) => a.due.localeCompare(b.due)), box = $('dashTasks');
   box.innerHTML = '<h2 class="font-bold text-lg mb-2">🍀 오늘까지 할 일</h2>';
@@ -2849,141 +2871,42 @@ function renderHome() {
 /* ===== 시간표 (교사별 · 전체 학급 시간표 파일) ===== */
 const SCH_KEY = 'gm-sch', SCHE_KEY = 'gm-sch-edit', DAYN = ['월', '화', '수', '목', '금'];
 const schNorm = v => Object.assign({ teachers: {}, classes: {}, periods: {}, me: '', myClass: '', tFile: '', cFile: '' }, v || {});
-let sch = schNorm(jl(SCH_KEY)), schE = (() => { const v = jl(SCHE_KEY); return { t: v.t || {}, c: v.c || {} }; })();
+let sch = schNorm(jl(SCH_KEY)), schE = (() => { const v = jl(SCHE_KEY); return { t: v.t || {}, c: v.c || {} }; })(), schSelT = '', schSelC = '', schEdit = { t: false, c: false };
 const saveSch = () => store(SCH_KEY, sch), saveSchE = () => store(SCHE_KEY, schE);
 const schClean = v => String(v == null ? '' : v).replace(/_x000D_/g, '').replace(/\r/g, '').split('\n').map(s => s.trim()).filter(Boolean).join('\n');
 const schLines = v => String(v || '').split(/\n| \/ /).map(s => s.trim()).filter(Boolean);
 const schFull = ab => { if (!ab) return ''; const c = Object.keys(sch.teachers).filter(n => n.startsWith(ab)); return c.length === 1 ? c[0] : ab; };
 const schFmt = (v, kind) => { const L = schLines(v); if (!L.length) return ['', '']; if (kind === 't') { const m = /^(\d)(\d{2})$/.exec(L[0]); return [m ? `${m[1]}-${+m[2]}반` : L[0], L.slice(1).join(' ')]; } return [L[0], [schFull(L[1] || ''), ...L.slice(2)].filter(Boolean).join(' ')]; };
-// 표기 차이를 정규화하되 과목/교사 내용은 그대로 보존합니다.
-const schDay = v => {
-  const s = schClean(v).replace(/\s/g, '');
-  const m = /^(?:\(?)([월화수목금])(?:요일|\))?$/.exec(s);
-  return m ? DAYN.indexOf(m[1]) : -1;
-};
-const schPeriod = v => {
-  const m = /^(\d{1,2})\s*(?:교시|시)?(?:\s*\([^)]*\))?$/.exec(schClean(v));
-  return m && +m[1] > 0 && +m[1] <= 15 ? +m[1] : 0;
-};
-const schClassName = v => {
-  const s = schClean(v).replace(/\s/g, '').replace(/[‐‑–—]/g, '-');
-  const m = /^(\d{1,2})(?:학년|-|_|\/)(\d{1,2})반?$/.exec(s);
-  return m ? `${+m[1]}-${+m[2]}` : '';
-};
-function schClassContext(rows, context) {
-  for (const v of [context.sheetName, context.fileName.replace(/\.[^.]+$/, ''), ...rows.slice(0, Math.min(8, rows.findIndex(r => r.filter(v => schDay(v) >= 0).length >= 3) < 0 ? 8 : rows.findIndex(r => r.filter(v => schDay(v) >= 0).length >= 3))).flat()]) {
-    const s = schClean(v), exact = schClassName(s);
-    if (exact) return exact;
-    const m = /(?:^|[^\d])(\d{1,2})\s*(?:학년\s*|-|_)\s*(\d{1,2})\s*반?(?!\d)/.exec(s);
-    if (m) return `${+m[1]}-${+m[2]}`;
-  }
-  return '';
-}
-function schWeekTables(rows) {
-  const tables = [];
+function parseTeacherTT(rows) {
+  const out = {}, per = {};
   for (let i = 0; i < rows.length; i++) {
-    const r = rows[i].map(schClean), cols = DAYN.map(d => r.findIndex(v => schDay(v) === DAYN.indexOf(d)));
-    if (cols.some(c => c < 0)) continue;
-    const firstDay = Math.min(...cols), cells = {}, periods = {};
-    let periodCol = -1, used = 0, misses = 0;
+    const r = rows[i].map(schClean), cols = DAYN.map(d => r.indexOf(d));
+    if (!r[0] || cols.some(c => c < 1)) continue;
+    const name = r[0].split('\n')[0], cells = {};
     for (let j = i + 1; j < rows.length; j++) {
-      const rr = rows[j].map(schClean);
-      if (rr.filter(v => schDay(v) >= 0).length >= 3) break;
-      if (periodCol < 0) periodCol = rr.findIndex((v, c) => c < firstDay && schPeriod(v));
-      const p = periodCol >= 0 ? schPeriod(rr[periodCol]) : 0;
-      if (!p) { if (used && ++misses > 2) break; continue; }
-      misses = 0; used++;
-      const tm = /\(([^)]+)\)/.exec(rr[periodCol]); if (tm) periods[p] = tm[1];
+      const rr = rows[j].map(schClean), m = /^(\d+)\s*교시/.exec(rr[0] || ''); if (!m) break;
+      const p = +m[1], tm = /\(([^)]+)\)/.exec(rr[0]); if (tm && !per[p]) per[p] = tm[1];
       cols.forEach((c, d) => { if (rr[c]) cells[`${d}-${p}`] = rr[c]; });
     }
-    if (used && Object.keys(cells).length) {
-      const label = r.slice(0, firstDay).find(v => v && !/^(교시|시간|요일|구분)$/.test(v)) || '';
-      tables.push({ label: label.split('\n')[0], cells, periods });
-    }
-  }
-  return tables;
-}
-function parseTeacherTT(rows, context = {}) {
-  const out = {}, per = {}, sheet = context.sheetName || '';
-  for (const t of schWeekTables(rows)) {
-    let name = t.label;
-    if (!name || /^(시간표|교사|교사명|성명)$/.test(name)) {
-      if ((context.kind === 't' || /교사/.test(context.fileName || '')) && !/^(Sheet\d*|시트\d*|교사.*시간표|시간표)$/i.test(sheet) && !schClassName(sheet)) name = sheet;
-      else continue;
-    }
-    if (schClassName(name) || /학급|학년|반별|전체|시간표|교시/.test(name) || name.length > 20) continue;
-    out[name] = t.cells; Object.assign(per, t.periods);
+    out[name] = cells;
   }
   return { teachers: out, periods: per };
 }
-function parseClassTT(rows, context = {}) {
-  const ctx = { sheetName: '', fileName: '', ...context }, out = {};
-  const contextName = schClassContext(rows, ctx);
-  const norm = v => schClean(v).replace(/\s/g, '');
-  // 세로 목록: 학년 / 반 / 요일 / 교시 / 과목 / 교사
-  for (let i = 0; i < rows.length; i++) {
-    const h = rows[i].map(norm), find = rx => h.findIndex(v => rx.test(v));
-    const dc = find(/^(요일|일자)$/), pc = find(/^(교시|차시)$/), sc = find(/^(과목|교과|과목명|교과명|수업)$/);
-    if (dc < 0 || pc < 0 || sc < 0) continue;
-    const cc = find(/^(학급|학급명|반|반명)$/), gc = find(/^학년$/), tc = find(/^(교사|교사명|담당교사|선생님)$/);
-    for (const r of rows.slice(i + 1)) {
-      const day = schDay(r[dc]), p = schPeriod(r[pc]);
-      let name = cc >= 0 ? schClassName(r[cc]) : '';
-      if (!name && gc >= 0 && cc >= 0) {
-        const g = parseInt(r[gc], 10), c = parseInt(r[cc], 10);
-        if (g > 0 && c > 0) name = `${g}-${c}`;
-      }
-      name = name || contextName;
-      if (name && day >= 0 && p && schClean(r[sc])) {
-        (out[name] ||= {})[`${day}-${p}`] = [schClean(r[sc]), tc >= 0 ? schClean(r[tc]) : ''].filter(Boolean).join('\n');
-      }
-    }
+function parseClassTT(rows) {
+  const hi = rows.findIndex(r => schClean(r[0]) === '학급'); if (hi < 0) return null;
+  const hr = rows[hi].map(schClean), pr = (rows[hi + 1] || []).map(schClean), map = []; let day = -1;
+  for (let c = 1; c < Math.max(hr.length, pr.length); c++) { const di = DAYN.indexOf(hr[c]); if (di >= 0) day = di; const p = parseInt(pr[c], 10); if (day >= 0 && p) map[c] = `${day}-${p}`; }
+  const out = {};
+  for (let i = hi + 2; i < rows.length; i++) {
+    const nm = schClean(rows[i][0]).replace(/\s/g, ''); if (!/^\d+-\d+$/.test(nm)) continue;
+    const cells = {}; map.forEach((k, c) => { const v = schClean(rows[i][c]); if (v) cells[k] = v; }); out[nm] = cells;
   }
-  // 전체 학급 가로표: 학급 열 위치, 병합된 요일, '1교시' 표기를 허용합니다.
-  for (let hi = 0; hi < rows.length; hi++) {
-    const hr = rows[hi].map(schClean), cc = hr.findIndex(v => /^(학급|학급명|학년반|반|반명)$/.test(norm(v)));
-    if (cc < 0) continue;
-    for (let offset = 0; offset <= 3; offset++) {
-      const pr = (rows[hi + offset] || []).map(schClean), map = {}; let day = -1;
-      for (let c = cc + 1; c < Math.max(hr.length, pr.length); c++) {
-        let di = schDay(hr[c]), p = schPeriod(pr[c]);
-        const combined = /([월화수목금])(?:요일)?\s*(\d{1,2})\s*(?:교시)?/.exec(hr[c]);
-        if (combined) { di = DAYN.indexOf(combined[1]); p = +combined[2]; }
-        if (di >= 0) day = di;
-        if (day >= 0 && p > 0 && p <= 15) map[c] = `${day}-${p}`;
-      }
-      if (!Object.keys(map).length) continue;
-      for (const r of rows.slice(hi + offset + 1)) {
-        const name = schClassName(r[cc]); if (!name) continue;
-        const cells = {};
-        Object.entries(map).forEach(([c, k]) => { const v = schClean(r[c]); if (v) cells[k] = v; });
-        if (Object.keys(cells).length) out[name] = { ...(out[name] || {}), ...cells };
-      }
-    }
-  }
-  // 단일 학급 주간표: 상단 또는 시트 이름에 학년·반이 있습니다.
-  const weekTables = schWeekTables(rows);
-  for (const t of weekTables) {
-    const name = schClassName(t.label) || (weekTables.length === 1 ? contextName : '');
-    if (name) out[name] = { ...(out[name] || {}), ...t.cells };
-  }
-  // 요일이 세로, 교시가 가로인 주간표
-  if (contextName) for (let i = 0; i < rows.length; i++) {
-    const h = rows[i].map(schPeriod), cols = h.map((p, c) => [c, p]).filter(([, p]) => p);
-    if (cols.length < 3) continue;
-    for (const r of rows.slice(i + 1)) {
-      const dc = r.findIndex(v => schDay(v) >= 0); if (dc < 0) continue;
-      const d = schDay(r[dc]);
-      cols.forEach(([c, p]) => { const v = schClean(r[c]); if (c !== dc && v) (out[contextName] ||= {})[`${d}-${p}`] = v; });
-    }
-  }
-  return Object.keys(out).length ? out : null;
+  return out;
 }
-
 function schGrid(kind, name, editing) {
   const cells = (kind === 't' ? sch.teachers : sch.classes)[name] || {}, ed = schE[kind][name] || {}, td = (now.getDay() + 6) % 7;
   const maxP = Math.max(7, ...Object.keys(cells).concat(Object.keys(ed)).map(k => +k.split('-')[1] || 0));
-  let h = `<table class="sch-table w-full min-w-[560px] text-sm text-center border border-slate-200 table-fixed"><thead class="bg-slate-50"><tr><th class="p-1.5 w-24"></th>${DAYN.map((n, i) => `<th class="p-1.5 font-bold ${i === td ? 'bg-sky-100' : ''}">${n}${i === td ? ' (오늘)' : ''}</th>`).join('')}</tr></thead><tbody>`;
+  let h = `<table class="w-full min-w-[560px] text-sm text-center border border-slate-200 table-fixed"><thead class="bg-slate-50"><tr><th class="p-1.5 w-24"></th>${DAYN.map((n, i) => `<th class="p-1.5 font-bold ${i === td ? 'bg-sky-100' : ''}">${n}${i === td ? ' (오늘)' : ''}</th>`).join('')}</tr></thead><tbody>`;
   for (let p = 1; p <= maxP; p++) {
     h += `<tr class="border-t border-slate-100"><td class="p-1.5 text-xs"><b>${p}교시</b><br><span class="text-slate-600">${esc(sch.periods[p] || '')}</span></td>`;
     DAYN.forEach((n, d) => {
@@ -2997,166 +2920,126 @@ function schGrid(kind, name, editing) {
 }
 function bindSch(box, kind, name) {
   const base = (kind === 't' ? sch.teachers : sch.classes)[name] || {};
-  box.querySelectorAll('input[data-k]').forEach(i => { i.oninput = () => {
+  box.querySelectorAll('input[data-k]').forEach(i => { i.onchange = () => {
     const k = i.dataset.k, b = schLines(base[k]).join(' / '), v = i.value.trim(), m = schE[kind][name] = schE[kind][name] || {};
     if (v === b) delete m[k]; else m[k] = v; saveSchE(); i.classList.toggle('bg-yellow-50', k in m); i.classList.toggle('bg-white', !(k in m));
   }; });
 }
-function appendDashboardNeis(box, button) {
-  const details = el('details', 'mt-4 border-t border-slate-200 pt-3');
-  details.appendChild(el('summary', 'text-sm font-bold cursor-pointer', '🏫 나이스에서 학급 시간표 불러오기'));
-  const form = el('form', 'flex items-end gap-2 flex-wrap mt-3');
-  const makeInput = (label, type, value, min, max) => {
-    const wrapper = el('label', 'text-sm'), input = el('input', 'block mt-1 border border-slate-300 rounded-lg px-2 py-2 bg-slate-50 text-sm');
-    input.type = type; input.value = value; input.required = true;
-    if (min) input.min = min; if (max) input.max = max;
-    if (type === 'number') input.style.width = '5rem';
-    wrapper.append(el('span', '', label), input); form.appendChild(wrapper); return input;
-  };
-  const grade = makeInput('학년', 'number', neis.grade || '', '1', '6');
-  const cls = makeInput('반', 'number', neis.cls || '', '1', '99');
-  const date = makeInput('기준 날짜', 'date', ymd(now));
-  const loadBtn = button('불러오기', () => form.requestSubmit());
-  const status = el('p', 'text-xs text-slate-600 mt-2'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
-  form.appendChild(loadBtn); details.append(form, status);
-  details.appendChild(el('p', 'text-xs text-slate-600 mt-2', '기준 날짜가 속한 월~금 시간표를 홈에 고정합니다.'));
-  if (!neis.code) details.appendChild(button('나이스 연동 설정', () => goTab('cal')));
-  form.onsubmit = async e => {
-    e.preventDefault();
-    if (!neis.code) { status.textContent = '학사 일정 탭에서 학교를 검색해서 선택해 주세요.'; return; }
-    const g = +grade.value, c = +cls.value, selected = new Date(date.value + 'T00:00:00');
-    if (!g || !c || Number.isNaN(selected.getTime())) return;
-    const mon = new Date(selected); mon.setDate(selected.getDate() - ((selected.getDay() + 6) % 7));
-    const fri = new Date(mon); fri.setDate(mon.getDate() + 4);
-    const fmt = d => `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;
-    loadBtn.disabled = true; status.textContent = '시간표를 불러오는 중…';
-    try {
-      const rows = await neisGet(TT_PATH[neis.kind] || 'hisTimetable', { ATPT_OFCDC_SC_CODE: neis.atpt, SD_SCHUL_CODE: neis.code, GRADE: g, CLASS_NM: c, TI_FROM_YMD: fmt(mon), TI_TO_YMD: fmt(fri) });
-      const cells = {};
-      rows.forEach(r => {
-        const d = (new Date(ymdOf(r.ALL_TI_YMD) + 'T00:00:00').getDay() + 6) % 7, p = +r.PERIO;
-        if (d < 5 && p > 0 && p <= 15 && r.ITRT_CNTNT) cells[`${d}-${p}`] = schClean(r.ITRT_CNTNT);
-      });
-      if (!Object.keys(cells).length) { status.textContent = '해당 주의 시간표가 없습니다. 기존 시간표는 유지됩니다.'; return; }
-      const name = `${g}-${c}`;
-      if (Object.keys(schE.c[name] || {}).length && confirm('이 학급의 직접 수정 내용을 지우고 나이스 시간표를 적용할까요? 취소하면 수정 내용이 유지됩니다.')) delete schE.c[name];
-      neis.grade = String(g); neis.cls = String(c); saveNeis();
-      sch.classes[name] = cells; sch.myClass = name; sch.cFile = `나이스 ${ymd(mon)} ~ ${ymd(fri)}`;
-      dashEditing.c = false; saveSch(); saveSchE(); renderDashTT();
-      $('dashImportInfo').textContent = `${g}학년 ${c}반 시간표를 불러와 고정했습니다 (${ymd(mon)} ~ ${ymd(fri)}).`;
-    } catch (err) { status.textContent = '불러오기 실패: ' + err.message; }
-    finally { loadBtn.disabled = false; }
-  };
-  box.appendChild(details);
+function renderSch() {
+  const tn = Object.keys(sch.teachers).sort((a, b) => a.localeCompare(b, 'ko')), cn = Object.keys(sch.classes).sort((a, b) => a.localeCompare(b, 'ko', { numeric: true }));
+  if (!tn.includes(schSelT)) schSelT = tn.includes(sch.me) ? sch.me : (tn[0] || '');
+  if (!cn.includes(schSelC)) schSelC = cn.includes(sch.myClass) ? sch.myClass : (cn[0] || '');
+  const fill = (sel, arr, cur, star) => { sel.innerHTML = ''; arr.forEach(n => { const o = el('option', '', (n === star ? '⭐ ' : '') + n); o.value = n; sel.appendChild(o); }); sel.value = cur; };
+  fill($('schTeacher'), tn, schSelT, sch.me); fill($('schClass'), cn, schSelC, sch.myClass);
+  $('schInfo').textContent = `${sch.tFile ? '교사별: ' + sch.tFile : '교사별 시간표 파일 없음'} · ${sch.cFile ? '학급: ' + sch.cFile : '학급 시간표 파일 없음'}`;
+  $('schMeBtn').textContent = schSelT && schSelT === sch.me ? '⭐ 내 시간표' : '⭐ 내 시간표로 고정';
+  $('schClsBtn').textContent = schSelC && schSelC === sch.myClass ? '⭐ 우리 반' : '⭐ 우리 반으로 고정';
+  $('schEditT').textContent = schEdit.t ? '✅ 수정 끝' : '✏️ 수정'; $('schEditC').textContent = schEdit.c ? '✅ 수정 끝' : '✏️ 수정';
+  const tb = $('schT'), cb = $('schC');
+  tb.innerHTML = schSelT ? schGrid('t', schSelT, schEdit.t) : '<p class="text-sm text-slate-600 py-4 text-center">교사별 시간표 파일을 올리면 선생님 목록이 나옵니다.</p>';
+  cb.innerHTML = schSelC ? schGrid('c', schSelC, schEdit.c) : '<p class="text-sm text-slate-600 py-4 text-center">전체 학급 시간표 파일을 올리면 학급 목록이 나옵니다.</p>';
+  if (schEdit.t && schSelT) bindSch(tb, 't', schSelT); if (schEdit.c && schSelC) bindSch(cb, 'c', schSelC);
 }
-
-const dashEditing = { t: false, c: false };
-function renderDashTT() {
-  if (!Object.keys(sch.teachers).length && Object.values(myTT).some(v => String(v || '').trim())) {
-    const name = $('pTeacher').value.trim() || '내 시간표';
-    sch.teachers[name] = { ...myTT }; sch.me = name; saveSch();
-  }
-  [['t', 'dashTeacher', '🧑‍🏫 교사 시간표'], ['c', 'dashClass', '🏫 학급 시간표']].forEach(([kind, id, title]) => {
-    const isT = kind === 't', data = isT ? sch.teachers : sch.classes;
-    const names = Object.keys(data).sort((a,b) => a.localeCompare(b, 'ko', {numeric:true}));
-    const pinned = isT ? sch.me : sch.myClass;
-    const name = names.includes(pinned) ? pinned : '';
-    const box = $(id); box.innerHTML = '';
-    box.appendChild(el('h2', 'font-bold text-lg mb-3', title));
-    const toolbar = el('div', 'dashboard-toolbar'), select = el('select', 'border border-slate-300 rounded-lg px-2 py-2 bg-slate-50 text-sm');
-    select.setAttribute('aria-label', isT ? '홈 교사 시간표 고정' : '홈 학급 시간표 고정');
-    const placeholder = el('option', '', names.length ? (isT ? '선생님 선택 후 고정' : '학급 선택 후 고정') : '시간표를 먼저 올려 주세요'); placeholder.value = ''; select.appendChild(placeholder);
-    names.forEach(n => { const o = el('option', '', (n === pinned ? '⭐ ' : '') + n); o.value = n; select.appendChild(o); }); select.value = name;
-    const button = (label, action) => { const b = el('button', 'border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white', label); b.type = 'button'; b.onclick = action; return b; };
-    const pin = button('⭐ 고정', () => {
-      if (!select.value) return;
-      if (isT) { sch.me = select.value; } else { sch.myClass = select.value; }
-      dashEditing[kind] = false; saveSch(); renderDashTT();
-    });
-    pin.disabled = !names.length;
-    toolbar.append(select, pin, button('📂 파일 올리기', () => $(isT ? 'dashTFile' : 'dashCFile').click())); box.appendChild(toolbar);
-    const actions = el('div', 'flex items-center gap-2 flex-wrap mb-3');
-    if (name) {
-      actions.append(el('span', 'text-sm font-bold mr-auto', `⭐ ${name}${isT ? ' 선생님' : '반'}`), button(dashEditing[kind] ? '✅ 수정 완료' : '✏️ 수정', () => { dashEditing[kind] = !dashEditing[kind]; renderDashTT(); }));
-      const grid = el('div', 'overflow-x-auto'); grid.innerHTML = schGrid(kind, name, dashEditing[kind]); box.append(actions, grid);
-      if (dashEditing[kind]) bindSch(grid, kind, name);
-      box.appendChild(el('p', 'text-xs text-slate-600 mt-3', dashEditing[kind] ? '칸을 눌러 수정하세요. 입력 즉시 저장됩니다. 수정 완료를 누르면 주간 시간표로 표시됩니다.' : '고정한 주간 시간표입니다. 직접 수정한 칸은 노란색으로 표시됩니다.'));
-    } else {
-      box.appendChild(el('p', 'text-sm text-slate-600 py-6 text-center', names.length ? '위 목록에서 선택하고 ⭐ 고정을 눌러 주세요. 기존에 고정한 시간표도 그대로 표시됩니다.' : '시간표 파일을 올려 주세요. 파일 없이 직접 입력할 수도 있습니다.'));
-    }
-    const footer = el('div', 'flex gap-2 flex-wrap mt-3');
-    footer.append(button('＋ 직접 만들기', () => {
-      const value = prompt(isT ? '선생님 이름을 입력하세요.' : '학년과 반을 입력하세요. 예: 1-7'); if (!value || !value.trim()) return;
-      const n = isT ? value.trim() : schClassName(value);
-      if (!n) { alert('학급은 1-7 또는 1학년 7반 형식으로 입력해 주세요.'); return; }
-      if (!data[n]) data[n] = isT ? { ...myTT } : {};
-      if (isT) { sch.me = n; } else { sch.myClass = n; }
-      dashEditing[kind] = true; saveSch(); renderDashTT();
-    }));
-    if (name) footer.appendChild(button('↩️ 수정 지우기', () => {
-      if (!Object.keys(schE[kind][name] || {}).length) { alert('직접 수정한 내용이 없습니다.'); return; }
-      if (!confirm(`${name} 시간표의 직접 수정 내용을 지우고 불러온 시간표로 되돌릴까요?`)) return;
-      delete schE[kind][name]; dashEditing[kind] = false; saveSchE(); renderDashTT();
-    }));
-    box.appendChild(footer);
-    const fileName = isT ? sch.tFile : sch.cFile;
-    if (fileName) box.appendChild(el('p', 'text-xs text-slate-600 mt-2', '불러온 파일: ' + fileName));
-    if (!isT) {
-      box.appendChild(el('p', 'text-xs text-slate-600 mt-3', '학급 엑셀은 전체 학급 가로표, 요일×교시 주간표, 학년·반·요일·교시 목록을 읽습니다. 개별 학급 시트 이름은 1-7처럼 적어 주세요.'));
-      appendDashboardNeis(box, button);
-    }
-  });
+function renderToday() {
+  const box = $('dashToday'), d = (now.getDay() + 6) % 7, cells = sch.teachers[sch.me];
+  if (!cells || d > 4) { box.classList.add('hidden'); return; }
+  const ed = schE.t[sch.me] || {}, items = [];
+  for (let p = 1; p <= 10; p++) { const k = `${d}-${p}`, v = k in ed ? ed[k] : cells[k]; if (v) items.push([p, schFmt(v, 't')]); }
+  box.classList.remove('hidden');
+  box.innerHTML = `<h2 class="font-bold text-lg mb-2">⏰ 오늘 내 수업 (${DAYN[d]}요일)</h2>` + (items.length ? items.map(([p, [a, b]]) => `<div class="flex gap-3 py-1 text-sm items-center"><span class="w-12 font-bold">${p}교시</span><span class="w-28 text-xs text-slate-600">${esc(sch.periods[p] || '')}</span><span class="font-medium">${esc(a)}</span><span class="text-slate-600">${esc(b)}</span></div>`).join('') : '<p class="text-sm text-slate-600">오늘은 수업이 없습니다.</p>');
 }
-// 이전 호출부와 호환되도록 대시보드의 두 시간표를 함께 갱신합니다.
-function renderToday() { renderDashTT(); }
-
-async function importSchedules(files, kind = '') {
-  if (!files.length) return;
-  if (typeof XLSX === 'undefined') { alert('엑셀 읽기 도구를 불러오지 못했습니다. 인터넷 연결 후 새로고침해 주세요.'); return; }
+$('schTeacher').addEventListener('change', () => { schSelT = $('schTeacher').value; renderSch(); });
+$('schClass').addEventListener('change', () => { schSelC = $('schClass').value; renderSch(); });
+$('schMeBtn').addEventListener('click', () => { if (!schSelT) return; sch.me = schSelT; saveSch(); renderSch(); renderToday(); });
+$('schClsBtn').addEventListener('click', () => { if (!schSelC) return; sch.myClass = schSelC; saveSch(); renderSch(); });
+$('schEditT').addEventListener('click', () => { schEdit.t = !schEdit.t; renderSch(); renderToday(); });
+$('schEditC').addEventListener('click', () => { schEdit.c = !schEdit.c; renderSch(); });
+$('schResetT').addEventListener('click', () => { if (schSelT && schE.t[schSelT] && confirm(`${schSelT} 선생님 시간표에서 직접 고친 내용을 지우고 파일 원래대로 돌릴까요?`)) { delete schE.t[schSelT]; saveSchE(); renderSch(); renderToday(); } });
+$('schResetC').addEventListener('click', () => { if (schSelC && schE.c[schSelC] && confirm(`${schSelC} 시간표에서 직접 고친 내용을 지우고 파일 원래대로 돌릴까요?`)) { delete schE.c[schSelC]; saveSchE(); renderSch(); } });
+$('schFile').addEventListener('change', async e => {
+  const files = [...e.target.files]; e.target.value = ''; if (!files.length) return;
+  if (typeof XLSX === 'undefined') { alert('엑셀 읽기 도구를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'); return; }
   const msg = [];
   for (const f of files) {
     try {
-      const wb = XLSX.read(await f.arrayBuffer()), classes = {}, teachers = {}, periods = {}, sheets = [];
-      // 첫 시트에서 멈추지 않고 모든 시트를 읽습니다.
+      const wb = XLSX.read(await f.arrayBuffer()); let done = false;
       for (const n of wb.SheetNames) {
-        const rows = XLSX.utils.sheet_to_json(wb.Sheets[n], { header: 1, defval: '', range: 0 });
-        const ctx = { sheetName: n, fileName: f.name, kind }, cl = kind === 't' ? null : parseClassTT(rows, ctx);
-        if (cl) { Object.assign(classes, cl); sheets.push(n); }
-        else if (kind !== 'c') {
-          const t = parseTeacherTT(rows, ctx);
-          if (Object.keys(t.teachers).length) { Object.assign(teachers, t.teachers); Object.assign(periods, t.periods); sheets.push(n); }
+        const rows = XLSX.utils.sheet_to_json(wb.Sheets[n], { header: 1, defval: '' }), cl = parseClassTT(rows);
+        if (cl && Object.keys(cl).length) {
+          if (Object.keys(schE.c).length && confirm('새 학급 시간표입니다. 이전에 직접 고친 학급 시간표 내용을 지울까요? (취소하면 고친 내용이 남습니다)')) schE.c = {};
+          sch.classes = cl; sch.cFile = f.name; msg.push(`${f.name}: 학급 ${Object.keys(cl).length}개를 불러왔습니다.`); done = true; break;
+        }
+        const t = parseTeacherTT(rows);
+        if (Object.keys(t.teachers).length) {
+          if (Object.keys(schE.t).length && confirm('새 교사별 시간표입니다. 이전에 직접 고친 교사 시간표 내용을 지울까요? (취소하면 고친 내용이 남습니다)')) schE.t = {};
+          sch.teachers = t.teachers; sch.periods = Object.assign({}, sch.periods, t.periods); sch.tFile = f.name; msg.push(`${f.name}: 선생님 ${Object.keys(t.teachers).length}명을 불러왔습니다.`); done = true; break;
         }
       }
-      const cn = Object.keys(classes), tn = Object.keys(teachers);
-      if (!cn.length && !tn.length) {
-        msg.push(`${f.name}: 읽을 수 있는 시간표를 찾지 못했습니다. 학급 주간표는 시트 이름에 학년·반(예: 1-7)을 적고 요일과 교시를 표시해 주세요. PDF·사진은 엑셀로 변환해 주세요.`); continue;
-      }
-      if (cn.length) {
-        const changed = cn.some(n => Object.keys(schE.c[n] || {}).length);
-        if (changed && confirm('새 파일에 포함된 학급의 직접 수정 내용을 지우고 새 시간표를 적용할까요? 취소하면 수정 내용이 유지됩니다.')) cn.forEach(n => delete schE.c[n]);
-        Object.assign(sch.classes, classes); sch.cFile = f.name;
-        if (!sch.classes[sch.myClass]) sch.myClass = cn[0];
-      }
-      if (tn.length) {
-        const changed = tn.some(n => Object.keys(schE.t[n] || {}).length);
-        if (changed && confirm('새 파일에 포함된 교사의 직접 수정 내용을 지우고 새 시간표를 적용할까요? 취소하면 수정 내용이 유지됩니다.')) tn.forEach(n => delete schE.t[n]);
-        Object.assign(sch.teachers, teachers); Object.assign(sch.periods, periods); sch.tFile = f.name;
-        if (!sch.teachers[sch.me] && tn.length === 1) sch.me = tn[0];
-      }
-      msg.push(`${f.name}: ${[tn.length ? `교사 ${tn.length}명` : '', cn.length ? `학급 ${cn.length}개` : ''].filter(Boolean).join(', ')} 적용 완료 (${sheets.length}개 시트).`);
-    } catch (err) { msg.push(`${f.name}: 불러오기 실패 (${err.message}). 엑셀 또는 CSV 파일인지 확인해 주세요.`); }
+      if (!done) msg.push(`${f.name}: 시간표 형식을 찾지 못했습니다.`);
+    } catch (err) { msg.push(`${f.name}: 불러오기 실패 (${err.message})`); }
   }
-  saveSch(); saveSchE(); renderDashTT();
-  $('dashImportInfo').textContent = msg.join('\n');
-  if (!sch.me && Object.keys(sch.teachers).length) msg.push('홈의 교사 목록에서 본인 이름을 고르고 ‘⭐ 고정’을 눌러 주세요.');
-  alert(msg.join('\n'));
-}
-[['dashTFile', 't'], ['dashCFile', 'c']].forEach(([id, kind]) => {
-  $(id).addEventListener('change', async e => { const files = [...e.target.files]; e.target.value = ''; await importSchedules(files, kind); });
+  saveSch(); saveSchE(); renderSch(); renderToday();
+  alert(msg.join('\n') + (!sch.me && Object.keys(sch.teachers).length ? '\n\n교사 시간표에서 본인 이름을 고르고 "내 시간표로 고정"을 눌러 주세요.' : ''));
 });
 
+/* ===== PC·휴대폰 연동 (구글 Apps Script, 개인정보 없는 자료만) ===== */
+const SYNC_KEY = 'gm-sync';
+let syncCfg = (() => { const v = jl(SYNC_KEY); return { url: v.url || '', token: v.token || '', last: v.last || '', meta: v.meta || { h: {}, ts: {} } }; })(), syncing = false;
+const saveSync = () => store(SYNC_KEY, syncCfg);
+const SYNC_KEYS = [
+  ['gm-memos', '할 일·메모', () => memos, v => { memos = Array.isArray(v) ? v : []; }],
+  ['gm-events', '내 일정', () => evs, v => { evs = Array.isArray(v) ? v : []; }],
+  ['gm-dday', 'D-day', () => ddays, v => { ddays = Array.isArray(v) ? v : []; }],
+  ['gm-tt', '내 시간표(직접 입력)', () => myTT, v => { myTT = v || {}; }],
+  ['gm-sch', '교사·학급 시간표', () => sch, v => { sch = schNorm(v); }],
+  ['gm-sch-edit', '시간표 수정 내용', () => schE, v => { schE = { t: (v && v.t) || {}, c: (v && v.c) || {} }; }],
+  ['gm-ch', '창체 일정', () => ch, v => { ch = { sheets: (v && v.sheets) || {}, files: (v && v.files) || [], sel: (v && v.sel) || '' }; }]
+];
+const hashStr = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0; return h.toString(36) + ':' + s.length; };
+const isEmptyVal = v => v == null || v === '' || (Array.isArray(v) ? v.length === 0 : typeof v === 'object' ? Object.values(v).every(isEmptyVal) : false);
+const syncMsg = (t, ok) => { $('syncMsg').textContent = t; $('syncMsg').className = 'text-xs ' + (ok ? 'text-emerald-700' : 'text-slate-600'); };
+async function syncReq(method, payload) {
+  const u = syncCfg.url.trim();
+  const r = method === 'GET' ? await fetch(`${u}${u.includes('?') ? '&' : '?'}token=${encodeURIComponent(syncCfg.token)}&t=${Date.now()}`)
+    : await fetch(u, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+  const tx = await r.text(); try { return JSON.parse(tx); } catch (e) { throw new Error('웹 앱 응답을 읽지 못했습니다. 주소와 배포 설정(액세스: 모든 사용자)을 확인하세요.'); }
+}
+async function syncNow(interactive) {
+  if (syncing) return;
+  if (!syncCfg.url || !syncCfg.token) { if (interactive) alert('설정에서 웹 앱 주소와 연동 암호를 먼저 입력하세요.'); return; }
+  syncing = true; syncMsg('동기화 중…');
+  try {
+    const g = await syncReq('GET'); if (!g.ok) throw new Error(g.error || '서버 응답 오류');
+    const doc = g.doc && g.doc.items ? g.doc : { v: 1, items: {} }, meta = syncCfg.meta, stamp = Date.now(), skipped = [];
+    let pushed = 0, pulled = 0;
+    for (const [k, label, get, set] of SYNC_KEYS) {
+      const rem = doc.items[k], lh = hashStr(JSON.stringify(get())), empty = isEmptyVal(get());
+      const lc = lh !== meta.h[k] && !(empty && rem), rc = !!rem && rem.ts !== meta.ts[k];
+      let use = !rem ? (empty ? 'none' : 'push') : lc && rc ? 'conflict' : lc ? 'push' : rc ? 'pull' : 'none';
+      if (use === 'conflict') {
+        if (!interactive) { skipped.push(label); continue; }
+        use = confirm(`'${label}'이(가) 이 기기와 다른 기기에서 모두 바뀌었습니다.\n\n확인: 이 기기 내용으로 맞추기\n취소: 다른 기기 내용으로 맞추기`) ? 'push' : 'pull';
+      }
+      if (use === 'push') { doc.items[k] = { ts: stamp, data: get() }; meta.h[k] = lh; meta.ts[k] = stamp; pushed++; }
+      else if (use === 'pull') { set(rem.data); store(k, get()); meta.h[k] = hashStr(JSON.stringify(get())); meta.ts[k] = rem.ts; pulled++; }
+      else if (rem) { meta.ts[k] = rem.ts; meta.h[k] = lh; }
+    }
+    if (pushed) { doc.v = 1; const p = await syncReq('POST', { token: syncCfg.token, doc }); if (!p.ok) throw new Error(p.error || '저장 실패'); }
+    syncCfg.meta = meta; syncCfg.last = new Date().toLocaleString('ko-KR'); saveSync();
+    if (pulled) renderAll();
+    syncMsg(`${syncCfg.last} 동기화 완료 · 보냄 ${pushed} · 받음 ${pulled}${skipped.length ? ' · 양쪽 모두 바뀌어 건너뜀: ' + skipped.join(', ') + ' (지금 동기화를 눌러 선택)' : ''}`, true);
+  } catch (e) { syncMsg('동기화 실패: ' + e.message); if (interactive) alert('동기화 실패: ' + e.message); }
+  finally { syncing = false; }
+}
+const syncUI = () => { $('syncBtn').classList.toggle('hidden', !(syncCfg.url && syncCfg.token)); if (syncCfg.last && !$('syncMsg').textContent) syncMsg(`마지막 동기화: ${syncCfg.last}`, true); };
+$('syncUrl').value = syncCfg.url; $('syncToken').value = syncCfg.token;
+['syncUrl', 'syncToken'].forEach(id => $(id).addEventListener('change', () => { syncCfg.url = $('syncUrl').value.trim(); syncCfg.token = $('syncToken').value.trim(); syncCfg.meta = { h: {}, ts: {} }; saveSync(); syncUI(); }));
+$('syncRun').addEventListener('click', () => syncNow(true));
+$('syncBtn').addEventListener('click', () => syncNow(true));
+syncUI();
+if (syncCfg.url && syncCfg.token) setTimeout(() => syncNow(false), 1500);
 
-function renderAll() { renderToday(); renderCal(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); }
+function renderAll() { renderSch(); renderToday(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); }
 renderAll();
 </script>
 </body>
