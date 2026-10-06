@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>교무실 도우미</title>
+<title>송현쌤의 교무실</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -68,7 +68,7 @@
 <body class="bg-slate-100 text-slate-800 min-h-screen">
 <div id="lock" class="fixed inset-0 z-50 bg-[#0f2747] flex items-center justify-center p-6">
   <form id="lockForm" class="bg-white rounded-xl p-6 w-[380px] max-w-full space-y-3">
-    <h2 class="font-bold text-lg">🔒 <span id="lockTitle">교무실 도우미</span></h2>
+    <h2 class="font-bold text-lg">🔒 송현쌤의 교무실</h2>
     <p id="lockMsg" class="text-sm text-slate-600"></p>
     <input id="lockPw" type="password" autocomplete="off" placeholder="비밀번호" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
     <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:#12343b"><input id="lockShow" type="checkbox"> 비밀번호 보기</label>
@@ -77,13 +77,13 @@
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 블루투스 안내</p>
   </form>
 </div>
 
 <header class="bg-[#0f2747] text-white">
   <div class="max-w-6xl mx-auto px-6 pt-4 flex items-center gap-3 flex-wrap">
-    <h1 class="text-xl font-bold tracking-tight"><span class="bob">🐥</span> <span id="appTitle">교무실 도우미</span></h1>
+    <h1 class="text-xl font-bold tracking-tight"><span class="bob">🐥</span> 송현쌤의 교무실</h1>
     <span id="today" class="text-sm text-slate-300"></span>
     <span id="ddays" class="flex gap-2 flex-wrap"></span>
     <button id="lockNow" title="지금 잠그기" class="ml-auto text-xl hover:scale-110 transition" aria-label="잠금">🔒</button>
@@ -145,7 +145,7 @@
   <!-- 스티커 메모 -->
   <section id="tab-memo" class="tab-panel hidden">
     <form id="mmForm" class="bg-white rounded-xl border border-slate-200 p-5 flex flex-wrap gap-3 items-end">
-      <label class="text-sm flex-1 min-w-[240px]">새 업무 메모<input id="mmText" required maxlength="200" placeholder="예: 금요일까지 상담일지 제출" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+      <label class="text-sm flex-1 min-w-[240px]">새 업무 메모<textarea id="mmText" required maxlength="1000" rows="3" placeholder="예: 금요일까지 상담일지 제출 (Enter로 줄바꿈, Ctrl+Enter로 추가)" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm resize-y"></textarea></label>
       <select id="mmCat" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><option value="">분류 없음</option><option value="담임">🧑‍🏫 담임</option><option value="수업">📚 수업</option><option value="업무">💼 업무</option></select>
       <input id="mmDue" type="date" title="마감일" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
       <div id="mmColors" class="flex gap-2 pb-2.5" role="group" aria-label="메모 색상"></div>
@@ -301,7 +301,7 @@
     <div class="bg-white rounded-xl border border-slate-200 mt-5 overflow-hidden">
       <div class="p-4 border-b border-slate-200 flex items-center gap-3">
         <input id="sSearch" type="search" placeholder="학번, 이름, 연락처, 특이사항으로 검색" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
-        <span id="sCount" class="text-sm text-slate-500 whitespace-nowrap"></span>
+        <button id="sSeed" type="button" class="text-sm border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 whitespace-nowrap">1학년 7반 명단 불러오기</button><span id="sCount" class="text-sm text-slate-500 whitespace-nowrap"></span>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-sm">
@@ -405,20 +405,6 @@
     </section>
 
     <section>
-      <h3 class="font-bold text-sm mb-2">🏷️ 프로그램 이름</h3>
-      <input id="cfgTitle" placeholder="교무실 도우미" maxlength="30" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
-      <p class="text-xs text-slate-500 mt-1">상단 제목과 창 제목에 표시됩니다. 비워 두면 기본 이름을 씁니다.</p>
-    </section>
-
-    <section>
-      <h3 class="font-bold text-sm mb-2">🏫 학교 정보 (조퇴증 출력에 사용)</h3>
-      <div class="grid grid-cols-2 gap-2">
-        <input id="cfgSchool" placeholder="학교 이름" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
-        <input id="cfgClass" placeholder="담임 학급 (예: 1학년 3반)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
-      </div>
-    </section>
-
-    <section>
       <h3 class="font-bold text-sm mb-2">☁️ PC·휴대폰 연동</h3>
       <p class="text-xs text-slate-600 mb-2">본인 구글 계정의 Apps Script로 할 일·메모, 내 일정, D-day, 시간표, 창체 일정만 주고받습니다. 학생 명단, 상담, 조퇴, 작성한 기록, 성적, 예산은 연동하지 않습니다.</p>
       <input id="syncUrl" placeholder="웹 앱 주소 (https://script.google.com/macros/s/.../exec)" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
@@ -442,7 +428,7 @@
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 블루투스 안내</p>
   </div>
 </dialog>
 
@@ -1868,13 +1854,15 @@ const pad = n => String(n).padStart(2, '0');
 const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
 let students = load('gm-students'), counsels = load('gm-counsels'), passes = load('gm-pass');
+const SEED = [{"no": "1701", "name": "황하이안", "phone": "010-3495-1268", "guard": "이희경(엄마) 010-8033-0785", "note": ""}, {"no": "1702", "name": "김민선", "phone": "010-2757-0021", "guard": "김형태(아빠) 010-5892-0021", "note": "배가 자주 아픕니다."}, {"no": "1703", "name": "김송민", "phone": "010-9218-3747", "guard": "김승현(부) 010-3407-3737", "note": ""}, {"no": "1704", "name": "김지민", "phone": "010-8310-4663", "guard": "김명섭(부) 010-8320-4663", "note": ""}, {"no": "1705", "name": "김현우", "phone": "010-4510-7704", "guard": "김승천(부) 010-4477-5875", "note": ""}, {"no": "1706", "name": "류지환", "phone": "010-4220-2239", "guard": "김영희(엄마) 010-3331-2239", "note": ""}, {"no": "1707", "name": "박지훈", "phone": "010-8669-9846", "guard": "박기영(부) 010-4857-9846", "note": ""}, {"no": "1708", "name": "박한결", "phone": "010-8201-7833", "guard": "김민혜(모) 010-8837-7833", "note": ""}, {"no": "1709", "name": "배에스더", "phone": "010-4046-7509", "guard": "이종미(엄마) 010-9727-7509", "note": ""}, {"no": "1710", "name": "양현민", "phone": "010-5425-0749", "guard": "양권규(부) 010-9574-0806", "note": ""}, {"no": "1711", "name": "오지성", "phone": "010-2718-5623", "guard": "장희선(모) 010-6250-8050", "note": ""}, {"no": "1712", "name": "오영준", "phone": "010-9025-0047", "guard": "이새롬(모) 010-4187-0047", "note": ""}, {"no": "1713", "name": "이재현", "phone": "010-4446-7797", "guard": "최현영(모) 010-9236-7772", "note": ""}, {"no": "1714", "name": "이제이", "phone": "010-4491-2900", "guard": "김선미(엄마) 010-4414-2900", "note": ""}, {"no": "1715", "name": "이준희", "phone": "010-4482-2439", "guard": "김보나(어머니) 010-3316-2439", "note": "장이 좋지 않다"}, {"no": "1716", "name": "정여원", "phone": "010-9529-3984", "guard": "박정선(모) 010-7676-3984", "note": ""}, {"no": "1717", "name": "편민창", "phone": "010-3686-1503", "guard": "편도철(부) 010-8826-1503", "note": ""}, {"no": "1718", "name": "허예빈", "phone": "010-5341-6846", "guard": "허진영(아빠) 010-5345-6846", "note": "배아픔 머리아픔 예민"}]; // 청양고 1학년 7반 기초조사서 기준
+try { if (localStorage.getItem('gm-students') === null) { students = SEED.map(s => ({ id: uid(), ...s })); store('gm-students', students); } } catch (e) { students = SEED.map(s => ({ id: uid(), ...s })); }
 const sorted = () => [...students].sort((a, b) => a.no.localeCompare(b.no, 'ko', { numeric: true }));
 const stuName = id => { const s = students.find(x => x.id === id); return s ? `${s.no} ${s.name}` : '(삭제된 학생)'; };
 
 /* 날짜 · 고사 D-day */
 const now = new Date(), base = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 $('today').textContent = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일 ${'일월화수목금토'[now.getDay()]}요일`;
-const DEFAULT_DD = [];
+const DEFAULT_DD = [{ name: '1회고사', date: '2026-10-06' }, { name: '2회고사', date: '2026-12-08' }];
 let ddays; try { const raw = localStorage.getItem('gm-dday'); ddays = raw === null ? DEFAULT_DD : JSON.parse(raw); } catch (e) { ddays = DEFAULT_DD; }
 const ddN = s => Math.round((new Date(s + 'T00:00:00') - base) / 864e5);
 const ddLabel = s => { const n = ddN(s); return n > 0 ? `D-${n}` : n === 0 ? 'D-DAY' : `D+${-n}`; };
@@ -2014,6 +2002,13 @@ $('sForm').addEventListener('submit', e => {
   store('gm-students', students); e.target.reset(); renderAll(); $('sNo').focus();
 });
 $('sSearch').addEventListener('input', renderStudents);
+$('sSeed').addEventListener('click', () => {
+  const add = SEED.filter(s => !students.some(x => x.no === s.no));
+  if (!add.length) { alert('1학년 7반 명단이 이미 모두 등록되어 있습니다.'); return; }
+  if (!confirm(`학번이 겹치지 않는 ${add.length}명을 추가할까요?`)) return;
+  add.forEach(s => students.push({ id: uid(), ...s }));
+  store('gm-students', students); renderAll();
+});
 
 /* 상담 관리자 */
 $('cDate').value = ymd(now);
@@ -2086,7 +2081,7 @@ $('mCopy').addEventListener('click', async () => {
 });
 
 /* 조퇴증 */
-$('pTeacher').value = (() => { try { return localStorage.getItem('gm-teacher') || ''; } catch (e) { return ''; } })();
+$('pTeacher').value = (() => { try { return localStorage.getItem('gm-teacher') || '김송현'; } catch (e) { return '김송현'; } })();
 const setNow = () => { const t = new Date(); $('pStart').value = `${pad(t.getHours())}:${pad(t.getMinutes())}`; };
 setNow();
 $('pStu').addEventListener('change', () => {
@@ -2106,9 +2101,7 @@ function renderPasses() {
 $('pClear').addEventListener('click', () => { if (passes.length && confirm('발급 기록을 모두 삭제할까요?')) { passes = []; store('gm-pass', passes); renderAll(); } });
 
 /* 영수증 내용 (58mm = 384dots) */
-const CFG_KEY = 'gm-cfg';
-let cfg = (() => { try { return JSON.parse(localStorage.getItem(CFG_KEY)) || {}; } catch (e) { return {}; } })();
-const stuInfo = no => { const m = /^(\d)(\d{2})(\d{2})$/.exec(no); return m ? { cls: `${m[1]}학년 ${+m[2]}반`, num: `${+m[3]}번` } : { cls: cfg.cls || '', num: '' }; };
+const stuInfo = no => { const m = /^(\d)(\d{2})(\d{2})$/.exec(no); return m ? { cls: `${m[1]}학년 ${+m[2]}반`, num: `${+m[3]}번` } : { cls: '1학년 7반', num: '' }; };
 const hm = t => (t && t.includes(':')) ? `${+t.split(':')[0]}시 ${+t.split(':')[1]}분` : '   시    분';
 const receiptLines = p => {
   const i = stuInfo(p.no), [Y, M, D] = p.date.split('-').map(Number);
@@ -2118,7 +2111,7 @@ const receiptLines = p => {
     { t: p.kind ? `상기 학생의 (${p.kind})${p.kind === '외출' ? '을' : '를'}` : '상기 학생의 (외출·조퇴)을/를', b: 1 }, { t: '허락함.', b: 1 }, { t: '', s: 8 },
     { t: `●사유 : ${p.reason}` }, { t: `●시간 : ${hm(p.start)} - ${hm(p.end)} 까지`, s: 20 }, { t: '', s: 8 },
     { t: `${Y}년 ${M}월 ${D}일`, c: 1 }, { t: `${i.cls} 담임교사 : ${p.teacher} (인)`, s: 20, c: 1 }, { t: '', s: 8 },
-    ...(cfg.school ? [{ t: cfg.school, s: 30, c: 1, b: 1 }] : [])
+    { t: '청양고등학교', s: 30, c: 1, b: 1 }
   ];
 };
 
@@ -2178,6 +2171,7 @@ function labelImage(p) {
   return cv.toDataURL('image/png');
 }
 async function nbConnect() {
+  if (typeof Niimbot !== 'undefined' && Niimbot.isSupported() && !(await btReady())) return;
   if (typeof Niimbot === 'undefined' || !Niimbot.isSupported()) { alert('이 환경에서는 Web Bluetooth를 쓸 수 없습니다. 데스크톱 Chrome/Edge 또는 설치한 프로그램에서 열어 주세요.'); return; }
   try {
     btMsg('연결 중…', false);
@@ -2185,7 +2179,7 @@ async function nbConnect() {
     nbOn = true;
     btMsg(`${(Niimbot.printer && Niimbot.printer.label) || '님봇'} 연결됨 · 발급 시 라벨이 출력됩니다.`, true);
     $('btDisc').classList.remove('hidden');
-  } catch (e) { nbOn = false; btMsg(e.name === 'NotFoundError' ? '연결 안 됨' : '연결 실패: ' + e.message, false); }
+  } catch (e) { nbOn = false; btMsg(btWhy(e), false); }
 }
 /* Meemo/Phomemo M02S: 접두 10 FF FE 01 + ESC @ + ESC 7 + GS v 0 래스터, 서비스 FF00 / 쓰기 FF02 */
 try { const w = localStorage.getItem('gm-m02w'); if (w) $('m02Width').value = w; } catch (e) {}
@@ -2216,9 +2210,15 @@ function m02Receipt(p) {
   out.push(0x1b, 0x4a, 0x50); // 종이 조금 밀어내기
   return new Uint8Array(out);
 }
+const btWhy = e => e.name === 'NotFoundError' ? `기기를 고르지 않았거나 찾지 못했습니다. (${e.message}) 프린터 전원과 PC 블루투스를 확인한 뒤 다시 눌러 주세요.` : e.name === 'SecurityError' ? '이 화면에서는 블루투스를 쓸 수 없습니다. 설치한 프로그램이나 Chrome·Edge에서 열어 주세요.' : `연결 실패: ${e.message}`;
+async function btReady() {
+  if (!navigator.bluetooth) { const m = '이 브라우저는 Web Bluetooth를 지원하지 않습니다. 데스크톱 Chrome·Edge 또는 설치한 프로그램에서 열어 주세요.'; btMsg(m, false); alert(m); return false; }
+  try { if (navigator.bluetooth.getAvailability && !(await navigator.bluetooth.getAvailability())) { const m = '이 PC에서 블루투스를 사용할 수 없습니다. 블루투스 어댑터가 없거나 Windows 설정에서 꺼져 있는지 확인하세요. 어댑터가 없는 PC는 블루투스 USB 동글이 필요하고, 그동안은 일반 인쇄창으로 출력됩니다.'; btMsg(m, false); alert(m); return false; } } catch (e) {}
+  btMsg('기기 검색 창을 여는 중입니다… 목록에서 프린터를 고르세요.', false); return true;
+}
 async function btConnect() {
   if ($('pType').value === 'niimbot') return nbConnect();
-  if (!navigator.bluetooth) { alert('이 브라우저는 Web Bluetooth를 지원하지 않습니다. 데스크톱 Chrome 또는 Edge에서 https 주소나 localhost로 열어 주세요.'); return; }
+  if (!(await btReady())) return;
   try {
     btDev = await navigator.bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: BT_SERVICES }); // 목록에서 PPS1 등 프린터 선택
     btDev.addEventListener('gattserverdisconnected', () => { btChar = null; btMsg('연결 끊김 · 발급 시 브라우저 인쇄창이 열립니다.', false); });
@@ -2232,7 +2232,7 @@ async function btConnect() {
     }
     if (!btChar) throw new Error('쓰기 가능한 프린터 특성을 찾지 못했습니다.');
     btMsg(`${btDev.name || '프린터'} 연결됨 · 발급 시 바로 출력됩니다.`, true);
-  } catch (e) { btChar = null; if (e.name !== 'NotFoundError') btMsg('연결 실패: ' + e.message, false); }
+  } catch (e) { btChar = null; btMsg(btWhy(e), false); }
 }
 async function btSend(data) {
   const wo = btChar.properties.writeWithoutResponse;
@@ -2276,14 +2276,6 @@ $('pForm').addEventListener('submit', async e => {
   receiptLines(p).forEach(l => { const d = el('div', '', l.t || '\u00a0'); if (l.c) d.style.textAlign = 'center'; if (l.b) d.style.fontWeight = '700'; if (l.s) d.style.fontSize = Math.round(l.s * 0.5) + 'pt'; pa.appendChild(d); });
   window.print();
 });
-
-function applyTitle() { const t = (cfg.title || '').trim() || '교무실 도우미'; $('appTitle').textContent = t; $('lockTitle').textContent = t; document.title = t; }
-$('cfgSchool').value = cfg.school || ''; $('cfgClass').value = cfg.cls || ''; $('cfgTitle').value = cfg.title || '';
-['cfgSchool', 'cfgClass', 'cfgTitle'].forEach(id => $(id).addEventListener('input', () => {
-  cfg = { school: $('cfgSchool').value.trim(), cls: $('cfgClass').value.trim(), title: $('cfgTitle').value.trim() };
-  store(CFG_KEY, cfg); applyTitle();
-}));
-applyTitle();
 
 /* ===== 앱 잠금 (초기 0000 → 강한 비밀번호로 변경 필수) ===== */
 const PW_KEY = 'gm-pw';
@@ -2360,7 +2352,7 @@ if (isOff()) $('lock').classList.add('hidden'); else showLock('login');
 const G_KEY = 'gm-grades-all', GEX_KEY = 'gm-gex';
 let gAll = (() => { try { const a = JSON.parse(localStorage.getItem(G_KEY)); if (a) return a; const old = JSON.parse(localStorage.getItem('gm-grades')); return old ? { [old.term || '이전 성적']: old } : {}; } catch (e) { return {}; } })();
 let curTerm = Object.keys(gAll).sort().pop() || '', grades = gAll[curTerm] || null;
-let gex = (() => { try { const v = localStorage.getItem(GEX_KEY); return v === null ? [] : JSON.parse(v); } catch (e) { return []; } })();
+let gex = (() => { try { const v = localStorage.getItem(GEX_KEY); return v === null ? ['박지훈', '박한결', '배에스더'] : JSON.parse(v); } catch (e) { return []; } })();
 $('gEx').value = gex.join(', ');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const numOf = v => { const m = /^\s*(-?\d+(?:\.\d+)?)/.exec(String(v == null ? '' : v)); return m ? +m[1] : null; };
@@ -2489,6 +2481,7 @@ function renderMemos() {
   });
   $('mmEmpty').classList.toggle('hidden', list.length > 0);
 }
+$('mmText').addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); const f = $('mmForm'); if (f.requestSubmit) f.requestSubmit(); else f.dispatchEvent(new Event('submit', { cancelable: true })); } });
 $('mmForm').addEventListener('submit', e => {
   e.preventDefault(); const tx = $('mmText').value.trim(); if (!tx) return;
   memos.unshift({ id: uid(), text: tx, color: mmColor, cat: $('mmCat').value, due: $('mmDue').value, done: false, date: ymd(new Date()) });
@@ -2709,9 +2702,9 @@ function renderDash() {
   box.innerHTML = '<h2 class="font-bold text-lg mb-2">🍀 오늘까지 할 일</h2>';
   if (!due.length) box.appendChild(el('p', 'text-sm text-slate-500', '마감이 오늘까지인 할 일이 없습니다.'));
   due.slice(0, 8).forEach(m => {
-    const row = el('label', 'flex items-center gap-2 py-1 text-sm cursor-pointer'), cb = el('input'); cb.type = 'checkbox';
+    const row = el('label', 'flex items-start gap-2 py-1 text-sm cursor-pointer'), cb = el('input'); cb.type = 'checkbox';
     cb.onchange = () => { m.done = true; store(MEMO_KEY, memos); renderMemos(); renderDash(); };
-    row.append(cb, el('span', 'flex-1', m.text), el('span', `text-xs ${m.due < t ? 'text-red-600' : 'text-slate-500'}`, `${m.cat || ''} ${m.due.slice(5).replace('-', '/')}`)); box.appendChild(row);
+    row.append(cb, el('span', 'flex-1 whitespace-pre-wrap break-words', m.text), el('span', `text-xs whitespace-nowrap ${m.due < t ? 'text-red-600' : 'text-slate-500'}`, `${m.cat || ''} ${m.due.slice(5).replace('-', '/')}`)); box.appendChild(row);
   });
   const lk = $('dashLinks'); if (!lk) return; lk.innerHTML = '';
   Object.entries(LINKS).forEach(([g, arr]) => {
