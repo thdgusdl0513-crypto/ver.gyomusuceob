@@ -77,7 +77,7 @@
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 블루투스 안내</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 예산 탭 삭제</p>
   </form>
 </div>
 
@@ -406,7 +406,7 @@
 
     <section>
       <h3 class="font-bold text-sm mb-2">☁️ PC·휴대폰 연동</h3>
-      <p class="text-xs text-slate-600 mb-2">본인 구글 계정의 Apps Script로 할 일·메모, 내 일정, D-day, 시간표, 창체 일정만 주고받습니다. 학생 명단, 상담, 조퇴, 작성한 기록, 성적, 예산은 연동하지 않습니다.</p>
+      <p class="text-xs text-slate-600 mb-2">본인 구글 계정의 Apps Script로 주고받습니다. 할 일·메모, 일정, D-day, 시간표, 창체 일정은 항상 동기화되고, 아래 항목은 <b>직접 체크한 것만</b> 동기화됩니다. 체크한 자료는 구글 시트에 그대로 저장되니 학교 개인정보 지침에 맞게 사용하세요.</p><div id="syncOpts" class="grid gap-1 mb-3 p-2 rounded-lg bg-slate-50 border border-slate-200"></div>
       <input id="syncUrl" placeholder="웹 앱 주소 (https://script.google.com/macros/s/.../exec)" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
       <input id="syncToken" type="password" autocomplete="off" placeholder="연동 암호 (Apps Script에 적은 값과 같게)" class="mt-2 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
       <div class="flex items-center gap-2 mt-2 flex-wrap"><button id="syncRun" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm font-bold">☁️ 지금 동기화</button><span id="syncMsg" class="text-xs text-slate-600"></span></div>
@@ -428,7 +428,7 @@
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 블루투스 안내</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 예산 탭 삭제</p>
   </div>
 </dialog>
 
@@ -2108,7 +2108,7 @@ const receiptLines = p => {
   return [
     { t: p.kind ? `${p.kind}증` : '외출·조퇴증', s: 32, c: 1, b: 1 }, { t: '', s: 8 },
     { t: `소속 : ${i.cls} ${i.num}` }, { t: `성명 : ${p.name}` }, { t: '', s: 8 },
-    { t: p.kind ? `상기 학생의 (${p.kind})${p.kind === '외출' ? '을' : '를'}` : '상기 학생의 (외출·조퇴)을/를', b: 1 }, { t: '허락함.', b: 1 }, { t: '', s: 8 },
+    { t: p.kind ? `상기 학생의 (${p.kind})${p.kind === '외출' ? '을' : '를'} 허락함.` : '상기 학생의 (외출·조퇴)을/를 허락함.', b: 1, fit: 1 }, { t: '', s: 8 },
     { t: `●사유 : ${p.reason}` }, { t: `●시간 : ${hm(p.start)} - ${hm(p.end)} 까지`, s: 20 }, { t: '', s: 8 },
     { t: `${Y}년 ${M}월 ${D}일`, c: 1 }, { t: `${i.cls} 담임교사 : ${p.teacher} (인)`, s: 20, c: 1 }, { t: '', s: 8 },
     { t: '청양고등학교', s: 30, c: 1, b: 1 }
@@ -2123,8 +2123,9 @@ function escposReceipt(p) {
   const x = cv.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.fillStyle = '#000'; x.textBaseline = 'top';
   let y = 16;
   for (const l of L) {
-    const s = l.s || 24;
+    let s = l.s || 24;
     x.font = `${l.b ? '700 ' : ''}${s}px 'Noto Sans KR','Malgun Gothic',sans-serif`;
+    if (l.fit) { while (s > 14 && x.measureText(l.t).width > W - 12) { s -= 1; x.font = `${l.b ? '700 ' : ''}${s}px 'Noto Sans KR','Malgun Gothic',sans-serif`; } }
     x.textAlign = l.c ? 'center' : 'left';
     if (l.rule) x.fillRect(0, y + 6, W, 2); else x.fillText(l.t, l.c ? W / 2 : 6, y);
     y += s + 14;
@@ -2163,8 +2164,9 @@ function labelImage(p) {
   const x = cv.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.fillStyle = '#000'; x.textBaseline = 'top';
   let y = Math.max(16, (H - L.reduce((a, l) => a + (l.s || 24) + 14, 0)) / 2);
   for (const l of L) {
-    const s = l.s || 24;
+    let s = l.s || 24;
     x.font = `${l.b ? '700 ' : ''}${s}px 'Noto Sans KR','Malgun Gothic',sans-serif`;
+    if (l.fit) { while (s > 14 && x.measureText(l.t).width > W - 12) { s -= 1; x.font = `${l.b ? '700 ' : ''}${s}px 'Noto Sans KR','Malgun Gothic',sans-serif`; } }
     x.textAlign = l.c ? 'center' : 'left';
     x.fillText(l.t, l.c ? W / 2 : 6, y); y += s + 14;
   }
@@ -2193,8 +2195,9 @@ function m02Receipt(p) {
   const x = cv.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.fillStyle = '#000'; x.textBaseline = 'top';
   let y = 16 * k;
   for (const l of L) {
-    const s = (l.s || 24) * k;
+    let s = (l.s || 24) * k;
     x.font = `${l.b ? '700 ' : ''}${s}px 'Noto Sans KR','Malgun Gothic',sans-serif`;
+    if (l.fit) { while (s > 14 * k && x.measureText(l.t).width > W - 12 * k) { s -= 1; x.font = `${l.b ? '700 ' : ''}${s}px 'Noto Sans KR','Malgun Gothic',sans-serif`; } }
     x.textAlign = l.c ? 'center' : 'left';
     x.fillText(l.t, l.c ? W / 2 : 6 * k, y); y += s + 14 * k;
   }
@@ -2604,7 +2607,16 @@ function renderBudget() {
   const tabs = $('bgTabs'); tabs.innerHTML = '';
   [['all', '📊 전체'], ...bg.items.map(b => [b.id, `🐷 ${b.name}`])].forEach(([k, t]) => {
     const b = el('button', `px-3 py-1.5 rounded-full border text-sm ${bgSel === k ? 'bg-[#0f2747] text-white border-[#0f2747]' : 'border-slate-300 bg-white'}`, t);
-    b.onclick = () => { bgSel = k; renderBudget(); }; tabs.appendChild(b);
+    b.onclick = () => { bgSel = k; renderBudget(); };
+    if (k === 'all') { tabs.appendChild(b); return; }
+    const wrap = el('span', 'inline-flex items-center'), x = el('button', 'ml-1 w-6 h-6 rounded-full text-xs text-slate-500 hover:bg-rose-100 hover:text-rose-600', '✕');
+    x.type = 'button'; x.title = '이 예산 삭제';
+    x.onclick = () => {
+      const it = bg.items.find(i => i.id === k); if (!it) return;
+      if (!confirm(`"${it.name}" 예산과 집행 내역을 삭제할까요?\n(되돌릴 수 없습니다)`)) return;
+      bg.items = bg.items.filter(i => i.id !== k); bg.spends = bg.spends.filter(s => s.bid !== k); if (bgSel === k) bgSel = 'all'; saveBg(); renderBudget();
+    };
+    wrap.append(b, x); tabs.appendChild(wrap);
   });
   const sel = bg.items.filter(b => bgSel === 'all' || b.id === bgSel), one = bgSel !== 'all';
   const tot = sel.reduce((a, b) => a + totalOf(b), 0), used = sel.reduce((a, b) => a + usedOf(b.id), 0), rate = pctOf(used, tot);
@@ -2980,7 +2992,7 @@ $('schFileC').addEventListener('change', e => schUpload(e, 'c'));
 
 /* ===== PC·휴대폰 연동 (구글 Apps Script, 개인정보 없는 자료만) ===== */
 const SYNC_KEY = 'gm-sync';
-let syncCfg = (() => { const v = jl(SYNC_KEY); return { url: v.url || '', token: v.token || '', last: v.last || '', meta: v.meta || { h: {}, ts: {} } }; })(), syncing = false;
+let syncCfg = (() => { const v = jl(SYNC_KEY); return { url: v.url || '', token: v.token || '', last: v.last || '', meta: v.meta || { h: {}, ts: {} }, opt: v.opt || {} }; })(), syncing = false;
 const saveSync = () => store(SYNC_KEY, syncCfg);
 const SYNC_KEYS = [
   ['gm-memos', '할 일·메모', () => memos, v => { memos = Array.isArray(v) ? v : []; }],
@@ -2989,8 +3001,20 @@ const SYNC_KEYS = [
   ['gm-tt', '내 시간표(직접 입력)', () => myTT, v => { myTT = v || {}; }],
   ['gm-sch', '교사·학급 시간표', () => sch, v => { sch = schNorm(v); }],
   ['gm-sch-edit', '시간표 수정 내용', () => schE, v => { schE = { t: (v && v.t) || {}, c: (v && v.c) || {} }; }],
-  ['gm-ch', '창체 일정', () => ch, v => { ch = { sheets: (v && v.sheets) || {}, files: (v && v.files) || [], sel: (v && v.sel) || '' }; }]
+  ['gm-ch', '창체 일정', () => ch, v => { ch = { sheets: (v && v.sheets) || {}, files: (v && v.files) || [], sel: (v && v.sel) || '' }; }],
+  /* 선택 항목 (개인정보 포함 — 설정에서 직접 켠 경우에만 동기화) */
+  ['gm-students', '학생 명단·기록', () => students, v => { students = Array.isArray(v) ? v : []; }, 'stu'],
+  ['gm-counsels', '상담 기록', () => counsels, v => { counsels = Array.isArray(v) ? v : []; }, 'stu'],
+  ['gm-pass', '조퇴·외출 발급 기록', () => passes, v => { passes = Array.isArray(v) ? v : []; }, 'stu'],
+  ['gm-recs', '작성한 기록(세특·행특 등)', () => recs, v => { recs = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }, 'rec'],
+  ['gm-subj', '과목 목록', () => subjList, v => { subjList = Array.isArray(v) ? v : []; }, 'rec'],
+  ['gm-clubs', '동아리 목록', () => clubList, v => { clubList = Array.isArray(v) ? v : []; }, 'rec'],
+  ['gm-grades-all', '성적 분석 자료', () => gAll, v => { gAll = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; curTerm = Object.keys(gAll).sort().pop() || ''; grades = gAll[curTerm] || null; }, 'gr'],
+  ['gm-gex', '성적 제외 학생', () => gex, v => { gex = Array.isArray(v) ? v : []; $('gEx').value = gex.join(', '); }, 'gr'],
+  ['gm-budget', '예산', () => bg, v => { bg = normBg(v); }, 'bg']
 ];
+const SYNC_GROUPS = [['stu', '👩‍🎓 학생 명단·기록, 상담, 조퇴·외출 기록', true], ['rec', '📝 작성한 세특·행특·동아리 기록', true], ['gr', '📊 성적 분석 자료', true], ['bg', '💰 예산', false]];
+const syncOn = g => !g || !!syncCfg.opt[g];
 const hashStr = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0; return h.toString(36) + ':' + s.length; };
 const isEmptyVal = v => v == null || v === '' || (Array.isArray(v) ? v.length === 0 : typeof v === 'object' ? Object.values(v).every(isEmptyVal) : false);
 const syncMsg = (t, ok) => { $('syncMsg').textContent = t; $('syncMsg').className = 'text-xs ' + (ok ? 'text-emerald-700' : 'text-slate-600'); };
@@ -3008,7 +3032,8 @@ async function syncNow(interactive) {
     const g = await syncReq('GET'); if (!g.ok) throw new Error(g.error || '서버 응답 오류');
     const doc = g.doc && g.doc.items ? g.doc : { v: 1, items: {} }, meta = syncCfg.meta, stamp = Date.now(), skipped = [];
     let pushed = 0, pulled = 0;
-    for (const [k, label, get, set] of SYNC_KEYS) {
+    for (const [k, label, get, set, grp] of SYNC_KEYS) {
+      if (!syncOn(grp)) continue;
       const rem = doc.items[k], lh = hashStr(JSON.stringify(get())), empty = isEmptyVal(get());
       const lc = lh !== meta.h[k] && !(empty && rem), rc = !!rem && rem.ts !== meta.ts[k];
       let use = !rem ? (empty ? 'none' : 'push') : lc && rc ? 'conflict' : lc ? 'push' : rc ? 'pull' : 'none';
@@ -3027,12 +3052,23 @@ async function syncNow(interactive) {
   } catch (e) { syncMsg('동기화 실패: ' + e.message); if (interactive) alert('동기화 실패: ' + e.message); }
   finally { syncing = false; }
 }
+const renderSyncOpts = () => {
+  const box = $('syncOpts'); if (!box) return; box.innerHTML = '';
+  SYNC_GROUPS.forEach(([g, label, pii]) => {
+    const l = el('label', 'flex items-center gap-2 text-sm'), c = el('input'); c.type = 'checkbox'; c.checked = !!syncCfg.opt[g];
+    c.addEventListener('change', () => {
+      if (c.checked && pii && !confirm('학생 개인정보가 본인 구글 시트에 그대로 저장됩니다.\n학교 개인정보 보호 지침을 확인했고, 시트·웹 앱 주소·연동 암호를 안전하게 관리할 수 있나요?')) { c.checked = false; return; }
+      syncCfg.opt[g] = c.checked; saveSync();
+    });
+    l.append(c, document.createTextNode(label)); box.appendChild(l);
+  });
+};
 const syncUI = () => { $('syncBtn').classList.toggle('hidden', !(syncCfg.url && syncCfg.token)); if (syncCfg.last && !$('syncMsg').textContent) syncMsg(`마지막 동기화: ${syncCfg.last}`, true); };
 $('syncUrl').value = syncCfg.url; $('syncToken').value = syncCfg.token;
 ['syncUrl', 'syncToken'].forEach(id => $(id).addEventListener('change', () => { syncCfg.url = $('syncUrl').value.trim(); syncCfg.token = $('syncToken').value.trim(); syncCfg.meta = { h: {}, ts: {} }; saveSync(); syncUI(); }));
 $('syncRun').addEventListener('click', () => syncNow(true));
 $('syncBtn').addEventListener('click', () => syncNow(true));
-syncUI();
+renderSyncOpts(); syncUI();
 if (syncCfg.url && syncCfg.token) setTimeout(() => syncNow(false), 1500);
 
 function renderAll() { renderSch(); renderToday(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); }
