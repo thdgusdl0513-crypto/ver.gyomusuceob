@@ -77,7 +77,7 @@
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 예산 탭 삭제</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 기타사유 직접입력</p>
   </form>
 </div>
 
@@ -342,6 +342,7 @@
               <label class="flex items-center gap-2"><input type="radio" name="reason" value="병원 치료"> 2. 병원 치료</label>
               <label class="flex items-center gap-2"><input type="radio" name="reason" value="질병으로 인한 귀가" checked> 3. 질병으로 인한 귀가</label>
               <label class="flex items-center gap-2"><input type="radio" name="reason" value="기타사유"> 4. 기타사유</label>
+              <input id="pReasonEtc" type="text" maxlength="40" placeholder="기타 사유를 직접 입력 (예: 가정 사정)" class="hidden w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm">
             </div>
           </fieldset>
           <div class="grid grid-cols-2 gap-3">
@@ -428,7 +429,7 @@
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 예산 탭 삭제</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 기타사유 직접입력</p>
   </div>
 </dialog>
 
@@ -2101,6 +2102,10 @@ function renderPasses() {
 $('pClear').addEventListener('click', () => { if (passes.length && confirm('발급 기록을 모두 삭제할까요?')) { passes = []; store('gm-pass', passes); renderAll(); } });
 
 /* 영수증 내용 (58mm = 384dots) */
+document.querySelectorAll('input[name=reason]').forEach(r => r.addEventListener('change', () => {
+  const etc = document.querySelector('input[name=reason]:checked').value === '기타사유';
+  $('pReasonEtc').classList.toggle('hidden', !etc); if (etc) $('pReasonEtc').focus();
+}));
 const stuInfo = no => { const m = /^(\d)(\d{2})(\d{2})$/.exec(no); return m ? { cls: `${m[1]}학년 ${+m[2]}반`, num: `${+m[3]}번` } : { cls: '1학년 7반', num: '' }; };
 const hm = t => (t && t.includes(':')) ? `${+t.split(':')[0]}시 ${+t.split(':')[1]}분` : '   시    분';
 const receiptLines = p => {
@@ -2109,7 +2114,7 @@ const receiptLines = p => {
     { t: p.kind ? `${p.kind}증` : '외출·조퇴증', s: 32, c: 1, b: 1 }, { t: '', s: 8 },
     { t: `소속 : ${i.cls} ${i.num}` }, { t: `성명 : ${p.name}` }, { t: '', s: 8 },
     { t: p.kind ? `상기 학생의 (${p.kind})${p.kind === '외출' ? '을' : '를'} 허락함.` : '상기 학생의 (외출·조퇴)을/를 허락함.', b: 1, fit: 1 }, { t: '', s: 8 },
-    { t: `●사유 : ${p.reason}` }, { t: `●시간 : ${hm(p.start)} - ${hm(p.end)} 까지`, s: 20 }, { t: '', s: 8 },
+    { t: `●사유 : ${p.reason}`, fit: 1 }, { t: `●시간 : ${hm(p.start)} - ${hm(p.end)} 까지`, s: 20 }, { t: '', s: 8 },
     { t: `${Y}년 ${M}월 ${D}일`, c: 1 }, { t: `${i.cls} 담임교사 : ${p.teacher} (인)`, s: 20, c: 1 }, { t: '', s: 8 },
     { t: '청양고등학교', s: 30, c: 1, b: 1 }
   ];
@@ -2255,12 +2260,12 @@ $('pForm').addEventListener('submit', async e => {
   e.preventDefault();
   const d = new Date();
   const p = { id: uid(), date: ymd(d), when: `${d.getMonth() + 1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}`,
-    no: $('pNo').value.trim(), name: $('pName').value.trim(), kind: document.querySelector('input[name=kind]:checked').value, reason: document.querySelector('input[name=reason]:checked').value,
+    no: $('pNo').value.trim(), name: $('pName').value.trim(), kind: document.querySelector('input[name=kind]:checked').value, reason: (() => { const r = document.querySelector('input[name=reason]:checked').value, t = $('pReasonEtc').value.trim(); return r === '기타사유' && t ? `기타사유(${t})` : r; })(),
     start: $('pStart').value, end: $('pEnd').value, teacher: $('pTeacher').value.trim() };
   passes.unshift(p); store('gm-pass', passes);
   try { localStorage.setItem('gm-teacher', p.teacher); } catch (err) {}
   renderAll();
-  ['pNo', 'pName', 'pEnd'].forEach(i => $(i).value = ''); $('pStu').value = ''; setNow();
+  ['pNo', 'pName', 'pEnd', 'pReasonEtc'].forEach(i => $(i).value = ''); $('pStu').value = ''; setNow();
 
   if ($('pType').value === 'niimbot' && nbOn) {
     try {
