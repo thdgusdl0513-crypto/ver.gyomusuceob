@@ -79,7 +79,7 @@
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 결석신고서 체크식</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 담임의견 고정</p>
   </form>
 </div>
 
@@ -384,6 +384,7 @@
           <div class="flex gap-4 flex-wrap"><label><input type="checkbox" id="abC1"> 가정방문</label><label><input type="checkbox" id="abC2"> 전화확인</label><label><input type="checkbox" id="abC3"> 학부모내교</label></div>
         </fieldset>
         <label class="block">담임 의견<textarea id="abOpin" rows="3" maxlength="200" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></textarea></label>
+        <label class="flex items-center gap-2 text-xs"><input type="checkbox" id="abOpinFix"> 📌 담임 의견 고정 (다음에 열어도 같은 내용 유지)</label>
         <label class="block">담임교사 성명<input id="abTeacher" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
         <div class="grid gap-2 pt-1">
           <button id="abPrint" type="button" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">🖨️ 인쇄 (A4)</button>
@@ -515,7 +516,7 @@
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 결석신고서 체크식</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 담임의견 고정</p>
   </div>
 </dialog>
 
@@ -3361,6 +3362,11 @@ function absInit() {
     $('abShare').classList.remove('hidden');
     $('abShare').addEventListener('click', async () => { const b = await blob(); try { await navigator.share({ files: [new File([b], fname(), { type: 'image/png' })] }); } catch (e) { if (e.name !== 'AbortError') alert('공유하지 못했습니다. 💾 이미지로 저장을 눌러 주세요.'); } });
   }
+  try {
+    if (localStorage.getItem('gm-abs-fix') === '1') { $('abOpinFix').checked = true; $('abOpin').value = localStorage.getItem('gm-abs-opin') || ''; }
+  } catch (e) {}
+  const saveOpin = () => { try { if ($('abOpinFix').checked) { localStorage.setItem('gm-abs-fix', '1'); localStorage.setItem('gm-abs-opin', $('abOpin').value); } else { localStorage.removeItem('gm-abs-fix'); localStorage.removeItem('gm-abs-opin'); } } catch (e) {} };
+  $('abOpin').addEventListener('input', saveOpin); $('abOpinFix').addEventListener('change', saveOpin);
   absInit(); absRender();
 })();
 
