@@ -78,7 +78,7 @@
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 자리 배치</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 반 명단 자동입력</p>
   </form>
 </div>
 
@@ -333,6 +333,13 @@
           <button id="sePrint" type="button" class="w-full border border-slate-300 bg-white hover:bg-slate-50 rounded-lg py-2 text-sm">🖨️ 인쇄</button>
         </div>
         <p class="text-xs text-slate-500">학생 명단(학생 기록 관리)의 학생을 자리에 섞어 배치합니다. 명단이 비어 있으면 칸에 직접 적은 이름을 섞습니다. 🔒를 눌러 고정한 자리는 돌려도 바뀌지 않습니다.</p>
+        <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 space-y-2">
+          <h3 class="font-bold text-sm">📂 학년·반·번호 명단 올리기</h3>
+          <p class="text-xs text-slate-500">엑셀/CSV에 <b>학번(예: 1701)</b>과 <b>이름</b> 열이 있거나, <b>학년·반·번호·이름</b> 열이 있으면 됩니다. 올리면 반별로 나누고 번호순으로 자리에 자동 입력합니다.</p>
+          <input id="seFile" type="file" accept=".xlsx,.xls,.csv" class="text-sm w-full">
+          <select id="seCls" class="hidden w-full border border-slate-300 rounded-lg px-2 py-2 bg-white text-sm"></select>
+          <div class="flex items-center gap-2"><span id="seRosterInfo" class="text-xs text-slate-600 flex-1"></span><button id="seRosterClear" type="button" class="hidden text-xs border border-slate-300 bg-white rounded-lg px-2 py-1">명단 지우기</button></div>
+        </div>
         <div>
           <h3 class="font-bold text-sm mb-2">🚫 제외할 학생</h3>
           <div class="flex gap-2"><select id="seExSel" class="flex-1 min-w-0 border border-slate-300 rounded-lg px-2 py-2 bg-slate-50 text-sm"></select><button id="seExAdd" type="button" class="border border-slate-300 bg-white rounded-lg px-3 text-sm font-bold">추가</button></div>
@@ -467,7 +474,7 @@
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 자리 배치</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 반 명단 자동입력</p>
   </div>
 </dialog>
 
@@ -1963,7 +1970,7 @@ $('rstBtn').addEventListener('click', () => {
   students = []; counsels = []; passes = []; memos = []; store('gm-memos', memos); evs = []; myTT = {}; store('gm-events', evs); store('gm-tt', myTT); renderMyTT();
   bg = { items: [], spends: [] }; ch = { sheets: {}, files: [], sel: '' }; saveCh(); sch = schNorm({ me: sch.me }); schE = { t: {}, c: {} }; saveSch(); saveSchE(); neisCache = {}; store(NC_KEY, {}); recs = {}; subjList = []; clubList = []; saveBg(); store(REC_KEY, recs); store('gm-subj', subjList); store('gm-clubs', clubList);
   store('gm-students', students); store('gm-counsels', counsels); store('gm-pass', passes);
-  seat = normSeat(null); saveSeat();
+  seat = normSeat(null); saveSeat(); seatRoster = []; saveRoster();
   gAll = {}; curTerm = ''; store(G_KEY, {}); renderAll(); $('dlg').close();
 });
 
@@ -3087,14 +3094,14 @@ const normSeat = v => {
   v = v && typeof v === 'object' && !Array.isArray(v) ? v : {};
   const cols = Math.min(10, Math.max(1, +v.cols || 4)), rows = Math.min(10, Math.max(1, +v.rows || 4)), cells = [];
   for (let i = 0; i < cols * rows; i++) { const c = (v.cells || [])[i]; cells.push(c && (c.name || c.no || c.lock) ? { no: c.no || '', name: c.name || '', lock: !!c.lock } : { no: '', name: '', lock: false }); }
-  return { cols, rows, cells, excl: Array.isArray(v.excl) ? v.excl.filter(e => e && (e.no || e.name)).map(e => ({ no: e.no || '', name: e.name || '' })) : [] };
+  return { cols, rows, cells, cls: typeof v.cls === 'string' ? v.cls : '', excl: Array.isArray(v.excl) ? v.excl.filter(e => e && (e.no || e.name)).map(e => ({ no: e.no || '', name: e.name || '' })) : [] };
 };
 let seat = normSeat(jl(SEAT_KEY));
 const saveSeat = () => store(SEAT_KEY, seat);
 const seMsg = (t, ok = true) => { $('seMsg').textContent = t; $('seMsg').className = 'text-xs ' + (ok ? 'text-emerald-700' : 'text-rose-600'); };
 const isExcl = s => seat.excl.some(e => (e.no && e.no === s.no) || (e.name && e.name === s.name));
 function seatResize(cols, rows) {
-  const old = seat; seat = normSeat({ cols, rows, cells: [], excl: old.excl });
+  const old = seat; seat = normSeat({ cols, rows, cells: [], excl: old.excl, cls: old.cls });
   // 기존 칸 위치(행/열)를 유지하며 옮김
   for (let r = 0; r < Math.min(old.rows, seat.rows); r++) for (let c = 0; c < Math.min(old.cols, seat.cols); c++) seat.cells[r * seat.cols + c] = old.cells[r * old.cols + c];
   saveSeat(); renderSeat();
@@ -3107,14 +3114,15 @@ function renderSeat() {
     const d = el('div', `rounded-lg border p-1.5 ${c.lock ? 'border-amber-400 bg-amber-50' : 'border-slate-300 bg-slate-50'}`);
     const no = el('input', 'w-full min-w-0 text-[11px] text-slate-500 bg-transparent outline-none text-center'); no.placeholder = '학번'; no.value = c.no; no.maxLength = 6;
     const nm = el('input', 'w-full min-w-0 text-sm font-bold text-slate-900 bg-transparent outline-none text-center'); nm.placeholder = '이름'; nm.value = c.name; nm.maxLength = 12;
-    no.addEventListener('change', () => { c.no = no.value.trim(); const s = students.find(x => x.no === c.no); if (s && !c.name) { c.name = s.name; nm.value = s.name; } saveSeat(); });
-    nm.addEventListener('change', () => { c.name = nm.value.trim(); if (!c.no) { const s = students.find(x => x.name === c.name); if (s) { c.no = s.no; no.value = s.no; } } saveSeat(); });
+    no.addEventListener('change', () => { c.no = no.value.trim(); const s = activeRoster().find(x => x.no === c.no); if (s && !c.name) { c.name = s.name; nm.value = s.name; } saveSeat(); });
+    nm.addEventListener('change', () => { c.name = nm.value.trim(); if (!c.no) { const s = activeRoster().find(x => x.name === c.name); if (s) { c.no = s.no; no.value = s.no; } } saveSeat(); });
     const lk = el('button', 'block mx-auto text-xs leading-none opacity-70 hover:opacity-100', c.lock ? '🔒' : '🔓'); lk.type = 'button'; lk.title = '이 자리 고정';
     lk.addEventListener('click', () => { c.lock = !c.lock; saveSeat(); renderSeat(); });
     d.append(no, nm, lk); g.appendChild(d);
   });
+  if (typeof renderRosterUI === 'function') renderRosterUI();
   const sel = $('seExSel'); sel.innerHTML = '';
-  const cand = students.filter(s => !isExcl(s)).sort((a, b) => String(a.no).localeCompare(String(b.no)));
+  const cand = activeRoster().map(s => ({ id: s.no, ...s })).filter(s => !isExcl(s)).sort((a, b) => String(a.no).localeCompare(String(b.no)));
   sel.appendChild(new Option(cand.length ? '-- 학생 선택 --' : '(추가할 학생 없음)', ''));
   cand.forEach(s => sel.appendChild(new Option(`${s.no} ${s.name}`, s.id)));
   const ex = $('seExList'); ex.innerHTML = '';
@@ -3126,7 +3134,8 @@ function renderSeat() {
 function seatPool() {
   const locked = new Set(seat.cells.filter(c => c.lock).map(c => c.no || c.name));
   let list;
-  if (students.length) list = students.map(s => ({ no: s.no, name: s.name }));
+  const base = activeRoster();
+  if (base.length) list = base;
   else list = seat.cells.filter(c => (c.name || c.no) && !c.lock).map(c => ({ no: c.no, name: c.name }));
   return list.filter(s => !isExcl(s) && !locked.has(s.no || s.name));
 }
@@ -3142,14 +3151,82 @@ $('seCols').addEventListener('change', () => seatResize(+$('seCols').value, seat
 $('seRows').addEventListener('change', () => seatResize(seat.cols, +$('seRows').value));
 $('seShuffle').addEventListener('click', seatShuffle);
 $('seLoad').addEventListener('click', () => {
-  if (!students.length) { seMsg('학생 명단이 비어 있습니다.', false); return; }
-  const list = students.filter(s => !isExcl(s)).sort((a, b) => String(a.no).localeCompare(String(b.no))), free = seat.cells.map((c, i) => c.lock ? -1 : i).filter(i => i >= 0);
+  if (!activeRoster().length) { seMsg('학생 명단이 비어 있습니다. 명단 파일을 올리거나 학생을 등록해 주세요.', false); return; }
+  const r = seatFillFromRoster(); seMsg(r.total > r.free ? `자리가 ${r.total - r.free}개 부족해 일부 학생이 빠졌습니다.` : '번호순으로 채웠습니다.', r.total <= r.free);
+});
+
+/* 학년·반·번호 명단 (엑셀/CSV) */
+const ROSTER_KEY = 'gm-seat-roster';
+let seatRoster = (() => { try { const v = JSON.parse(localStorage.getItem(ROSTER_KEY)); return Array.isArray(v) ? v : []; } catch (e) { return []; } })();
+const saveRoster = () => store(ROSTER_KEY, seatRoster);
+const noInfo = no => { const d = String(no || '').replace(/\D/g, ''); if (d.length === 5) return { g: +d[0], c: +d.slice(1, 3), n: +d.slice(3) }; if (d.length === 4) return { g: +d[0], c: +d[1], n: +d.slice(2) }; return null; };
+const clsKey = no => { const i = noInfo(no); return i ? `${i.g}-${i.c}` : ''; };
+const clsLabel = k => { const [g, c] = k.split('-'); return `${g}학년 ${c}반`; };
+function parseSeatRoster(wb) {
+  const out = [], seen = new Set();
+  const add = (no, name) => { no = String(no).replace(/\D/g, ''); name = String(name).trim(); if (!noInfo(no) || !name || seen.has(no)) return; seen.add(no); out.push({ no, name }); };
+  for (const sn of wb.SheetNames) {
+    const rows = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, defval: '' });
+    let hi = -1, cI = {};
+    for (let r = 0; r < Math.min(rows.length, 20) && hi < 0; r++) {
+      const h = rows[r].map(nz), ni = h.findIndex(x => x === '이름' || x === '성명');
+      if (ni < 0) continue;
+      const si = h.findIndex(x => x === '학번'), gi = h.findIndex(x => x === '학년'), ci = h.findIndex(x => x === '반' || x === '학급'), bi = h.findIndex(x => x === '번호' || x === '번');
+      if (si >= 0 || (gi >= 0 && ci >= 0 && bi >= 0)) { hi = r; cI = { ni, si, gi, ci, bi }; }
+    }
+    if (hi >= 0) {
+      for (let r = hi + 1; r < rows.length; r++) {
+        const row = rows[r], name = row[cI.ni];
+        if (cI.si >= 0 && String(row[cI.si]).trim()) add(row[cI.si], name);
+        else if (cI.gi >= 0) { const g = +row[cI.gi], c = +row[cI.ci], n = +row[cI.bi]; if (g && c && n) add(`${g}${String(c).padStart(2, '0')}${String(n).padStart(2, '0')}`, name); }
+      }
+    } else {
+      rows.forEach(row => { const no = row.find(c => /^\d{4,5}$/.test(String(c).trim())), nm = row.find(c => /^[가-힣]{2,5}$/.test(String(c).trim())); if (no && nm) add(no, nm); });
+    }
+  }
+  return out;
+}
+const rosterClasses = () => { const m = {}; seatRoster.forEach(s => { const k = clsKey(s.no); if (k) (m[k] = m[k] || []).push(s); }); return m; };
+const activeRoster = () => {
+  if (seat.cls && seatRoster.length) return seatRoster.filter(s => clsKey(s.no) === seat.cls).sort((a, b) => (noInfo(a.no).n - noInfo(b.no).n));
+  return students.map(s => ({ no: s.no, name: s.name }));
+};
+function seatFillFromRoster() {
+  const list = activeRoster().filter(s => !isExcl(s)), free = seat.cells.map((c, i) => c.lock ? -1 : i).filter(i => i >= 0);
   const used = new Set(seat.cells.filter(c => c.lock).map(c => c.no || c.name)), rest = list.filter(s => !used.has(s.no || s.name));
   free.forEach((ci, k) => { const s = rest[k]; seat.cells[ci].no = s ? s.no : ''; seat.cells[ci].name = s ? s.name : ''; });
-  saveSeat(); renderSeat(); seMsg(rest.length > free.length ? `자리가 ${rest.length - free.length}개 부족해 일부 학생이 빠졌습니다.` : '명단 순서대로 채웠습니다.', rest.length <= free.length);
+  saveSeat(); renderSeat();
+  return { total: rest.length, free: free.length };
+}
+function renderRosterUI() {
+  const cl = rosterClasses(), keys = Object.keys(cl).sort((a, b) => { const [g1, c1] = a.split('-').map(Number), [g2, c2] = b.split('-').map(Number); return g1 - g2 || c1 - c2; });
+  const sel = $('seCls'); sel.innerHTML = '';
+  sel.classList.toggle('hidden', !keys.length); $('seRosterClear').classList.toggle('hidden', !seatRoster.length);
+  if (keys.length) { sel.appendChild(new Option('-- 학급 선택 (전체 명단 사용) --', '')); keys.forEach(k => sel.appendChild(new Option(`${clsLabel(k)} (${cl[k].length}명)`, k))); sel.value = keys.includes(seat.cls) ? seat.cls : ''; }
+  $('seRosterInfo').textContent = seatRoster.length ? `올린 명단 ${seatRoster.length}명 · ${keys.length}개 학급` : '';
+}
+$('seFile').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  if (typeof XLSX === 'undefined') { alert('엑셀 읽기 도구를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'); return; }
+  try {
+    const list = parseSeatRoster(XLSX.read(await f.arrayBuffer()));
+    if (!list.length) { seMsg('명단을 찾지 못했습니다. 학번(예: 1701)과 이름 열이 있는지 확인해 주세요.', false); return; }
+    seatRoster = list; saveRoster();
+    const keys = Object.keys(rosterClasses());
+    seat.cls = keys.length === 1 ? keys[0] : (keys.includes(seat.cls) ? seat.cls : '');
+    saveSeat(); renderRosterUI();
+    if (seat.cls) { const r = seatFillFromRoster(); seMsg(`${clsLabel(seat.cls)} ${r.total}명을 번호순으로 입력했습니다.${r.total > r.free ? ` 자리가 ${r.total - r.free}개 부족합니다. 열·행을 늘려 주세요.` : ''}`, r.total <= r.free); }
+    else { renderSeat(); seMsg(`${list.length}명을 불러왔습니다. 학급을 선택하면 자동으로 채워집니다.`); }
+  } catch (err) { seMsg('불러오기 실패: ' + err.message, false); }
 });
+$('seCls').addEventListener('change', () => {
+  seat.cls = $('seCls').value; saveSeat();
+  if (!seat.cls) { renderSeat(); return; }
+  const r = seatFillFromRoster(); seMsg(`${clsLabel(seat.cls)} ${r.total}명을 번호순으로 입력했습니다.${r.total > r.free ? ` 자리가 ${r.total - r.free}개 부족합니다. 열·행을 늘려 주세요.` : ''}`, r.total <= r.free);
+});
+$('seRosterClear').addEventListener('click', () => { if (!confirm('올린 명단을 지울까요? (자리 칸의 이름은 그대로 남습니다)')) return; seatRoster = []; saveRoster(); seat.cls = ''; saveSeat(); renderRosterUI(); renderSeat(); seMsg('명단을 지웠습니다.'); });
 $('seClear').addEventListener('click', () => { if (!confirm('고정하지 않은 자리를 모두 비울까요?')) return; seat.cells.forEach(c => { if (!c.lock) { c.no = ''; c.name = ''; } }); saveSeat(); renderSeat(); seMsg('비웠습니다.'); });
-$('seExAdd').addEventListener('click', () => { const s = students.find(x => x.id === $('seExSel').value); if (!s) return; seat.excl.push({ no: s.no, name: s.name }); saveSeat(); renderSeat(); });
+$('seExAdd').addEventListener('click', () => { const s = activeRoster().find(x => x.no === $('seExSel').value); if (!s) return; seat.excl.push({ no: s.no, name: s.name }); saveSeat(); renderSeat(); });
 $('seExAdd2').addEventListener('click', () => {
   const t = $('seExTxt').value.trim(); if (!t) return;
   const s = students.find(x => x.no === t || x.name === t); seat.excl.push(s ? { no: s.no, name: s.name } : (/^\d+$/.test(t) ? { no: t, name: '' } : { no: '', name: t })); $('seExTxt').value = ''; saveSeat(); renderSeat();
@@ -3183,6 +3260,7 @@ const SYNC_KEYS = [
   ['gm-grades-all', '성적 분석 자료', () => gAll, v => { gAll = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; curTerm = Object.keys(gAll).sort().pop() || ''; grades = gAll[curTerm] || null; }, 'gr'],
   ['gm-gex', '성적 제외 학생', () => gex, v => { gex = Array.isArray(v) ? v : []; $('gEx').value = gex.join(', '); }, 'gr'],
   ['gm-seat', '자리 배치', () => seat, v => { seat = normSeat(v); }, 'stu'],
+  ['gm-seat-roster', '자리 배치 명단', () => seatRoster, v => { seatRoster = Array.isArray(v) ? v : []; }, 'stu'],
   ['gm-budget', '예산', () => bg, v => { bg = normBg(v); }, 'bg']
 ];
 const SYNC_GROUPS = [['stu', '👩‍🎓 학생 명단·기록, 상담, 조퇴·외출 기록', true], ['rec', '📝 작성한 세특·행특·동아리 기록', true], ['gr', '📊 성적 분석 자료', true], ['bg', '💰 예산', false]];
