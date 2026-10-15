@@ -54,8 +54,8 @@
   #lock input:focus { border-color: #0ea5e9 !important; }
   #lockMsg { color: #334155 !important; font-size: .95rem; line-height: 1.5; }
   #lockCancel, #lockReset, #lockSkip { color: #12343b !important; text-decoration: underline; font-size: .85rem; }
-  #homeCal .hc-cell { min-height: 92px; }
-  @media (max-width: 640px) { #homeCal .hc-cell { min-height: 64px; } }
+  #homeCal .hc-cell { min-height: 62px; }
+  @media (max-width: 640px) { #homeCal .hc-cell { min-height: 50px; } }
   /* 일정 추가: 날짜·시간 칸이 겹치지 않게 */
   #homeCal form label { min-width: 0; }
   #homeCal form input { min-width: 0; max-width: 100%; }
@@ -64,6 +64,7 @@
   #printArea { display: none; }
   @media print { body > *:not(#printArea) { display: none !important; } #printArea { display: block !important; width: 72mm; border: 1px solid #000; padding: 6mm; margin: 10mm auto 0; font-size: 11pt; line-height: 1.6; } }
   @media print { #printArea.seat-print { width: 180mm !important; } }
+  @media print { #printArea.abs-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 0 auto !important; } #printArea.abs-print img { width: 100%; display: block; } }
 </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen">
@@ -78,7 +79,7 @@
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 반 명단 자동입력</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 결석신고서 체크식</p>
   </form>
 </div>
 
@@ -103,6 +104,7 @@
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="records">🎒 학생 기록 관리</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="pass">🎫 조퇴증 발급</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="seat">🪑 자리 배치</button>
+    <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="absent">📄 결석신고서</button>
   </nav>
 </header>
 
@@ -126,8 +128,8 @@
   <section id="tab-dash" class="tab-panel">
     <div class="grid gap-5 lg:grid-cols-2 items-start">
       <div class="space-y-5 min-w-0">
-        <div id="homeCal" class="bg-white rounded-xl border border-slate-200 p-3 md:p-5"></div>
-        <div id="dashTasks" class="bg-white rounded-xl border border-slate-200 p-5"></div>
+        <div id="dashTasks" class="bg-white rounded-xl border border-slate-200 p-4 md:p-5"></div>
+        <div id="homeCal" class="bg-white rounded-xl border border-slate-200 p-3 md:p-4"></div>
       </div>
       <div class="space-y-5 min-w-0">
         <div class="bg-white rounded-xl border border-slate-200 p-4 md:p-5">
@@ -355,6 +357,45 @@
     </div>
   </section>
 
+  <section id="tab-absent" class="tab-panel hidden">
+    <div class="grid lg:grid-cols-[400px_1fr] gap-6 items-start">
+      <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-3 text-sm">
+        <h2 class="font-bold text-base">📄 결석신고서 작성</h2>
+        <label class="block">학생 선택<select id="abStu" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></select></label>
+        <div class="grid grid-cols-2 gap-3">
+          <label>학번<input id="abNo" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+          <label>성명<input id="abName" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+          <label>연락처(전화)<input id="abTel" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+          <label>학부모 성함<input id="abPar" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <label>결석 시작일<input id="abFrom" type="date" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+          <label>결석 종료일<input id="abTo" type="date" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+        </div>
+        <p id="abDays" class="text-xs text-slate-500"></p>
+        <label class="block">결석 사유<input id="abReason" maxlength="60" placeholder="예: 감기 몸살로 병원 진료" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+        <fieldset>
+          <legend class="mb-1">종별 (체크)</legend>
+          <div class="flex gap-4 flex-wrap"><label><input type="checkbox" class="abK" value="질병" checked> 질병</label><label><input type="checkbox" class="abK" value="인정"> 인정</label><label><input type="checkbox" class="abK" value="기타"> 기타</label></div>
+        </fieldset>
+        <label class="block">신고서 작성일<input id="abDate" type="date" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+        <fieldset>
+          <legend class="mb-1">담임교사 확인내용</legend>
+          <div class="flex gap-4 flex-wrap"><label><input type="checkbox" id="abC1"> 가정방문</label><label><input type="checkbox" id="abC2"> 전화확인</label><label><input type="checkbox" id="abC3"> 학부모내교</label></div>
+        </fieldset>
+        <label class="block">담임 의견<textarea id="abOpin" rows="3" maxlength="200" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></textarea></label>
+        <label class="block">담임교사 성명<input id="abTeacher" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+        <div class="grid gap-2 pt-1">
+          <button id="abPrint" type="button" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">🖨️ 인쇄 (A4)</button>
+          <button id="abSave" type="button" class="w-full border border-slate-300 bg-white hover:bg-slate-50 font-bold rounded-lg py-2.5">💾 이미지로 저장</button>
+          <button id="abShare" type="button" class="hidden w-full border border-slate-300 bg-white hover:bg-slate-50 font-bold rounded-lg py-2.5">📤 이미지 공유 (프린터 앱 등)</button>
+        </div>
+        <p class="text-xs text-slate-500">A4 크기 양식이라 53mm 소형 프린터에는 맞지 않습니다. 일반 프린터로 인쇄하거나 이미지를 저장해 사용하세요. (인) 칸은 비워 두니 출력 후 직접 서명하세요.</p>
+      </div>
+      <div class="bg-white rounded-xl border border-slate-200 p-3 md:p-5 overflow-auto"><img id="abView" alt="결석신고서 미리보기" class="mx-auto border border-slate-300 bg-white w-full max-w-[640px]"></div>
+    </div>
+  </section>
+
   <section id="tab-pass" class="tab-panel hidden">
     <div class="grid lg:grid-cols-[400px_1fr] gap-6 items-start">
       <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-4">
@@ -474,7 +515,7 @@
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 반 명단 자동입력</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 결석신고서 체크식</p>
   </div>
 </dialog>
 
@@ -2924,8 +2965,8 @@ function renderHome() {
     const d = new Date(y, m - 1, 1 - first.getDay() + i), ds = ymd(d), inM = d.getMonth() === m - 1, evl = eventsOn(ds);
     const c = el('div', `hc-cell border rounded-lg p-1 cursor-pointer overflow-hidden ${inM ? 'bg-white' : 'bg-slate-50 opacity-50'} ${homeM.sel === ds ? 'ring-2 ring-sky-400 border-sky-300' : 'border-slate-200'}`);
     const n = el('div', `text-xs font-bold mb-0.5 ${ds === t ? 'inline-block bg-sky-500 text-white rounded-full px-1.5' : d.getDay() === 0 ? 'text-red-600' : d.getDay() === 6 ? 'text-blue-700' : ''}`, d.getDate()); c.appendChild(n);
-    evl.slice(0, 3).forEach(e => { const [em, cl] = HCLR[e.src]; const chip = el('div', `text-[11px] leading-tight px-1 py-0.5 mb-0.5 rounded truncate ${cl}`, `${em} ${e.cont ? '↳ ' : ''}${e.time ? e.time + ' ' : ''}${e.text}`); chip.title = e.text; c.appendChild(chip); });
-    if (evl.length > 3) c.appendChild(el('div', 'text-[11px] text-slate-600', `+${evl.length - 3}개 더`));
+    evl.slice(0, 2).forEach(e => { const [em, cl] = HCLR[e.src]; const chip = el('div', `text-[11px] leading-tight px-1 py-0.5 mb-0.5 rounded truncate ${cl}`, `${em} ${e.cont ? '↳ ' : ''}${e.time ? e.time + ' ' : ''}${e.text}`); chip.title = e.text; c.appendChild(chip); });
+    if (evl.length > 2) c.appendChild(el('div', 'text-[11px] text-slate-600', `+${evl.length - 2}개 더`));
     c.onclick = () => { homeM.sel = ds; if (!inM) { homeM.y = d.getFullYear(); homeM.m = d.getMonth() + 1; } renderHome(); }; grid.appendChild(c);
   }
   box.appendChild(grid);
@@ -3238,6 +3279,91 @@ $('sePrint').addEventListener('click', () => {
   pa.append(t, b, g); window.print(); setTimeout(() => pa.classList.remove('seat-print'), 500);
 });
 
+/* ===== 결석신고서 (양식 그대로 그려서 인쇄·이미지 저장) ===== */
+function absData() {
+  const g = id => $(id).value.trim(), kind = (document.querySelector('.abK:checked') || {}).value || '';
+  const f = g('abFrom') ? new Date(g('abFrom') + 'T00:00:00') : null, t = g('abTo') ? new Date(g('abTo') + 'T00:00:00') : f;
+  const dt = g('abDate') ? new Date(g('abDate') + 'T00:00:00') : null;
+  const days = f && t && t >= f ? Math.round((t - f) / 86400000) + 1 : (f ? 1 : 0);
+  return { no: g('abNo'), name: g('abName'), tel: g('abTel'), par: g('abPar'), f, t, days, reason: g('abReason'), kind, dt, c: [$('abC1').checked, $('abC2').checked, $('abC3').checked], opin: $('abOpin').value.trim(), teacher: g('abTeacher') };
+}
+function absCanvas(d) {
+  const S = 2, cv = document.createElement('canvas'); cv.width = 724 * S; cv.height = 1024 * S;
+  const x = cv.getContext('2d'); x.scale(S, S); x.fillStyle = '#fff'; x.fillRect(0, 0, 724, 1024); x.fillStyle = '#000'; x.strokeStyle = '#000'; x.lineWidth = 1.4; x.textBaseline = 'middle';
+  const FONT = "'Noto Sans KR','Malgun Gothic',sans-serif";
+  const ln = (a, b, c, e) => { x.beginPath(); x.moveTo(a, b); x.lineTo(c, e); x.stroke(); };
+  const tx = (t, px, py, size = 16, al = 'center', bold = false) => { x.font = `${bold ? '700 ' : ''}${size}px ${FONT}`; x.textAlign = al; x.fillText(t, px, py); };
+  const wrap = (t, px, py, w, lh, size = 15) => { x.font = `${size}px ${FONT}`; x.textAlign = 'left'; let line = '', yy = py; for (const ch of t) { if (x.measureText(line + ch).width > w) { x.fillText(line, px, yy); line = ch; yy += lh; } else line += ch; } if (line) x.fillText(line, px, yy); };
+  // 결재란
+  x.strokeRect(524, 124, 128, 97); ln(588, 124, 588, 221); ln(524, 153, 652, 153); tx('학년부장', 556, 138, 14); tx('교감', 620, 138, 14);
+  [...'결석신고서'].forEach((ch, i) => tx(ch, 180 + i * 60, 173, 36, 'center', true));
+  // 표 틀
+  x.strokeRect(72, 221, 580, 640);
+  [262, 305, 387, 607, 660].forEach(y => ln(72, y, 652, y));
+  ln(144, 221, 144, 387); ln(247, 221, 247, 262); ln(303, 221, 303, 262); ln(470, 221, 470, 262); ln(525, 221, 525, 262);
+  ln(461, 305, 461, 387); ln(525, 305, 525, 387);
+  ln(204, 607, 204, 861);
+  tx('학번', 108, 241, 15); tx('성명', 275, 241, 15); tx('연락처', 497, 234, 13); tx('(전화)', 497, 251, 13);
+  tx('결석기간', 108, 284, 15); tx('결석사유', 108, 346, 15); tx('종별', 493, 346, 15);
+  tx('담임교사', 138, 625, 14); tx('확인내용', 138, 643, 14); tx('담임 의견', 138, 760, 15);
+  // 값
+  tx(d.no, 195, 241, 16); tx(d.name, 387, 241, 16); tx(d.tel, 588, 241, d.tel.length > 13 ? 13 : 15);
+  const md = v => v ? `${v.getMonth() + 1}월 ${v.getDate()}일` : '    월    일';
+  tx(`${d.f ? d.f.getFullYear() : '    '}년 ${md(d.f)}  ~  ${md(d.t)}  ( ${d.days || ''} )일간`, 362, 284, 16);
+  x.fillStyle = '#000'; wrap(d.reason, 152, 325, 300, 21, 15);
+  [['질병', 322], ['인정', 345], ['기타', 369]].forEach(([k, y]) => { tx(`${k}( ${d.kind === k ? '✓' : '  '} )`, 588, y, 15); });
+  tx('위와 같은 사유로 결석하였기에 결석 신고서를 제출합니다.', 362, 413, 15);
+  tx(d.dt ? `${d.dt.getFullYear()}년      ${d.dt.getMonth() + 1}월      ${d.dt.getDate()}일` : '        년        월        일', 362, 457, 16);
+  tx(`학 생 :  ${d.name}`, 590, 498, 15, 'right'); tx('(인)', 612, 498, 15, 'left');
+  tx(`학부모 :  ${d.par}`, 590, 527, 15, 'right'); tx('(인)', 612, 527, 15, 'left');
+  tx('청양고등학교장 귀하', 362, 577, 24, 'center', true);
+  tx(`가정방문( ${d.c[0] ? '✓' : '  '} )    전화확인( ${d.c[1] ? '✓' : '  '} )    학부모내교( ${d.c[2] ? '✓' : '  '} )`, 428, 633, 15);
+  wrap(d.opin, 214, 685, 428, 22, 15);
+  tx(`작성자 : 담임교사 ${d.teacher || 'ㅇ ㅇ ㅇ'}  (인)`, 656, 899, 15, 'right');
+  return cv;
+}
+let absTimer = null;
+function absRender() {
+  const d = absData();
+  $('abDays').textContent = d.days ? `결석일수: ${d.days}일${d.t && d.f && d.t < d.f ? ' (종료일이 시작일보다 빨라 1일로 계산)' : ''}` : '';
+  const go = async () => { try { await document.fonts.load("16px 'Noto Sans KR'"); } catch (e) {} $('abView').src = absCanvas(d).toDataURL('image/png'); };
+  clearTimeout(absTimer); absTimer = setTimeout(go, 150);
+}
+function absStuFill() {
+  const s = students.find(x => x.id === $('abStu').value); if (!s) return;
+  $('abNo').value = s.no; $('abName').value = s.name;
+  const g = String(s.guard || ''), m = g.match(/(01\d[-\s]?\d{3,4}[-\s]?\d{4})/), tel = m ? m[1] : (s.phone || '');
+  $('abTel').value = tel; $('abPar').value = g.replace(/\(.*?\)/g, ' ').replace(/[\d\-]{7,}/g, ' ').trim().split(/\s+/)[0] || '';
+  absRender();
+}
+function absInit() {
+  const sel = $('abStu'); const cur = sel.value; sel.innerHTML = '';
+  sel.appendChild(new Option('-- 학생 선택 (직접 입력도 가능) --', ''));
+  students.slice().sort((a, b) => String(a.no).localeCompare(String(b.no))).forEach(s => sel.appendChild(new Option(`${s.no} ${s.name}`, s.id)));
+  sel.value = cur;
+}
+(() => {
+  const t = ymd(new Date()); $('abFrom').value = t; $('abTo').value = t; $('abDate').value = t;
+  try { $('abTeacher').value = localStorage.getItem('gm-teacher') || ''; } catch (e) {}
+  ['abNo', 'abName', 'abTel', 'abPar', 'abFrom', 'abTo', 'abReason', 'abDate', 'abC1', 'abC2', 'abC3', 'abOpin', 'abTeacher'].forEach(id => { $(id).addEventListener('input', absRender); $(id).addEventListener('change', absRender); });
+  document.querySelectorAll('.abK').forEach(c => c.addEventListener('change', () => { if (c.checked) document.querySelectorAll('.abK').forEach(o => { if (o !== c) o.checked = false; }); absRender(); }));
+  $('abFrom').addEventListener('change', () => { if (!$('abTo').value || $('abTo').value < $('abFrom').value) $('abTo').value = $('abFrom').value; absRender(); });
+  $('abStu').addEventListener('change', absStuFill);
+  const blob = () => new Promise(r => absCanvas(absData()).toBlob(r, 'image/png'));
+  const fname = () => `결석신고서_${$('abName').value.trim() || '학생'}_${$('abFrom').value || ''}.png`;
+  $('abSave').addEventListener('click', async () => { const b = await blob(), a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = fname(); document.body.appendChild(a); a.click(); a.remove(); });
+  $('abPrint').addEventListener('click', async () => {
+    try { await document.fonts.load("16px 'Noto Sans KR'"); } catch (e) {}
+    const pa = $('printArea'); pa.innerHTML = ''; pa.classList.add('abs-print'); const im = new Image(); im.src = absCanvas(absData()).toDataURL('image/png'); pa.appendChild(im);
+    await new Promise(r => { im.onload = r; setTimeout(r, 400); }); window.print(); setTimeout(() => { pa.classList.remove('abs-print'); pa.innerHTML = ''; }, 800);
+  });
+  if (navigator.canShare && navigator.canShare({ files: [new File(['x'], 'x.png', { type: 'image/png' })] })) {
+    $('abShare').classList.remove('hidden');
+    $('abShare').addEventListener('click', async () => { const b = await blob(); try { await navigator.share({ files: [new File([b], fname(), { type: 'image/png' })] }); } catch (e) { if (e.name !== 'AbortError') alert('공유하지 못했습니다. 💾 이미지로 저장을 눌러 주세요.'); } });
+  }
+  absInit(); absRender();
+})();
+
 /* ===== PC·휴대폰 연동 (구글 Apps Script, 개인정보 없는 자료만) ===== */
 const SYNC_KEY = 'gm-sync';
 let syncCfg = (() => { const v = jl(SYNC_KEY); return { url: v.url || '', token: v.token || '', last: v.last || '', meta: v.meta || { h: {}, ts: {} }, opt: v.opt || {} }; })(), syncing = false;
@@ -3321,7 +3447,7 @@ $('syncBtn').addEventListener('click', () => syncNow(true));
 renderSyncOpts(); syncUI();
 if (syncCfg.url && syncCfg.token) setTimeout(() => syncNow(false), 1500);
 
-function renderAll() { renderSch(); renderToday(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); }
+function renderAll() { renderSch(); renderToday(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); absInit(); }
 renderAll();
 </script>
 </body>
