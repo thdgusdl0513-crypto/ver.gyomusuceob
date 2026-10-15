@@ -64,7 +64,7 @@
   #printArea { display: none; }
   @media print { body > *:not(#printArea) { display: none !important; } #printArea { display: block !important; width: 72mm; border: 1px solid #000; padding: 6mm; margin: 10mm auto 0; font-size: 11pt; line-height: 1.6; } }
   @media print { #printArea.seat-print { width: 180mm !important; } }
-  @media print { #printArea.abs-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 0 auto !important; } #printArea.abs-print img { width: 100%; display: block; } }
+  @media print { #printArea.abs-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 10mm auto 0 !important; } #printArea.abs-print img { width: 100%; display: block; } }
 </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen">
@@ -79,7 +79,7 @@
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 결석서 인쇄 여백0</p>
   </form>
 </div>
 
@@ -520,7 +520,7 @@
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 결석서 인쇄 여백0</p>
   </div>
 </dialog>
 
@@ -2063,7 +2063,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click
   L.addEventListener('click', () => go(-1)); R.addEventListener('click', () => go(1));
   nav.addEventListener('scroll', upd, { passive: true }); window.addEventListener('resize', upd);
   document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => b.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' })));
-  setTimeout(upd, 50); setTimeout(upd, 600);
+  setTimeout(upd, 50); setTimeout(upd, 600); window.addEventListener('load', upd); window.addEventListener('orientationchange', () => setTimeout(upd, 300)); if (window.ResizeObserver) { const ro = new ResizeObserver(upd); ro.observe(nav); Array.from(nav.children).forEach(c => ro.observe(c)); } setInterval(upd, 1500);
 })();
 
 /* 드롭다운 */
@@ -3371,7 +3371,7 @@ function absInit() {
   $('abPrint').addEventListener('click', async () => {
     try { await document.fonts.load("16px 'Noto Sans KR'"); } catch (e) {}
     const pa = $('printArea'); pa.innerHTML = ''; pa.classList.add('abs-print'); const im = new Image(); im.src = absCanvas(absData()).toDataURL('image/png'); pa.appendChild(im);
-    await new Promise(r => { im.onload = r; setTimeout(r, 400); }); window.print(); setTimeout(() => { pa.classList.remove('abs-print'); pa.innerHTML = ''; }, 800);
+    await new Promise(r => { im.onload = r; setTimeout(r, 400); }); const pg = document.createElement('style'); pg.id = 'absPage'; pg.textContent = '@page{size:A4;margin:0}'; document.head.appendChild(pg); const done = () => { pg.remove(); pa.classList.remove('abs-print'); pa.innerHTML = ''; window.removeEventListener('afterprint', done); }; window.addEventListener('afterprint', done); window.print(); setTimeout(done, 60000);
   });
   if (navigator.canShare && navigator.canShare({ files: [new File(['x'], 'x.png', { type: 'image/png' })] })) {
     $('abShare').classList.remove('hidden');
