@@ -127,6 +127,8 @@
   #homeMeal .ml-extra { margin:0 12px 10px; font-size:11px; color:var(--sub); background:var(--chip); border-radius:8px; padding:7px 9px; white-space:pre-line; }
   #homeMeal .ml-note { font-size:12px; color:var(--sub); margin:10px 0 0; }
   #homeMeal .ml-err { background:var(--warn-soft); color:var(--warn); border-radius:10px; padding:8px 12px; font-size:12px; margin-top:10px; }
+details.fold>summary{list-style:none}details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;color:#0e8fa8}details.fold:not([open])>summary::before{content:"▸"}
 </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen">
@@ -141,7 +143,7 @@
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v2 · 명단·자율자치</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 홈 접기 · 명단·자율자치</p>
   </form>
 </div>
 
@@ -196,19 +198,17 @@
       <div class="space-y-5 min-w-0">
         <div id="dashTasks" class="bg-white rounded-xl border border-slate-200 p-4 md:p-5"></div>
         <div id="homeRsv" class="hidden bg-white rounded-xl border border-slate-200 p-4 md:p-5"></div>
-        <div id="homeCal" class="bg-white rounded-xl border border-slate-200 p-3 md:p-4"></div>
+        <details class="fold bg-white rounded-xl border border-slate-200" id="fold-cal" open><summary class="fold-sum px-4 py-3 md:px-5 font-bold text-lg cursor-pointer select-none">📅 학사일정 달력</summary><div id="homeCal" class="p-3 md:p-4 pt-0"></div></details>
       </div>
       <div class="space-y-5 min-w-0">
-        <div class="bg-white rounded-xl border border-slate-200 p-4 md:p-5">
-          <div class="flex items-center gap-2 flex-wrap mb-2"><h2 class="font-bold text-lg mr-auto">🧑‍🏫 교사 시간표</h2><select id="schTeacher" class="border border-slate-300 rounded-lg px-2 py-1.5 bg-slate-50 text-sm"></select><button id="schMeBtn" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-2.5 py-1.5 text-xs whitespace-nowrap"></button><button id="schEditT" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-2.5 py-1.5 text-xs whitespace-nowrap"></button><button id="schResetT" type="button" class="text-xs text-slate-600 hover:text-red-600 underline">수정 지우기</button></div>
+        <details class="fold bg-white rounded-xl border border-slate-200" id="fold-tt" open><summary class="fold-sum px-4 py-3 md:px-5 font-bold text-lg cursor-pointer select-none">🧑‍🏫 교사 시간표</summary><div class="px-4 pb-4 md:px-5 md:pb-5">
+          <div class="flex items-center gap-2 flex-wrap mb-2"><span class="mr-auto"></span><select id="schTeacher" class="border border-slate-300 rounded-lg px-2 py-1.5 bg-slate-50 text-sm"></select><button id="schMeBtn" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-2.5 py-1.5 text-xs whitespace-nowrap"></button><button id="schEditT" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-2.5 py-1.5 text-xs whitespace-nowrap"></button><button id="schResetT" type="button" class="text-xs text-slate-600 hover:text-red-600 underline">수정 지우기</button></div>
           <div class="flex items-center gap-2 flex-wrap text-xs mb-2"><label class="font-bold">📂 교사별 시간표 파일<input id="schFileT" type="file" accept=".xlsx,.xls" class="ml-1 text-xs"></label><span id="schInfoT" class="text-slate-600"></span></div>
-          <div id="schT" class="overflow-x-auto"></div>
-        </div>
-        <div class="bg-white rounded-xl border border-slate-200 p-4 md:p-5">
-          <div class="flex items-center gap-2 flex-wrap mb-2"><h2 class="font-bold text-lg mr-auto">🏫 학급 시간표</h2><select id="schClass" class="border border-slate-300 rounded-lg px-2 py-1.5 bg-slate-50 text-sm"></select><button id="schClsBtn" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-2.5 py-1.5 text-xs whitespace-nowrap"></button><button id="schEditC" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-2.5 py-1.5 text-xs whitespace-nowrap"></button><button id="schResetC" type="button" class="text-xs text-slate-600 hover:text-red-600 underline">수정 지우기</button></div>
+          <div id="schT" class="overflow-x-auto"></div></div></details>
+        <details class="fold bg-white rounded-xl border border-slate-200" id="fold-cl" open><summary class="fold-sum px-4 py-3 md:px-5 font-bold text-lg cursor-pointer select-none">🏫 학급 시간표</summary><div class="px-4 pb-4 md:px-5 md:pb-5">
+          <div class="flex items-center gap-2 flex-wrap mb-2"><span class="mr-auto"></span><select id="schClass" class="border border-slate-300 rounded-lg px-2 py-1.5 bg-slate-50 text-sm"></select><button id="schClsBtn" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-2.5 py-1.5 text-xs whitespace-nowrap"></button><button id="schEditC" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-2.5 py-1.5 text-xs whitespace-nowrap"></button><button id="schResetC" type="button" class="text-xs text-slate-600 hover:text-red-600 underline">수정 지우기</button></div>
           <div class="flex items-center gap-2 flex-wrap text-xs mb-2"><label class="font-bold">📂 전체 학급 시간표 파일<input id="schFileC" type="file" accept=".xlsx,.xls" class="ml-1 text-xs"></label><span id="schInfoC" class="text-slate-600"></span></div>
-          <div id="schC" class="overflow-x-auto"></div>
-        </div>
+          <div id="schC" class="overflow-x-auto"></div></div></details>
       </div>
     </div>
     <div id="homeMeal" class="rounded-xl border border-sky-200 p-3 md:p-4 mt-5"></div>
@@ -689,7 +689,7 @@
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v2 · 명단·자율자치</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치</p>
   </div>
 </dialog>
 
@@ -3137,7 +3137,7 @@ $('recAiBtn').addEventListener('click', async () => {
   $('recAiHint').textContent = (await copyText(txt)) ? '요청문을 복사했습니다. AI 채팅창에 붙여넣고, 결과를 위의 큰 입력칸에 붙여넣으세요.' : '자동 복사에 실패했습니다. 아래 요청문을 직접 선택해 복사해 주세요.';
 });
 /* ===== Gemini 연동 (API 키) ===== */
-let gem = (() => { const v = jl('gm-gemini'); return { key: v.key || '', model: v.model || '' }; })();
+let gem = (() => { const v = jl('gm-gemini'); return { key: v.key || '', model: v.model || '', manual: !!v.manual }; })();
 const GEM_DEF = 'gemini-2.5-flash', saveGem = () => store('gm-gemini', gem);
 const gemMsg = (t, ok) => { $('recGemMsg').textContent = t; $('recGemMsg').className = ok ? 'text-emerald-700' : 'text-slate-600'; };
 function gemUI() { $('recGemKey').value = gem.key; $('recGemModel').value = gem.model; $('recGemState').textContent = gem.key ? '· 키 입력됨' : '· 키를 입력하면 바로 작성할 수 있어요'; }
@@ -3154,7 +3154,7 @@ function gemPick(list) {
   return ok[0] || list.find(n => /^gemini-.*flash/.test(n)) || list.find(n => /^gemini-/.test(n)) || '';
 }
 async function gemFill() { const l = await gemList(); $('recGemList').innerHTML = ''; l.forEach(n => { const o = document.createElement('option'); o.value = n; $('recGemList').appendChild(o); }); return l; }
-async function gemAsk(prompt, retried) {
+async function gemAsk(prompt, retried, tries, skip) {
   if (!gem.key) throw new Error('API 키가 없습니다. 위 "Gemini 연결 설정"에서 키를 입력하세요.');
   const model = (gem.model || GEM_DEF).trim();
   let r;
@@ -3166,12 +3166,23 @@ async function gemAsk(prompt, retried) {
     const m = (j.error && j.error.message) || `오류 ${r.status}`;
     if (r.status === 404 && !retried) {
       const l = await gemFill().catch(() => []), pick = gemPick(l);
-      if (pick && pick !== model) { gem.model = pick; saveGem(); gemUI(); gemMsg(`모델을 "${pick}"(으)로 자동 변경했습니다.`, true); return gemAsk(prompt, true); }
+      if (pick && pick !== model && !gem.manual) { gem.model = pick; saveGem(); gemUI(); gemMsg(`모델을 "${pick}"(으)로 자동 변경했습니다.`, true); return gemAsk(prompt, true, 0, skip); }
+    }
+    if ((r.status === 503 || r.status === 500 || /high demand|overloaded/i.test(m)) && (tries || 0) < 3) {
+      gemMsg(`구글 서버가 붐벼서 잠시 뒤 다시 시도합니다… (${(tries || 0) + 1}/3)`, true);
+      await new Promise(z => setTimeout(z, 2500 * ((tries || 0) + 1)));
+      return gemAsk(prompt, retried, (tries || 0) + 1, skip);
+    }
+    if (r.status === 503 || r.status === 500 || /high demand|overloaded/i.test(m)) {
+      const tried = (skip || []).concat(model), l = await gemList().catch(() => []);
+      const alt = l.filter(n => /^gemini-[\d.]+-flash/.test(n) && !/image|tts|audio|live|embed|exp|8b/i.test(n) && !tried.includes(n))[0];
+      if (alt && !gem.manual) { gemMsg(`"${model}"이(가) 붐벼서 "${alt}"(으)로 시도합니다.`, true); const old = gem.model; gem.model = alt; try { return await gemAsk(prompt, true, 0, tried); } catch (e) { gem.model = old; throw e; } }
+      throw new Error('구글 AI 서버가 지금 매우 붐빕니다. 몇 분 뒤에 다시 눌러 주세요. (앱 오류가 아닙니다)');
     }
     if (r.status === 429) throw new Error('무료 사용 한도를 넘었습니다. 잠시 뒤에 다시 시도해 주세요.');
     if (r.status === 400 && /API key/i.test(m)) throw new Error('API 키가 올바르지 않습니다. 키를 다시 확인해 주세요.');
     if (r.status === 403) throw new Error('이 키로는 사용할 수 없습니다. 키 설정이나 사용 지역·계정 제한을 확인해 주세요.');
-    if (r.status === 404) throw new Error(`모델 "${model}"을 찾을 수 없습니다. "모델 목록 불러오기"를 눌러 목록에서 골라 보세요.`);
+    if (r.status === 404) throw new Error(`모델 "${model}"은(는) 이 키로 쓸 수 없습니다(이름이 바뀌었거나 종료됨). "모델 목록 불러오기"를 눌러 목록에서 고르거나, 모델 칸을 비우고 다시 테스트하면 자동으로 골라 줍니다.`);
     throw new Error(m);
   }
   const c = j.candidates && j.candidates[0], t = c && c.content && c.content.parts ? c.content.parts.map(p => p.text || '').join('') : '';
@@ -3181,14 +3192,14 @@ async function gemAsk(prompt, retried) {
 (() => {
   gemUI();
   $('recGemKey').addEventListener('change', () => { gem.key = $('recGemKey').value.trim(); saveGem(); gemUI(); });
-  $('recGemModel').addEventListener('change', () => { gem.model = $('recGemModel').value.trim(); saveGem(); });
+  $('recGemModel').addEventListener('change', () => { gem.model = $('recGemModel').value.trim(); gem.manual = !!gem.model; saveGem(); });
   $('recGemModels').addEventListener('click', async () => {
     gem.key = $('recGemKey').value.trim(); saveGem(); if (!gem.key) { gemMsg('먼저 API 키를 입력하세요.'); return; } gemMsg('모델 목록을 불러오는 중…');
     try { const l = await gemFill(), p = gemPick(l); gemMsg(`사용 가능한 모델 ${l.length}개를 불러왔습니다. 모델 이름 칸을 눌러 고르세요.${p ? ` (추천: ${p})` : ''}`, true); if (p && !gem.model) { gem.model = p; saveGem(); gemUI(); } } catch (e) { gemMsg(e.message); }
   });
   $('recGemClear').addEventListener('click', () => { gem.key = ''; saveGem(); gemUI(); gemMsg('키를 지웠습니다.'); });
   $('recGemTest').addEventListener('click', async () => {
-    gem.key = $('recGemKey').value.trim(); gem.model = $('recGemModel').value.trim(); saveGem(); gemUI(); gemMsg('연결 확인 중…');
+    gem.key = $('recGemKey').value.trim(); gem.model = $('recGemModel').value.trim(); gem.manual = !!gem.model; saveGem(); gemUI(); gemMsg('연결 확인 중…');
     try { await gemAsk('"연결됨"이라고만 답하세요.'); gemMsg('연결됨! 이제 ✨ AI로 바로 작성을 쓸 수 있어요.', true); } catch (e) { gemMsg(e.message); }
   });
   const refresh = () => { $('recGemBtn').disabled = $('recAiBtn').disabled; };
@@ -3443,7 +3454,8 @@ function renderHomeRsv() {
   const t = ymd(now), today = rsvCache.reqs.filter(r => r.status === '승인' && r.date === t).sort((a, b) => a.start.localeCompare(b.start)), pend = rsvCache.reqs.filter(r => r.status === '대기' && r.date >= t).length;
   const head = el('div', 'flex items-center gap-2 mb-2'); head.append(el('h2', 'font-bold text-lg mr-auto', '💬 오늘 상담'));
   if (pend) { const b = el('button', 'text-xs font-bold px-2.5 py-1 rounded-full bg-rose-100 text-rose-700', `승인 대기 ${pend}건`); b.type = 'button'; b.onclick = () => { goTab('counsel'); const d = $('rsvDet'); if (d) d.open = true; }; head.appendChild(b); }
-  box.appendChild(head);
+  const fo = localStorage.getItem('gm-fold-rsv') === '0', tg = el('button', 'text-xs border border-slate-300 rounded-full px-2 py-0.5 bg-white', fo ? '펼치기' : '접기'); tg.type = 'button'; tg.onclick = () => { localStorage.setItem('gm-fold-rsv', fo ? '1' : '0'); renderHomeRsv(); }; head.appendChild(tg);
+  box.appendChild(head); if (fo) return;
   if (!today.length) box.appendChild(el('p', 'text-sm text-slate-500', '오늘 예정된 상담이 없습니다.'));
   today.forEach(r => { const d = el('div', 'flex items-baseline gap-2 py-1 border-b border-slate-100 last:border-0 text-sm'); d.append(el('span', 'font-bold text-sky-700 w-24 shrink-0', `${r.start}~${r.end}`), el('span', 'font-bold', `${r.name}`), el('span', 'text-xs text-slate-500', r.no), el('span', 'text-xs text-slate-600 truncate', r.topic || '')); box.appendChild(d); });
 }
@@ -4118,6 +4130,14 @@ if (syncCfg.url && syncCfg.token) setTimeout(() => syncNow(false), 1500);
 
 function renderAll() { renderSch(); renderToday(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); absInit(); renderMeal(); renderRsv(); renderHomeRsv(); }
 renderAll();
+
+(() => {
+  document.querySelectorAll('details.fold').forEach(d => {
+    let v = null; try { v = localStorage.getItem('gm-' + d.id); } catch (e) {}
+    if (v === '0') d.open = false;
+    d.addEventListener('toggle', () => { try { localStorage.setItem('gm-' + d.id, d.open ? '1' : '0'); } catch (e) {} });
+  });
+})();
 </script>
 </body>
 </html>
