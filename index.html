@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>송현쌤의 교무실</title>
+<title>교무실 도우미</title>
+<script>
+/* 공유용: 개인용과 저장 공간이 섞이지 않도록 모든 저장 이름 앞에 'gh:' 를 붙임 */
+(function () {
+  try {
+    var P = 'gh:', S = Storage.prototype, g = S.getItem, st = S.setItem, rm = S.removeItem;
+    var mine = function (o) { return o === window.localStorage; };
+    S.getItem = function (k) { return mine(this) ? g.call(this, P + k) : g.call(this, k); };
+    S.setItem = function (k, v) { return mine(this) ? st.call(this, P + k, v) : st.call(this, k, v); };
+    S.removeItem = function (k) { return mine(this) ? rm.call(this, P + k) : rm.call(this, k); };
+  } catch (e) {}
+})();
+</script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -120,7 +132,7 @@
 <body class="bg-slate-100 text-slate-800 min-h-screen">
 <div id="lock" class="fixed inset-0 z-50 bg-[#0f2747] flex items-center justify-center p-6">
   <form id="lockForm" class="bg-white rounded-xl p-6 w-[380px] max-w-full space-y-3">
-    <h2 class="font-bold text-lg">🔒 송현쌤의 교무실</h2>
+    <h2 class="font-bold text-lg">🔒 <span id="lockTitle">교무실 도우미</span></h2>
     <p id="lockMsg" class="text-sm text-slate-600"></p>
     <input id="lockPw" type="password" autocomplete="off" placeholder="비밀번호" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
     <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:#12343b"><input id="lockShow" type="checkbox"> 비밀번호 보기</label>
@@ -129,13 +141,13 @@
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini</p>
   </form>
 </div>
 
 <header class="bg-[#0f2747] text-white">
   <div class="max-w-6xl mx-auto px-6 pt-4 flex items-center gap-3 flex-wrap">
-    <h1 class="text-xl font-bold tracking-tight"><span class="bob">🐥</span> 송현쌤의 교무실</h1>
+    <h1 class="text-xl font-bold tracking-tight"><span class="bob">🐥</span> <span id="appTitle">교무실 도우미</span></h1>
     <span id="today" class="text-sm text-slate-300"></span>
     <span id="ddays" class="flex gap-2 flex-wrap"></span>
     <button id="lockNow" title="지금 잠그기" class="ml-auto text-xl hover:scale-110 transition" aria-label="잠금">🔒</button>
@@ -183,6 +195,7 @@
         <div class="grid gap-5 lg:grid-cols-2 items-start">
       <div class="space-y-5 min-w-0">
         <div id="dashTasks" class="bg-white rounded-xl border border-slate-200 p-4 md:p-5"></div>
+        <div id="homeRsv" class="hidden bg-white rounded-xl border border-slate-200 p-4 md:p-5"></div>
         <div id="homeCal" class="bg-white rounded-xl border border-slate-200 p-3 md:p-4"></div>
       </div>
       <div class="space-y-5 min-w-0">
@@ -286,12 +299,89 @@
         <textarea id="recText" rows="12" disabled class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></textarea>
         <div class="flex items-center gap-3 mt-2 flex-wrap"><span id="recCount" class="text-xs text-slate-500"></span><button id="recCopy" type="button" class="ml-auto border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">복사</button><button id="recAll" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">전체 복사 (연말용)</button></div>
         <p id="recHint" class="text-xs text-emerald-600 mt-2"></p>
+        <div class="mt-5 pt-4 border-t border-slate-200 space-y-2">
+          <div class="font-bold text-sm">✨ AI로 초안 쓰기 <span class="font-normal text-xs text-slate-500">(요청문을 만들어 드려요 · 결과를 위 칸에 붙여넣기)</span></div>
+          <details id="recGemDet" class="rounded-lg border border-sky-200 bg-sky-50 p-3 text-xs">
+            <summary class="font-bold cursor-pointer text-sm">🔑 Gemini 연결 설정 · 사용 방법 <span id="recGemState" class="font-normal text-slate-500"></span></summary>
+            <div class="mt-3 space-y-3">
+              <ol class="list-decimal ml-5 space-y-1 text-slate-700">
+                <li><b>Google AI Studio</b>(aistudio.google.com)에 접속해 구글 계정으로 로그인합니다.</li>
+                <li>화면의 <b>"API 키 받기"(Get API key)</b> 메뉴에서 새 키를 만들고 복사합니다. (메뉴 이름은 바뀔 수 있어요)</li>
+                <li>아래 <b>API 키</b> 칸에 붙여넣고 <b>연결 테스트</b>를 누릅니다. "연결됨"이 나오면 끝입니다. 키는 <b>이 컴퓨터(브라우저)에만</b> 저장됩니다.</li>
+                <li>학생을 고르고 관찰 메모를 적은 뒤 <b>✨ AI로 바로 작성</b>을 누르면 초안이 아래에 나옵니다. 마음에 들면 <b>위 입력칸에 넣기</b>로 옮겨 다듬습니다.</li>
+              </ol>
+              <label class="block">API 키<input id="recGemKey" type="password" autocomplete="off" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm" placeholder="AIza..."></label>
+              <label class="block">모델 이름<input id="recGemModel" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm" placeholder="gemini-2.5-flash"></label>
+              <div class="flex items-center gap-2"><button id="recGemTest" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold">연결 테스트</button><button id="recGemClear" type="button" class="text-slate-500 underline">키 지우기</button><span id="recGemMsg" class="text-slate-600"></span></div>
+              <ul class="list-disc ml-5 space-y-1 text-slate-600">
+                <li>무료 사용량에는 한도가 있어서, 한도를 넘으면 잠시 뒤에 다시 시도해야 할 수 있습니다. 요금·한도 정책은 구글이 바꿀 수 있으니 AI Studio 안내를 확인하세요.</li>
+                <li>모델 이름은 구글이 새 모델을 내면 바뀝니다. "모델을 찾을 수 없다"는 오류가 나오면 AI Studio에서 쓸 수 있는 모델 이름으로 바꿔 입력하세요.</li>
+                <li><b>개인정보:</b> 보낸 내용은 구글 서버로 전송됩니다. 학생 이름·학번은 기본으로 "학생"으로 바꿔 보내지만, 메모 속 다른 개인정보(전화번호, 가정 사정 등)는 그대로 가니 필요한 내용만 적으세요. 학교나 교육청의 AI 사용 지침이 있다면 따라 주세요.</li>
+                <li>키는 비밀번호처럼 다루세요. 다른 사람에게 알려주거나 메신저·메일로 보내지 마세요. 공유용 프로그램은 선생님마다 <b>각자 자기 키</b>를 만들어 입력해야 합니다.</li>
+                <li>AI가 쓴 글은 초안입니다. 사실과 다른 내용이 없는지, 학교의 생활기록부 기재요령에 맞는지 꼭 확인한 뒤 사용하세요.</li>
+              </ul>
+            </div>
+          </details>
+          <label id="recAiCtxL" class="block text-xs">활동·교과 맥락 (선택)<input id="recAiCtx" disabled class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm" placeholder="예: 모둠 프로젝트 수업, 학급 환경미화 활동 등"></label>
+          <label class="block text-xs">관찰·활동 메모 (이 학생에 대해 기억나는 내용을 그대로)<textarea id="recAiMemo" rows="5" disabled class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm" placeholder="예: 모둠 발표에서 자료조사를 맡아 통계 자료를 찾아 정리함. 처음엔 발표를 어려워했으나 두 번째 발표에서 먼저 손을 들고 설명함."></textarea></label>
+          <div class="flex items-center gap-3 flex-wrap text-xs">
+            <label class="flex items-center gap-1">분량 <input id="recAiLen" type="number" min="100" max="1500" value="500" class="w-20 border border-slate-300 rounded px-2 py-1 bg-slate-50"> 자 이내</label>
+            <label class="flex items-center gap-1"><input id="recAiHide" type="checkbox" checked> 학생 이름·학번 빼기</label>
+            <button id="recAiBtn" type="button" disabled class="ml-auto bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg px-3 py-2 text-sm disabled:opacity-40">요청문만 복사(직접 붙여넣기)</button>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <button id="recGemBtn" type="button" disabled class="bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg px-3 py-2 text-sm disabled:opacity-40">✨ AI로 바로 작성 (Gemini)</button>
+            <span id="recGemRun" class="text-xs text-slate-500"></span>
+          </div>
+          <textarea id="recAiOut" rows="6" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm hidden" placeholder="AI가 쓴 초안이 여기에 나옵니다."></textarea>
+          <div id="recAiOutRow" class="hidden flex items-center gap-2 text-xs"><span id="recAiOutCnt" class="text-slate-500"></span><button id="recAiUse" type="button" class="ml-auto border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold">위 입력칸에 넣기</button></div>
+          <textarea id="recAiBox" readonly rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-xs" placeholder="복사한 요청문이 여기에 표시됩니다. 사용하시는 AI 채팅창에 붙여넣고, AI가 써 준 글을 위의 큰 입력칸에 붙여넣어 다듬으세요."></textarea>
+          <p id="recAiHint" class="text-xs text-emerald-600"></p>
+          <p class="text-xs text-slate-500">AI 결과는 초안입니다. 사실과 다른 내용이 없는지, 학교의 생활기록부 기재요령에 맞는지 꼭 확인해 주세요. 이름을 빼도 메모 속 다른 개인정보는 그대로 전달되니 필요한 내용만 적으세요.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- 상담 관리자 -->
   <section id="tab-counsel" class="tab-panel hidden">
+    <details id="rsvDet" class="bg-white rounded-xl border border-slate-200 p-5 mb-6">
+      <summary class="font-bold text-lg cursor-pointer">📅 상담 신청 받기 <span class="text-xs font-normal text-slate-500">(학생 신청 → 선생님 승인)</span> <span id="rsvBadge" class="ml-1 text-xs font-bold text-rose-600"></span></summary>
+      <div class="mt-4 grid lg:grid-cols-2 gap-6 text-sm">
+        <div class="space-y-3">
+          <h3 class="font-bold">1. 연결 설정</h3>
+          <label class="block">웹 앱 주소 (상담 신청용 Apps Script)<input id="rsvUrl" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50" placeholder="https://script.google.com/macros/s/.../exec"></label>
+          <label class="block">관리 암호<input id="rsvTok" type="password" autocomplete="off" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+          <label class="block">학생 신청 페이지 주소 (GitHub 등에 올린 reservation 페이지)<input id="rsvPage" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50" placeholder="https://아이디.github.io/reservation/"></label>
+          <div class="flex flex-wrap gap-2">
+            <button id="rsvLink" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs font-bold">🔗 학생용 링크 복사</button>
+            <button id="rsvRefresh" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs font-bold">🔄 신청 새로고침</button>
+            <button id="rsvRoster" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs font-bold">📋 명단 올리기(본인 확인용)</button>
+            <button id="rsvRosterOff" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs font-bold">명단 해제</button>
+          </div>
+          <p id="rsvMsg" class="text-xs text-slate-500">웹 앱 주소와 관리 암호를 넣으면 연결됩니다. 설정 방법은 gyomu-reserve.gs 파일 맨 위 설명을 보세요.</p>
+          <h3 class="font-bold pt-2">2. 상담 시간 열기</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <label>시작 날짜<input id="rsvFrom" type="date" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+            <label>끝 날짜<input id="rsvTo" type="date" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+          </div>
+          <div class="flex gap-3 flex-wrap" id="rsvDays"></div>
+          <div class="grid grid-cols-3 gap-3">
+            <label>시작<input id="rsvStart" type="time" value="12:40" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
+            <label>끝<input id="rsvEnd" type="time" value="13:00" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
+            <label>이름<input id="rsvName" value="점심 상담" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
+          </div>
+          <button id="rsvAdd" type="button" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2">＋ 상담 시간 추가</button>
+          <div class="text-xs text-slate-500">같은 날짜·시작 시간은 한 번만 추가됩니다. 변경하면 자동으로 신청 페이지에 반영됩니다.</div>
+        </div>
+        <div class="space-y-3">
+          <h3 class="font-bold">3. 신청 승인</h3>
+          <div id="rsvReqList" class="space-y-2"></div>
+          <h3 class="font-bold pt-2">열어 둔 상담 시간</h3>
+          <div id="rsvSlotList" class="space-y-1 max-h-72 overflow-auto"></div>
+        </div>
+      </div>
+    </details>
     <div class="grid lg:grid-cols-[380px_1fr] gap-6 items-start">
       <div class="space-y-6">
       <form id="cForm" class="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
@@ -360,7 +450,7 @@
     <div class="bg-white rounded-xl border border-slate-200 mt-5 overflow-hidden">
       <div class="p-4 border-b border-slate-200 flex items-center gap-3">
         <input id="sSearch" type="search" placeholder="학번, 이름, 연락처, 특이사항으로 검색" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
-        <button id="sSeed" type="button" class="text-sm border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 whitespace-nowrap">1학년 7반 명단 불러오기</button><span id="sCount" class="text-sm text-slate-500 whitespace-nowrap"></span>
+        <span id="sCount" class="text-sm text-slate-500 whitespace-nowrap"></span>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-sm">
@@ -451,6 +541,7 @@
         </fieldset>
         <label class="block">담임 의견<textarea id="abOpin" rows="3" maxlength="200" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></textarea></label>
         <label class="flex items-center gap-2 text-xs"><input type="checkbox" id="abOpinFix"> 📌 담임 의견 고정 (다음에 열어도 같은 내용 유지)</label>
+        <label class="block">학교 이름 (○○장 귀하에 들어감)<input id="abSchool" placeholder="예: 청양고등학교" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
         <label class="block">담임교사 성명<input id="abTeacher" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
         <div class="grid gap-2 pt-1">
           <button id="abPrint" type="button" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">🖨️ 인쇄 (A4)</button>
@@ -559,6 +650,20 @@
     </section>
 
     <section>
+      <h3 class="font-bold text-sm mb-2">🏷️ 프로그램 이름</h3>
+      <input id="cfgTitle" placeholder="교무실 도우미" maxlength="30" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
+      <p class="text-xs text-slate-500 mt-1">상단 제목과 창 제목에 표시됩니다. 비워 두면 기본 이름을 씁니다.</p>
+    </section>
+
+    <section>
+      <h3 class="font-bold text-sm mb-2">🏫 학교 정보 (조퇴증 출력에 사용)</h3>
+      <div class="grid grid-cols-2 gap-2">
+        <input id="cfgSchool" placeholder="학교 이름" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
+        <input id="cfgClass" placeholder="담임 학급 (예: 1학년 3반)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
+      </div>
+    </section>
+
+    <section>
       <h3 class="font-bold text-sm mb-2">☁️ PC·휴대폰 연동</h3>
       <p class="text-xs text-slate-600 mb-2">본인 구글 계정의 Apps Script로 주고받습니다. 할 일·메모, 일정, D-day, 시간표, 창체 일정은 항상 동기화되고, 아래 항목은 <b>직접 체크한 것만</b> 동기화됩니다. 체크한 자료는 구글 시트에 그대로 저장되니 학교 개인정보 지침에 맞게 사용하세요.</p><div id="syncOpts" class="grid gap-1 mb-3 p-2 rounded-lg bg-slate-50 border border-slate-200"></div>
       <input id="syncUrl" placeholder="웹 앱 주소 (https://script.google.com/macros/s/.../exec)" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
@@ -582,7 +687,7 @@
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini</p>
   </div>
 </dialog>
 
@@ -2028,15 +2133,13 @@ const pad = n => String(n).padStart(2, '0');
 const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
 let students = load('gm-students'), counsels = load('gm-counsels'), passes = load('gm-pass');
-const SEED = [{"no": "1701", "name": "황하이안", "phone": "010-3495-1268", "guard": "이희경(엄마) 010-8033-0785", "note": ""}, {"no": "1702", "name": "김민선", "phone": "010-2757-0021", "guard": "김형태(아빠) 010-5892-0021", "note": "배가 자주 아픕니다."}, {"no": "1703", "name": "김송민", "phone": "010-9218-3747", "guard": "김승현(부) 010-3407-3737", "note": ""}, {"no": "1704", "name": "김지민", "phone": "010-8310-4663", "guard": "김명섭(부) 010-8320-4663", "note": ""}, {"no": "1705", "name": "김현우", "phone": "010-4510-7704", "guard": "김승천(부) 010-4477-5875", "note": ""}, {"no": "1706", "name": "류지환", "phone": "010-4220-2239", "guard": "김영희(엄마) 010-3331-2239", "note": ""}, {"no": "1707", "name": "박지훈", "phone": "010-8669-9846", "guard": "박기영(부) 010-4857-9846", "note": ""}, {"no": "1708", "name": "박한결", "phone": "010-8201-7833", "guard": "김민혜(모) 010-8837-7833", "note": ""}, {"no": "1709", "name": "배에스더", "phone": "010-4046-7509", "guard": "이종미(엄마) 010-9727-7509", "note": ""}, {"no": "1710", "name": "양현민", "phone": "010-5425-0749", "guard": "양권규(부) 010-9574-0806", "note": ""}, {"no": "1711", "name": "오지성", "phone": "010-2718-5623", "guard": "장희선(모) 010-6250-8050", "note": ""}, {"no": "1712", "name": "오영준", "phone": "010-9025-0047", "guard": "이새롬(모) 010-4187-0047", "note": ""}, {"no": "1713", "name": "이재현", "phone": "010-4446-7797", "guard": "최현영(모) 010-9236-7772", "note": ""}, {"no": "1714", "name": "이제이", "phone": "010-4491-2900", "guard": "김선미(엄마) 010-4414-2900", "note": ""}, {"no": "1715", "name": "이준희", "phone": "010-4482-2439", "guard": "김보나(어머니) 010-3316-2439", "note": "장이 좋지 않다"}, {"no": "1716", "name": "정여원", "phone": "010-9529-3984", "guard": "박정선(모) 010-7676-3984", "note": ""}, {"no": "1717", "name": "편민창", "phone": "010-3686-1503", "guard": "편도철(부) 010-8826-1503", "note": ""}, {"no": "1718", "name": "허예빈", "phone": "010-5341-6846", "guard": "허진영(아빠) 010-5345-6846", "note": "배아픔 머리아픔 예민"}]; // 청양고 1학년 7반 기초조사서 기준
-try { if (localStorage.getItem('gm-students') === null) { students = SEED.map(s => ({ id: uid(), ...s })); store('gm-students', students); } } catch (e) { students = SEED.map(s => ({ id: uid(), ...s })); }
 const sorted = () => [...students].sort((a, b) => a.no.localeCompare(b.no, 'ko', { numeric: true }));
 const stuName = id => { const s = students.find(x => x.id === id); return s ? `${s.no} ${s.name}` : '(삭제된 학생)'; };
 
 /* 날짜 · 고사 D-day */
 const now = new Date(), base = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 $('today').textContent = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일 ${'일월화수목금토'[now.getDay()]}요일`;
-const DEFAULT_DD = [{ name: '1회고사', date: '2026-10-06' }, { name: '2회고사', date: '2026-12-08' }];
+const DEFAULT_DD = [];
 let ddays; try { const raw = localStorage.getItem('gm-dday'); ddays = raw === null ? DEFAULT_DD : JSON.parse(raw); } catch (e) { ddays = DEFAULT_DD; }
 const ddN = s => Math.round((new Date(s + 'T00:00:00') - base) / 864e5);
 const ddLabel = s => { const n = ddN(s); return n > 0 ? `D-${n}` : n === 0 ? 'D-DAY' : `D+${-n}`; };
@@ -2188,13 +2291,6 @@ $('sForm').addEventListener('submit', e => {
   store('gm-students', students); e.target.reset(); renderAll(); $('sNo').focus();
 });
 $('sSearch').addEventListener('input', renderStudents);
-$('sSeed').addEventListener('click', () => {
-  const add = SEED.filter(s => !students.some(x => x.no === s.no));
-  if (!add.length) { alert('1학년 7반 명단이 이미 모두 등록되어 있습니다.'); return; }
-  if (!confirm(`학번이 겹치지 않는 ${add.length}명을 추가할까요?`)) return;
-  add.forEach(s => students.push({ id: uid(), ...s }));
-  store('gm-students', students); renderAll();
-});
 
 /* 상담 관리자 */
 $('cDate').value = ymd(now);
@@ -2267,7 +2363,7 @@ $('mCopy').addEventListener('click', async () => {
 });
 
 /* 조퇴증 */
-$('pTeacher').value = (() => { try { return localStorage.getItem('gm-teacher') || '김송현'; } catch (e) { return '김송현'; } })();
+$('pTeacher').value = (() => { try { return localStorage.getItem('gm-teacher') || ''; } catch (e) { return ''; } })();
 const setNow = () => { const t = new Date(); $('pStart').value = `${pad(t.getHours())}:${pad(t.getMinutes())}`; };
 setNow();
 $('pStu').addEventListener('change', () => {
@@ -2287,11 +2383,13 @@ function renderPasses() {
 $('pClear').addEventListener('click', () => { if (passes.length && confirm('발급 기록을 모두 삭제할까요?')) { passes = []; store('gm-pass', passes); renderAll(); } });
 
 /* 영수증 내용 (58mm = 384dots) */
+const CFG_KEY = 'gm-cfg';
+let cfg = (() => { try { return JSON.parse(localStorage.getItem(CFG_KEY)) || {}; } catch (e) { return {}; } })();
 document.querySelectorAll('input[name=reason]').forEach(r => r.addEventListener('change', () => {
   const etc = document.querySelector('input[name=reason]:checked').value === '기타사유';
   $('pReasonEtc').classList.toggle('hidden', !etc); if (etc) $('pReasonEtc').focus();
 }));
-const stuInfo = no => { const m = /^(\d)(\d{2})(\d{2})$/.exec(no); return m ? { cls: `${m[1]}학년 ${+m[2]}반`, num: `${+m[3]}번` } : { cls: '1학년 7반', num: '' }; };
+const stuInfo = no => { const m = /^(\d)(\d{2})(\d{2})$/.exec(no); return m ? { cls: `${m[1]}학년 ${+m[2]}반`, num: `${+m[3]}번` } : { cls: cfg.cls || '', num: '' }; };
 const hm = t => (t && t.includes(':')) ? `${+t.split(':')[0]}시 ${+t.split(':')[1]}분` : '   시    분';
 const receiptLines = p => {
   const i = stuInfo(p.no), [Y, M, D] = p.date.split('-').map(Number);
@@ -2301,7 +2399,7 @@ const receiptLines = p => {
     { t: p.kind ? `상기 학생의 (${p.kind})${p.kind === '외출' ? '을' : '를'} 허락함.` : '상기 학생의 (외출·조퇴)을/를 허락함.', b: 1, fit: 1 }, { t: '', s: 8 },
     { t: `●사유 : ${p.reason}`, fit: 1 }, { t: `●시간 : ${hm(p.start)} - ${hm(p.end)} 까지`, s: 20 }, { t: '', s: 8 },
     { t: `${Y}년 ${M}월 ${D}일`, c: 1 }, { t: `${i.cls} 담임교사 : ${p.teacher} (인)`, s: 20, c: 1 }, { t: '', s: 8 },
-    { t: '청양고등학교', s: 30, c: 1, b: 1 }
+    ...(cfg.school ? [{ t: cfg.school, s: 30, c: 1, b: 1 }] : [])
   ];
 };
 
@@ -2517,6 +2615,14 @@ $('pForm').addEventListener('submit', async e => {
   window.print();
 });
 
+function applyTitle() { const t = (cfg.title || '').trim() || '교무실 도우미'; $('appTitle').textContent = t; $('lockTitle').textContent = t; document.title = t; }
+$('cfgSchool').value = cfg.school || ''; $('cfgClass').value = cfg.cls || ''; $('cfgTitle').value = cfg.title || '';
+['cfgSchool', 'cfgClass', 'cfgTitle'].forEach(id => $(id).addEventListener('input', () => {
+  cfg = { school: $('cfgSchool').value.trim(), cls: $('cfgClass').value.trim(), title: $('cfgTitle').value.trim() };
+  store(CFG_KEY, cfg); applyTitle();
+}));
+applyTitle();
+
 /* ===== 앱 잠금 (초기 0000 → 강한 비밀번호로 변경 필수) ===== */
 const PW_KEY = 'gm-pw';
 const hex = b => [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
@@ -2550,7 +2656,7 @@ $('lockForm').addEventListener('submit', async e => {
   const pw = $('lockPw').value, msg = t => { $('lockMsg').textContent = t; };
   if (lockMode === 'reset') {
     if (pw.trim() !== '초기화') { msg('"초기화"라고 정확히 입력해 주세요.'); return; }
-    try { Object.keys(localStorage).filter(k => k.startsWith('gm-')).forEach(k => localStorage.removeItem(k)); localStorage.setItem('gm-students', '[]'); } catch (err) {}
+    try { Object.keys(localStorage).filter(k => k.startsWith('gh:gm-')).forEach(k => localStorage.removeItem(k.slice(3))); localStorage.setItem('gm-students', '[]'); } catch (err) {}
     location.reload(); return;
   }
   if (lockMode === 'login') {
@@ -2592,7 +2698,7 @@ if (isOff()) $('lock').classList.add('hidden'); else showLock('login');
 const G_KEY = 'gm-grades-all', GEX_KEY = 'gm-gex';
 let gAll = (() => { try { const a = JSON.parse(localStorage.getItem(G_KEY)); if (a) return a; const old = JSON.parse(localStorage.getItem('gm-grades')); return old ? { [old.term || '이전 성적']: old } : {}; } catch (e) { return {}; } })();
 let curTerm = Object.keys(gAll).sort().pop() || '', grades = gAll[curTerm] || null;
-let gex = (() => { try { const v = localStorage.getItem(GEX_KEY); return v === null ? ['박지훈', '박한결', '배에스더'] : JSON.parse(v); } catch (e) { return []; } })();
+let gex = (() => { try { const v = localStorage.getItem(GEX_KEY); return v === null ? [] : JSON.parse(v); } catch (e) { return []; } })();
 $('gEx').value = gex.join(', ');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const numOf = v => { const m = /^\s*(-?\d+(?:\.\d+)?)/.exec(String(v == null ? '' : v)); return m ? +m[1] : null; };
@@ -2941,6 +3047,99 @@ $('recAll').addEventListener('click', async () => {
   const txt = sorted().map(s => { const t = (recs[recKey(s.id)] || '').trim(); return t ? `${s.no} ${s.name}\n${t}` : null; }).filter(Boolean).join('\n\n');
   $('recHint').textContent = !txt ? '작성된 내용이 없습니다.' : (await copyText(txt)) ? '작성한 전체 내용을 복사했습니다.' : '복사에 실패했습니다.';
 });
+/* ===== 생기부 AI 요청문 (행특·세특·자율·동아리) ===== */
+let recMemo = (() => { const v = jl('gm-rec-memo'); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; })();
+const saveRecMemo = () => store('gm-rec-memo', recMemo);
+function recAiLoad() {
+  const ok = !!$('recText') && !$('recText').disabled, k = ok ? recKey(recStu) : '', v = (ok && recMemo[k]) || {};
+  ['recAiMemo', 'recAiCtx', 'recAiBtn'].forEach(id => { $(id).disabled = !ok; });
+  $('recAiMemo').value = v.m || ''; $('recAiCtx').value = v.c || '';
+  $('recAiCtxL').firstChild.textContent = recType === '교과세특' ? '수업 내용·단원·활동 (선택)' : recType === '동아리' ? '동아리 활동 내용 (선택)' : '활동·교과 맥락 (선택)';
+}
+{ const _rr = renderRec; renderRec = function () { _rr(); recAiLoad(); }; }
+const recAiSave = () => { if (!recStu || $('recText').disabled) return; recMemo[recKey(recStu)] = { m: $('recAiMemo').value, c: $('recAiCtx').value }; saveRecMemo(); };
+$('recAiMemo').addEventListener('input', recAiSave); $('recAiCtx').addEventListener('input', recAiSave);
+const REC_FOCUS = { '행특': '학생의 인성·태도·학교생활 전반의 모습을 종합해서 쓰기', '교과세특': '교과 역량(탐구·문제해결·의사소통·협업 등)이 드러나도록 수업 활동과 연결해서 쓰기', '자율·자치': '학급·학교 자치 활동에서의 역할, 기여, 성장이 드러나게 쓰기', '동아리': '동아리 활동에서의 역할, 참여 과정, 성장이 드러나게 쓰기' };
+function recAiBuild() {
+  const s = students.find(x => x.id === recStu), memo = $('recAiMemo').value.trim();
+  if (!s) { alert('왼쪽에서 학생을 먼저 선택하세요.'); return; }
+  if (!memo) { alert('관찰·활동 메모를 먼저 적어 주세요. 메모가 구체적일수록 좋은 초안이 나옵니다.'); return; }
+  const hide = $('recAiHide').checked, n = Math.max(100, +$('recAiLen').value || 500), hs = hasSubT();
+  let m = memo, c = $('recAiCtx').value.trim();
+  if (hide) { const rp = t => { if (s.no) t = t.split(`${s.no}번`).join('학생').split(s.no).join(''); if (s.name) t = t.split(s.name).join('학생'); return t.replace(/학생\s*학생/g, '학생'); }; m = rp(m); c = rp(c); }
+  const txt = [
+    `당신은 고등학교 교사입니다. 아래 관찰 메모를 바탕으로 학교생활기록부 '${recType}' 항목의 문장을 작성해 주세요.`, '',
+    `- 분량: 공백 포함 ${n}자 이내 (가능하면 ${Math.max(100, n - 60)}~${n}자)`,
+    '- 문체: 학교생활기록부 서술형. 문장을 "~함.", "~임.", "~보임.", "~드러남."처럼 명사형·개조식으로 끝내기 (존댓말·"~했다" 금지)',
+    hide ? '- 학생 이름과 학번은 쓰지 않고 주어를 생략하기' : `- 학생 이름은 "${s.name}"으로 표기 가능`,
+    `- 초점: ${REC_FOCUS[recType] || ''}`,
+    '- 메모에 없는 활동·수치·수상·결과는 절대 지어내지 않기',
+    '- 구체적인 활동, 역할, 변화와 성장 과정이 보이게 쓰고 "매우 뛰어남" 같은 추상적 칭찬 반복은 피하기',
+    '- 교외 대회·수상, 공인어학시험, 자격증, 사교육 관련 표현, 특정 기관·상호명은 쓰지 않기',
+    '- 결과는 생활기록부에 바로 붙여넣을 본문만 출력 (제목·설명·글자수 안내 없이)', '',
+    '[작성 정보]', `- 항목: ${recType}${hs && recSub ? ` (${recSub})` : ''}`, c ? `- 맥락: ${c}` : '', '', '[관찰 메모]', m
+  ].filter((x, i, a) => x !== '' || a[i - 1] !== '').join('\n');
+  $('recAiBox').value = txt;
+  return txt;
+}
+$('recAiBtn').addEventListener('click', async () => {
+  const txt = recAiBuild(); if (!txt) return;
+  $('recAiHint').textContent = (await copyText(txt)) ? '요청문을 복사했습니다. AI 채팅창에 붙여넣고, 결과를 위의 큰 입력칸에 붙여넣으세요.' : '자동 복사에 실패했습니다. 아래 요청문을 직접 선택해 복사해 주세요.';
+});
+/* ===== Gemini 연동 (API 키) ===== */
+let gem = (() => { const v = jl('gm-gemini'); return { key: v.key || '', model: v.model || '' }; })();
+const GEM_DEF = 'gemini-2.5-flash', saveGem = () => store('gm-gemini', gem);
+const gemMsg = (t, ok) => { $('recGemMsg').textContent = t; $('recGemMsg').className = ok ? 'text-emerald-700' : 'text-slate-600'; };
+function gemUI() { $('recGemKey').value = gem.key; $('recGemModel').value = gem.model; $('recGemState').textContent = gem.key ? '· 키 입력됨' : '· 키를 입력하면 바로 작성할 수 있어요'; }
+async function gemAsk(prompt) {
+  if (!gem.key) throw new Error('API 키가 없습니다. 위 "Gemini 연결 설정"에서 키를 입력하세요.');
+  const model = (gem.model || GEM_DEF).trim();
+  let r;
+  try {
+    r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': gem.key }, body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7 } }) });
+  } catch (e) { throw new Error('인터넷 연결 또는 접속 제한으로 AI에 연결하지 못했습니다.' + (window.desk ? '' : ' (일반 브라우저에서는 막힐 수 있습니다. 설치한 프로그램에서 해 보세요.)')); }
+  let j = {}; try { j = await r.json(); } catch (e) {}
+  if (!r.ok) {
+    const m = (j.error && j.error.message) || `오류 ${r.status}`;
+    if (r.status === 429) throw new Error('무료 사용 한도를 넘었습니다. 잠시 뒤에 다시 시도해 주세요.');
+    if (r.status === 400 && /API key/i.test(m)) throw new Error('API 키가 올바르지 않습니다. 키를 다시 확인해 주세요.');
+    if (r.status === 403) throw new Error('이 키로는 사용할 수 없습니다. 키 설정이나 사용 지역·계정 제한을 확인해 주세요.');
+    if (r.status === 404) throw new Error(`모델 "${model}"을 찾을 수 없습니다. 모델 이름을 바꿔 입력해 보세요.`);
+    throw new Error(m);
+  }
+  const c = j.candidates && j.candidates[0], t = c && c.content && c.content.parts ? c.content.parts.map(p => p.text || '').join('') : '';
+  if (!t.trim()) throw new Error(j.promptFeedback && j.promptFeedback.blockReason ? `AI가 내용을 거절했습니다(${j.promptFeedback.blockReason}). 메모 표현을 바꿔 보세요.` : 'AI가 빈 답을 보냈습니다. 다시 시도해 주세요.');
+  return t.trim();
+}
+(() => {
+  gemUI();
+  $('recGemKey').addEventListener('change', () => { gem.key = $('recGemKey').value.trim(); saveGem(); gemUI(); });
+  $('recGemModel').addEventListener('change', () => { gem.model = $('recGemModel').value.trim(); saveGem(); });
+  $('recGemClear').addEventListener('click', () => { gem.key = ''; saveGem(); gemUI(); gemMsg('키를 지웠습니다.'); });
+  $('recGemTest').addEventListener('click', async () => {
+    gem.key = $('recGemKey').value.trim(); gem.model = $('recGemModel').value.trim(); saveGem(); gemUI(); gemMsg('연결 확인 중…');
+    try { await gemAsk('"연결됨"이라고만 답하세요.'); gemMsg('연결됨! 이제 ✨ AI로 바로 작성을 쓸 수 있어요.', true); } catch (e) { gemMsg(e.message); }
+  });
+  const refresh = () => { $('recGemBtn').disabled = $('recAiBtn').disabled; };
+  { const _l = recAiLoad; recAiLoad = function () { _l(); refresh(); }; }
+  $('recGemBtn').addEventListener('click', async () => {
+    const txt = recAiBuild(); if (!txt) return;
+    if (!gem.key) { $('recGemDet').open = true; gemMsg('먼저 API 키를 입력해 주세요.'); return; }
+    $('recGemBtn').disabled = true; $('recGemRun').textContent = 'AI가 쓰는 중… (10~30초)';
+    try {
+      const out = await gemAsk(txt); $('recAiOut').value = out; $('recAiOut').classList.remove('hidden'); $('recAiOutRow').classList.remove('hidden');
+      $('recAiOutCnt').textContent = `${out.length}자`; $('recGemRun').textContent = '완료! 내용을 확인하고 위 입력칸에 넣으세요.';
+    } catch (e) { $('recGemRun').textContent = '실패: ' + e.message; }
+    $('recGemBtn').disabled = $('recAiBtn').disabled;
+  });
+  $('recAiOut').addEventListener('input', () => { $('recAiOutCnt').textContent = `${$('recAiOut').value.length}자`; });
+  $('recAiUse').addEventListener('click', () => {
+    if ($('recText').disabled) return; const cur = $('recText').value.trim();
+    if (cur && !confirm('위 입력칸에 이미 내용이 있습니다. AI 초안으로 바꿀까요? (취소하면 아래에 이어 붙입니다)')) $('recText').value = cur + '\n' + $('recAiOut').value;
+    else $('recText').value = $('recAiOut').value;
+    $('recText').dispatchEvent(new Event('input')); $('recAiHint').textContent = '초안을 입력칸에 넣었습니다. 내용을 확인하고 다듬어 주세요.';
+  });
+})();
 
 /* ===== 대시보드: 노션식 바로가기 + 오늘까지 할 일 ===== */
 const GEMO = { 담임: '🧑‍🏫', 수업: '📚', 업무: '💼' };
@@ -3048,7 +3247,7 @@ function eventsOn(date) {
   return out.sort((a, b) => a.rank.localeCompare(b.rank));
 }
 /* ===== 이번 주 급식 (나이스 급식식단정보 · 우리학교 급식 형식) ===== */
-const MEAL_KEY = 'gm-meal2', MEAL_DEF = { atpt: 'N10', code: '8140267', name: '청양고등학교' };
+const MEAL_KEY = 'gm-meal2', MEAL_DEF = null;
 const MEAL_AL = { 1: '난류', 2: '우유', 3: '메밀', 4: '땅콩', 5: '대두', 6: '밀', 7: '고등어', 8: '게', 9: '새우', 10: '돼지고기', 11: '복숭아', 12: '토마토', 13: '아황산류', 14: '호두', 15: '닭고기', 16: '쇠고기', 17: '오징어', 18: '조개류', 19: '잣' };
 const MEAL_NM = { 1: '조식', 2: '중식', 3: '석식' }, MEAL_DOW = '일월화수목금토';
 const lsGet = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
@@ -3111,6 +3310,106 @@ function renderMeal() {
     });
   }
 }
+/* ===== 상담 신청 받기 (학생 신청 → 선생님 승인) ===== */
+const RSV_KEY = 'gm-rsv', RSVS_KEY = 'gm-rsv-slots', RSVC_KEY = 'gm-rsv-cache';
+let rsv = (() => { const v = jl(RSV_KEY); return { url: v.url || '', token: v.token || '', page: v.page || '' }; })(), rsvSlots = (() => { const v = jl(RSVS_KEY); return Array.isArray(v) ? v : []; })(), rsvCache = (() => { const v = jl(RSVC_KEY); return { reqs: Array.isArray(v.reqs) ? v.reqs : [], rosterN: v.rosterN || 0, ts: v.ts || 0 }; })(), rsvPushT = null;
+const rsvOn = () => !!(rsv.url.trim() && rsv.token);
+const rsvMsg = (t, ok) => { const m = $('rsvMsg'); if (m) { m.textContent = t; m.className = 'text-xs ' + (ok ? 'text-emerald-600' : 'text-slate-500'); } };
+async function rsvReq(method, payload) {
+  const u = rsv.url.trim();
+  const r = method === 'GET' ? await fetch(`${u}${u.includes('?') ? '&' : '?'}action=admin&token=${encodeURIComponent(rsv.token)}&t=${Date.now()}`)
+    : await fetch(u, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ token: rsv.token, ...payload }) });
+  const tx = await r.text(); let j; try { j = JSON.parse(tx); } catch (e) { throw new Error('웹 앱 응답을 읽지 못했습니다. 주소와 배포 설정(액세스: 모든 사용자)을 확인하세요.'); }
+  if (!j.ok) throw new Error(j.error || '요청 실패'); return j;
+}
+const rsvTime = r => `${r.date.slice(5).replace('-', '/')}(${'일월화수목금토'[new Date(r.date + 'T00:00:00').getDay()]}) ${r.start}~${r.end}`;
+async function rsvRefresh(quiet) {
+  if (!rsvOn()) return;
+  try {
+    const j = await rsvReq('GET');
+    rsvCache = { reqs: j.reqs || [], rosterN: j.rosterN || 0, ts: Date.now() }; store(RSVC_KEY, rsvCache);
+    if (!rsvSlots.length && (j.slots || []).length) { rsvSlots = j.slots; store(RSVS_KEY, rsvSlots); }
+    if (!quiet) rsvMsg(`연결됨 · ${new Date().toLocaleTimeString('ko-KR')} 새로고침${rsvCache.rosterN ? ` · 본인 확인 명단 ${rsvCache.rosterN}명` : ''}`, true);
+  } catch (e) { if (!quiet) rsvMsg('불러오기 실패: ' + e.message); }
+  renderRsv(); renderHomeRsv();
+}
+function rsvPush() {
+  if (!rsvOn()) return; clearTimeout(rsvPushT);
+  rsvPushT = setTimeout(async () => { try { await rsvReq('POST', { action: 'setSlots', slots: rsvSlots }); rsvMsg('상담 시간을 신청 페이지에 반영했습니다.', true); } catch (e) { rsvMsg('반영 실패: ' + e.message); } }, 700);
+}
+function renderRsv() {
+  if (!$('rsvReqList')) return;
+  const t = ymd(now), act = r => r.status === '대기' || r.status === '승인';
+  const pend = rsvCache.reqs.filter(r => r.status === '대기' && r.date >= t).sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start)), appr = rsvCache.reqs.filter(r => r.status === '승인' && r.date >= t).sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start));
+  $('rsvBadge').textContent = pend.length ? `● 승인 대기 ${pend.length}건` : '';
+  const box = $('rsvReqList'); box.innerHTML = '';
+  const decide = async (r, status) => {
+    const note = status === '거절' ? (prompt('학생에게 보여줄 메모(선택)', '') || '') : '';
+    try { await rsvReq('POST', { action: 'decide', id: r.id, status, note }); r.status = status; r.note = note; store(RSVC_KEY, rsvCache); renderRsv(); renderHomeRsv(); } catch (e) { alert('처리 실패: ' + e.message); }
+  };
+  const row = (r, btns) => { const d = el('div', 'rounded-lg border border-slate-200 p-2.5 bg-slate-50'); d.append(el('div', 'font-bold', `${rsvTime(r)} · ${r.name}(${r.no})`)); if (r.topic) d.append(el('div', 'text-xs text-slate-600 mt-0.5', r.topic)); const b = el('div', 'flex gap-2 mt-2'); btns.forEach(([x, cls, fn]) => { const bt = el('button', `px-3 py-1 rounded-lg text-xs font-bold ${cls}`, x); bt.type = 'button'; bt.onclick = fn; b.appendChild(bt); }); d.appendChild(b); return d; };
+  if (!rsvOn()) { box.appendChild(el('p', 'text-xs text-slate-500', '웹 앱 주소와 관리 암호를 넣으면 신청이 여기에 표시됩니다.')); }
+  else if (!pend.length && !appr.length) box.appendChild(el('p', 'text-xs text-slate-500', '아직 대기 중이거나 예정된 상담이 없습니다.'));
+  if (pend.length) box.appendChild(el('div', 'text-xs font-bold text-rose-600', '승인 대기'));
+  pend.forEach(r => box.appendChild(row(r, [['승인', 'bg-emerald-600 text-white', () => decide(r, '승인')], ['거절', 'border border-slate-300 bg-white', () => decide(r, '거절')]])));
+  if (appr.length) box.appendChild(el('div', 'text-xs font-bold text-emerald-700 mt-2', '승인된 상담'));
+  appr.forEach(r => box.appendChild(row(r, [['승인 취소(거절)', 'border border-slate-300 bg-white', () => { if (confirm('이 상담을 취소할까요? 학생 화면에 거절로 표시됩니다.')) decide(r, '거절'); }]])));
+  const sl = $('rsvSlotList'); sl.innerHTML = '';
+  const up = rsvSlots.filter(s => s.date >= t).sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start)).slice(0, 80);
+  if (!up.length) sl.appendChild(el('p', 'text-xs text-slate-500', '열어 둔 상담 시간이 없습니다.'));
+  up.forEach(s => {
+    const taken = rsvCache.reqs.find(r => r.slotId === s.id && act(r)), d = el('div', 'flex items-center gap-2 text-xs border-b border-slate-100 py-1');
+    d.append(el('span', 'flex-1', `${rsvTime(s)} ${s.name || ''}${taken ? ` · ${taken.status} ${taken.name}` : ''}`));
+    const tg = el('button', `px-2 py-0.5 rounded-full border ${s.open ? 'bg-emerald-50 border-emerald-300 text-emerald-700' : 'bg-slate-100 border-slate-300 text-slate-500'}`, s.open ? '열림' : '닫힘'); tg.type = 'button'; tg.onclick = () => { s.open = !s.open; store(RSVS_KEY, rsvSlots); rsvPush(); renderRsv(); };
+    const dl = el('button', 'text-rose-600 px-1', '✕'); dl.type = 'button'; dl.onclick = () => { if (taken && !confirm('신청이 있는 시간입니다. 그래도 삭제할까요? (신청 내역은 시트에 남습니다)')) return; rsvSlots = rsvSlots.filter(x => x.id !== s.id); store(RSVS_KEY, rsvSlots); rsvPush(); renderRsv(); };
+    d.append(tg, dl); sl.appendChild(d);
+  });
+}
+function renderHomeRsv() {
+  const box = $('homeRsv'); if (!box) return;
+  if (!rsvOn()) { box.classList.add('hidden'); box.innerHTML = ''; return; }
+  box.classList.remove('hidden'); box.innerHTML = '';
+  const t = ymd(now), today = rsvCache.reqs.filter(r => r.status === '승인' && r.date === t).sort((a, b) => a.start.localeCompare(b.start)), pend = rsvCache.reqs.filter(r => r.status === '대기' && r.date >= t).length;
+  const head = el('div', 'flex items-center gap-2 mb-2'); head.append(el('h2', 'font-bold text-lg mr-auto', '💬 오늘 상담'));
+  if (pend) { const b = el('button', 'text-xs font-bold px-2.5 py-1 rounded-full bg-rose-100 text-rose-700', `승인 대기 ${pend}건`); b.type = 'button'; b.onclick = () => { goTab('counsel'); const d = $('rsvDet'); if (d) d.open = true; }; head.appendChild(b); }
+  box.appendChild(head);
+  if (!today.length) box.appendChild(el('p', 'text-sm text-slate-500', '오늘 예정된 상담이 없습니다.'));
+  today.forEach(r => { const d = el('div', 'flex items-baseline gap-2 py-1 border-b border-slate-100 last:border-0 text-sm'); d.append(el('span', 'font-bold text-sky-700 w-24 shrink-0', `${r.start}~${r.end}`), el('span', 'font-bold', `${r.name}`), el('span', 'text-xs text-slate-500', r.no), el('span', 'text-xs text-slate-600 truncate', r.topic || '')); box.appendChild(d); });
+}
+(() => {
+  if (!$('rsvUrl')) return;
+  $('rsvUrl').value = rsv.url; $('rsvTok').value = rsv.token; $('rsvPage').value = rsv.page;
+  const sv = () => { rsv = { url: $('rsvUrl').value.trim(), token: $('rsvTok').value, page: $('rsvPage').value.trim() }; store(RSV_KEY, rsv); };
+  ['rsvUrl', 'rsvTok', 'rsvPage'].forEach(id => $(id).addEventListener('change', () => { sv(); renderHomeRsv(); rsvRefresh(); }));
+  const days = $('rsvDays'); '월화수목금'.split('').forEach((d, i) => { const l = el('label', 'flex items-center gap-1'); const c = el('input'); c.type = 'checkbox'; c.checked = true; c.dataset.d = i + 1; l.append(c, d); days.appendChild(l); });
+  $('rsvFrom').value = ymd(now); $('rsvTo').value = ymd(now);
+  $('rsvAdd').addEventListener('click', () => {
+    const f = $('rsvFrom').value, t = $('rsvTo').value || f, s = $('rsvStart').value, e = $('rsvEnd').value, nm = $('rsvName').value.trim();
+    if (!f || !s || !e) { alert('날짜와 시간을 입력해 주세요.'); return; } if (e <= s) { alert('끝 시간은 시작 시간 이후여야 합니다.'); return; } if (t < f) { alert('끝 날짜는 시작 날짜 이후여야 합니다.'); return; }
+    const ok = new Set([...days.querySelectorAll('input:checked')].map(c => +c.dataset.d)); let n = 0;
+    for (let d = new Date(f + 'T00:00:00'); ymd(d) <= t; d.setDate(d.getDate() + 1)) { const ds = ymd(d); if (!ok.has(d.getDay())) continue; if (rsvSlots.some(x => x.date === ds && x.start === s)) continue; rsvSlots.push({ id: uid(), date: ds, start: s, end: e, name: nm, open: true }); n++; }
+    store(RSVS_KEY, rsvSlots); renderRsv(); rsvPush(); rsvMsg(n ? `${n}개 상담 시간을 추가했습니다.` : '추가할 날짜가 없거나 이미 있는 시간입니다. (요일 체크 확인)', !!n);
+  });
+  $('rsvRefresh').addEventListener('click', () => rsvRefresh());
+  $('rsvLink').addEventListener('click', async () => {
+    sv(); if (!rsv.url || !rsv.page) { alert('웹 앱 주소와 학생 신청 페이지 주소를 먼저 입력하세요.'); return; }
+    const link = `${rsv.page}${rsv.page.includes('?') ? '&' : '?'}a=${encodeURIComponent(rsv.url)}`;
+    try { await navigator.clipboard.writeText(link); rsvMsg('학생용 링크를 복사했습니다. 학생들에게 이 링크를 보내세요.', true); } catch (e) { prompt('이 링크를 복사해 학생들에게 보내세요', link); }
+  });
+  $('rsvRoster').addEventListener('click', async () => {
+    if (!rsvOn()) { alert('먼저 웹 앱 주소와 관리 암호를 입력하세요.'); return; }
+    const list = students.filter(s => s.no && s.name).map(s => ({ no: String(s.no), name: s.name }));
+    if (!list.length) { alert('올릴 학생 명단이 없습니다. 학생 기록 관리 탭에서 명단을 먼저 넣어 주세요.'); return; }
+    if (!confirm(`학번·이름 ${list.length}명을 내 구글 시트에 올려, 명단과 맞는 학생만 신청할 수 있게 할까요?\n(전화번호 등 다른 정보는 올리지 않습니다)`)) return;
+    try { await rsvReq('POST', { action: 'setRoster', roster: list }); rsvMsg(`명단 ${list.length}명을 올렸습니다. 이제 학번·이름이 맞는 학생만 신청할 수 있습니다.`, true); rsvRefresh(true); } catch (e) { rsvMsg('명단 올리기 실패: ' + e.message); }
+  });
+  $('rsvRosterOff').addEventListener('click', async () => {
+    if (!rsvOn()) return; if (!confirm('명단 확인을 해제할까요? (누구나 학번·이름만 쓰면 신청할 수 있게 됩니다)')) return;
+    try { await rsvReq('POST', { action: 'setRoster', roster: [] }); rsvMsg('명단 확인을 해제했습니다.', true); rsvRefresh(true); } catch (e) { rsvMsg('실패: ' + e.message); }
+  });
+  renderRsv(); renderHomeRsv();
+  if (rsvOn()) { rsvRefresh(true); setInterval(() => { if (!document.hidden) rsvRefresh(true); }, 180000); }
+})();
 function renderHome() {
   const box = $('homeCal'); box.innerHTML = '';
   const { y, m } = homeM, t = ymd(now), first = new Date(y, m - 1, 1), dim = new Date(y, m, 0).getDate(), weeks = Math.ceil((first.getDay() + dim) / 7);
@@ -3447,7 +3746,7 @@ function absData() {
   const f = g('abFrom') ? new Date(g('abFrom') + 'T00:00:00') : null, t = g('abTo') ? new Date(g('abTo') + 'T00:00:00') : f;
   const dt = g('abDate') ? new Date(g('abDate') + 'T00:00:00') : null;
   const days = f && t && t >= f ? Math.round((t - f) / 86400000) + 1 : (f ? 1 : 0);
-  return { no: g('abNo'), name: g('abName'), tel: g('abTel'), par: g('abPar'), f, t, days, reason: g('abReason'), kind, dt, c: [$('abC1').checked, $('abC2').checked, $('abC3').checked], opin: $('abOpin').value.trim(), teacher: g('abTeacher') };
+  return { no: g('abNo'), name: g('abName'), tel: g('abTel'), par: g('abPar'), f, t, days, reason: g('abReason'), kind, dt, c: [$('abC1').checked, $('abC2').checked, $('abC3').checked], opin: $('abOpin').value.trim(), teacher: g('abTeacher'), school: g('abSchool') };
 }
 function absCanvas(d) {
   if (absUse && absTpl && absTplImg && absTplImg.naturalWidth) return absTplCanvas(d);
@@ -3479,7 +3778,7 @@ function absCanvas(d) {
   tx(d.dt ? `${d.dt.getFullYear()}년      ${d.dt.getMonth() + 1}월      ${d.dt.getDate()}일` : '        년        월        일', 362, 457, 16);
   tx(`학 생 :  ${d.name}`, 590, 498, 15, 'right'); tx('(인)', 612, 498, 15, 'left');
   tx(`학부모 :  ${d.par}`, 590, 527, 15, 'right'); tx('(인)', 612, 527, 15, 'left');
-  tx('청양고등학교장 귀하', 362, 577, 24, 'center', true);
+  tx(`${d.school || ''}장 귀하`, 362, 577, 24, 'center', true);
   tx(`가정방문( ${d.c[0] ? '✓' : '  '} )    전화확인( ${d.c[1] ? '✓' : '  '} )    학부모내교( ${d.c[2] ? '✓' : '  '} )`, 428, 633, 15);
   wrap(d.opin, 214, 685, 428, 22, 15);
   tx(`작성자 : 담임교사 ${d.teacher || 'ㅇ ㅇ ㅇ'}  (인)`, 656, 899, 15, 'right');
@@ -3508,7 +3807,9 @@ function absInit() {
 (() => {
   const t = ymd(new Date()); $('abFrom').value = t; $('abTo').value = t; $('abDate').value = t;
   try { $('abTeacher').value = localStorage.getItem('gm-teacher') || ''; } catch (e) {}
-  ['abNo', 'abName', 'abTel', 'abPar', 'abFrom', 'abTo', 'abReason', 'abDate', 'abC1', 'abC2', 'abC3', 'abOpin', 'abTeacher'].forEach(id => { $(id).addEventListener('input', absRender); $(id).addEventListener('change', absRender); });
+  try { const sv = localStorage.getItem('gm-abs-school'); $('abSchool').value = sv != null ? sv : (neis.sname || ''); } catch (e) {}
+  $('abSchool').addEventListener('input', () => { try { localStorage.setItem('gm-abs-school', $('abSchool').value); } catch (e) {} });
+  ['abNo', 'abName', 'abTel', 'abPar', 'abFrom', 'abTo', 'abReason', 'abDate', 'abC1', 'abC2', 'abC3', 'abOpin', 'abTeacher', 'abSchool'].forEach(id => { $(id).addEventListener('input', absRender); $(id).addEventListener('change', absRender); });
   document.querySelectorAll('.abK').forEach(c => c.addEventListener('change', () => { if (c.checked) document.querySelectorAll('.abK').forEach(o => { if (o !== c) o.checked = false; }); absRender(); }));
   $('abFrom').addEventListener('change', () => { if (!$('abTo').value || $('abTo').value < $('abFrom').value) $('abTo').value = $('abFrom').value; absRender(); });
   $('abStu').addEventListener('change', absStuFill);
@@ -3675,6 +3976,7 @@ const SYNC_KEYS = [
   ['gm-students', '학생 명단·기록', () => students, v => { students = Array.isArray(v) ? v : []; }, 'stu'],
   ['gm-counsels', '상담 기록', () => counsels, v => { counsels = Array.isArray(v) ? v : []; }, 'stu'],
   ['gm-pass', '조퇴·외출 발급 기록', () => passes, v => { passes = Array.isArray(v) ? v : []; }, 'stu'],
+  ['gm-rec-memo', '생기부 관찰 메모', () => recMemo, v => { recMemo = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }, 'rec'],
   ['gm-recs', '작성한 기록(세특·행특 등)', () => recs, v => { recs = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }, 'rec'],
   ['gm-subj', '과목 목록', () => subjList, v => { subjList = Array.isArray(v) ? v : []; }, 'rec'],
   ['gm-clubs', '동아리 목록', () => clubList, v => { clubList = Array.isArray(v) ? v : []; }, 'rec'],
@@ -3742,7 +4044,7 @@ $('syncBtn').addEventListener('click', () => syncNow(true));
 renderSyncOpts(); syncUI();
 if (syncCfg.url && syncCfg.token) setTimeout(() => syncNow(false), 1500);
 
-function renderAll() { renderSch(); renderToday(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); absInit(); renderMeal(); }
+function renderAll() { renderSch(); renderToday(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); absInit(); renderMeal(); renderRsv(); renderHomeRsv(); }
 renderAll();
 </script>
 </body>
