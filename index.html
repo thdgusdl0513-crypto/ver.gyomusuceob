@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>교무실 도우미</title>
+<title>송현쌤의 교무실</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -71,7 +71,7 @@
 <body class="bg-slate-100 text-slate-800 min-h-screen">
 <div id="lock" class="fixed inset-0 z-50 bg-[#0f2747] flex items-center justify-center p-6">
   <form id="lockForm" class="bg-white rounded-xl p-6 w-[380px] max-w-full space-y-3">
-    <h2 class="font-bold text-lg">🔒 <span id="lockTitle">교무실 도우미</span></h2>
+    <h2 class="font-bold text-lg">🔒 송현쌤의 교무실</h2>
     <p id="lockMsg" class="text-sm text-slate-600"></p>
     <input id="lockPw" type="password" autocomplete="off" placeholder="비밀번호" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
     <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:#12343b"><input id="lockShow" type="checkbox"> 비밀번호 보기</label>
@@ -80,13 +80,13 @@
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식</p>
   </form>
 </div>
 
 <header class="bg-[#0f2747] text-white">
   <div class="max-w-6xl mx-auto px-6 pt-4 flex items-center gap-3 flex-wrap">
-    <h1 class="text-xl font-bold tracking-tight"><span class="bob">🐥</span> <span id="appTitle">교무실 도우미</span></h1>
+    <h1 class="text-xl font-bold tracking-tight"><span class="bob">🐥</span> 송현쌤의 교무실</h1>
     <span id="today" class="text-sm text-slate-300"></span>
     <span id="ddays" class="flex gap-2 flex-wrap"></span>
     <button id="lockNow" title="지금 잠그기" class="ml-auto text-xl hover:scale-110 transition" aria-label="잠금">🔒</button>
@@ -134,6 +134,7 @@
     <div class="grid gap-5 lg:grid-cols-2 items-start">
       <div class="space-y-5 min-w-0">
         <div id="dashTasks" class="bg-white rounded-xl border border-slate-200 p-4 md:p-5"></div>
+        <div id="homeMeal" class="bg-white rounded-xl border border-slate-200 p-4 md:p-5"></div>
         <div id="homeCal" class="bg-white rounded-xl border border-slate-200 p-3 md:p-4"></div>
       </div>
       <div class="space-y-5 min-w-0">
@@ -310,7 +311,7 @@
     <div class="bg-white rounded-xl border border-slate-200 mt-5 overflow-hidden">
       <div class="p-4 border-b border-slate-200 flex items-center gap-3">
         <input id="sSearch" type="search" placeholder="학번, 이름, 연락처, 특이사항으로 검색" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
-        <span id="sCount" class="text-sm text-slate-500 whitespace-nowrap"></span>
+        <button id="sSeed" type="button" class="text-sm border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 whitespace-nowrap">1학년 7반 명단 불러오기</button><span id="sCount" class="text-sm text-slate-500 whitespace-nowrap"></span>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-sm">
@@ -509,20 +510,6 @@
     </section>
 
     <section>
-      <h3 class="font-bold text-sm mb-2">🏷️ 프로그램 이름</h3>
-      <input id="cfgTitle" placeholder="교무실 도우미" maxlength="30" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
-      <p class="text-xs text-slate-500 mt-1">상단 제목과 창 제목에 표시됩니다. 비워 두면 기본 이름을 씁니다.</p>
-    </section>
-
-    <section>
-      <h3 class="font-bold text-sm mb-2">🏫 학교 정보 (조퇴증 출력에 사용)</h3>
-      <div class="grid grid-cols-2 gap-2">
-        <input id="cfgSchool" placeholder="학교 이름" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
-        <input id="cfgClass" placeholder="담임 학급 (예: 1학년 3반)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
-      </div>
-    </section>
-
-    <section>
       <h3 class="font-bold text-sm mb-2">☁️ PC·휴대폰 연동</h3>
       <p class="text-xs text-slate-600 mb-2">본인 구글 계정의 Apps Script로 주고받습니다. 할 일·메모, 일정, D-day, 시간표, 창체 일정은 항상 동기화되고, 아래 항목은 <b>직접 체크한 것만</b> 동기화됩니다. 체크한 자료는 구글 시트에 그대로 저장되니 학교 개인정보 지침에 맞게 사용하세요.</p><div id="syncOpts" class="grid gap-1 mb-3 p-2 rounded-lg bg-slate-50 border border-slate-200"></div>
       <input id="syncUrl" placeholder="웹 앱 주소 (https://script.google.com/macros/s/.../exec)" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
@@ -546,7 +533,7 @@
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식</p>
   </div>
 </dialog>
 
@@ -1992,13 +1979,15 @@ const pad = n => String(n).padStart(2, '0');
 const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
 let students = load('gm-students'), counsels = load('gm-counsels'), passes = load('gm-pass');
+const SEED = [{"no": "1701", "name": "황하이안", "phone": "010-3495-1268", "guard": "이희경(엄마) 010-8033-0785", "note": ""}, {"no": "1702", "name": "김민선", "phone": "010-2757-0021", "guard": "김형태(아빠) 010-5892-0021", "note": "배가 자주 아픕니다."}, {"no": "1703", "name": "김송민", "phone": "010-9218-3747", "guard": "김승현(부) 010-3407-3737", "note": ""}, {"no": "1704", "name": "김지민", "phone": "010-8310-4663", "guard": "김명섭(부) 010-8320-4663", "note": ""}, {"no": "1705", "name": "김현우", "phone": "010-4510-7704", "guard": "김승천(부) 010-4477-5875", "note": ""}, {"no": "1706", "name": "류지환", "phone": "010-4220-2239", "guard": "김영희(엄마) 010-3331-2239", "note": ""}, {"no": "1707", "name": "박지훈", "phone": "010-8669-9846", "guard": "박기영(부) 010-4857-9846", "note": ""}, {"no": "1708", "name": "박한결", "phone": "010-8201-7833", "guard": "김민혜(모) 010-8837-7833", "note": ""}, {"no": "1709", "name": "배에스더", "phone": "010-4046-7509", "guard": "이종미(엄마) 010-9727-7509", "note": ""}, {"no": "1710", "name": "양현민", "phone": "010-5425-0749", "guard": "양권규(부) 010-9574-0806", "note": ""}, {"no": "1711", "name": "오지성", "phone": "010-2718-5623", "guard": "장희선(모) 010-6250-8050", "note": ""}, {"no": "1712", "name": "오영준", "phone": "010-9025-0047", "guard": "이새롬(모) 010-4187-0047", "note": ""}, {"no": "1713", "name": "이재현", "phone": "010-4446-7797", "guard": "최현영(모) 010-9236-7772", "note": ""}, {"no": "1714", "name": "이제이", "phone": "010-4491-2900", "guard": "김선미(엄마) 010-4414-2900", "note": ""}, {"no": "1715", "name": "이준희", "phone": "010-4482-2439", "guard": "김보나(어머니) 010-3316-2439", "note": "장이 좋지 않다"}, {"no": "1716", "name": "정여원", "phone": "010-9529-3984", "guard": "박정선(모) 010-7676-3984", "note": ""}, {"no": "1717", "name": "편민창", "phone": "010-3686-1503", "guard": "편도철(부) 010-8826-1503", "note": ""}, {"no": "1718", "name": "허예빈", "phone": "010-5341-6846", "guard": "허진영(아빠) 010-5345-6846", "note": "배아픔 머리아픔 예민"}]; // 청양고 1학년 7반 기초조사서 기준
+try { if (localStorage.getItem('gm-students') === null) { students = SEED.map(s => ({ id: uid(), ...s })); store('gm-students', students); } } catch (e) { students = SEED.map(s => ({ id: uid(), ...s })); }
 const sorted = () => [...students].sort((a, b) => a.no.localeCompare(b.no, 'ko', { numeric: true }));
 const stuName = id => { const s = students.find(x => x.id === id); return s ? `${s.no} ${s.name}` : '(삭제된 학생)'; };
 
 /* 날짜 · 고사 D-day */
 const now = new Date(), base = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 $('today').textContent = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일 ${'일월화수목금토'[now.getDay()]}요일`;
-const DEFAULT_DD = [];
+const DEFAULT_DD = [{ name: '1회고사', date: '2026-10-06' }, { name: '2회고사', date: '2026-12-08' }];
 let ddays; try { const raw = localStorage.getItem('gm-dday'); ddays = raw === null ? DEFAULT_DD : JSON.parse(raw); } catch (e) { ddays = DEFAULT_DD; }
 const ddN = s => Math.round((new Date(s + 'T00:00:00') - base) / 864e5);
 const ddLabel = s => { const n = ddN(s); return n > 0 ? `D-${n}` : n === 0 ? 'D-DAY' : `D+${-n}`; };
@@ -2150,6 +2139,13 @@ $('sForm').addEventListener('submit', e => {
   store('gm-students', students); e.target.reset(); renderAll(); $('sNo').focus();
 });
 $('sSearch').addEventListener('input', renderStudents);
+$('sSeed').addEventListener('click', () => {
+  const add = SEED.filter(s => !students.some(x => x.no === s.no));
+  if (!add.length) { alert('1학년 7반 명단이 이미 모두 등록되어 있습니다.'); return; }
+  if (!confirm(`학번이 겹치지 않는 ${add.length}명을 추가할까요?`)) return;
+  add.forEach(s => students.push({ id: uid(), ...s }));
+  store('gm-students', students); renderAll();
+});
 
 /* 상담 관리자 */
 $('cDate').value = ymd(now);
@@ -2222,7 +2218,7 @@ $('mCopy').addEventListener('click', async () => {
 });
 
 /* 조퇴증 */
-$('pTeacher').value = (() => { try { return localStorage.getItem('gm-teacher') || ''; } catch (e) { return ''; } })();
+$('pTeacher').value = (() => { try { return localStorage.getItem('gm-teacher') || '김송현'; } catch (e) { return '김송현'; } })();
 const setNow = () => { const t = new Date(); $('pStart').value = `${pad(t.getHours())}:${pad(t.getMinutes())}`; };
 setNow();
 $('pStu').addEventListener('change', () => {
@@ -2242,13 +2238,11 @@ function renderPasses() {
 $('pClear').addEventListener('click', () => { if (passes.length && confirm('발급 기록을 모두 삭제할까요?')) { passes = []; store('gm-pass', passes); renderAll(); } });
 
 /* 영수증 내용 (58mm = 384dots) */
-const CFG_KEY = 'gm-cfg';
-let cfg = (() => { try { return JSON.parse(localStorage.getItem(CFG_KEY)) || {}; } catch (e) { return {}; } })();
 document.querySelectorAll('input[name=reason]').forEach(r => r.addEventListener('change', () => {
   const etc = document.querySelector('input[name=reason]:checked').value === '기타사유';
   $('pReasonEtc').classList.toggle('hidden', !etc); if (etc) $('pReasonEtc').focus();
 }));
-const stuInfo = no => { const m = /^(\d)(\d{2})(\d{2})$/.exec(no); return m ? { cls: `${m[1]}학년 ${+m[2]}반`, num: `${+m[3]}번` } : { cls: cfg.cls || '', num: '' }; };
+const stuInfo = no => { const m = /^(\d)(\d{2})(\d{2})$/.exec(no); return m ? { cls: `${m[1]}학년 ${+m[2]}반`, num: `${+m[3]}번` } : { cls: '1학년 7반', num: '' }; };
 const hm = t => (t && t.includes(':')) ? `${+t.split(':')[0]}시 ${+t.split(':')[1]}분` : '   시    분';
 const receiptLines = p => {
   const i = stuInfo(p.no), [Y, M, D] = p.date.split('-').map(Number);
@@ -2258,7 +2252,7 @@ const receiptLines = p => {
     { t: p.kind ? `상기 학생의 (${p.kind})${p.kind === '외출' ? '을' : '를'} 허락함.` : '상기 학생의 (외출·조퇴)을/를 허락함.', b: 1, fit: 1 }, { t: '', s: 8 },
     { t: `●사유 : ${p.reason}`, fit: 1 }, { t: `●시간 : ${hm(p.start)} - ${hm(p.end)} 까지`, s: 20 }, { t: '', s: 8 },
     { t: `${Y}년 ${M}월 ${D}일`, c: 1 }, { t: `${i.cls} 담임교사 : ${p.teacher} (인)`, s: 20, c: 1 }, { t: '', s: 8 },
-    ...(cfg.school ? [{ t: cfg.school, s: 30, c: 1, b: 1 }] : [])
+    { t: '청양고등학교', s: 30, c: 1, b: 1 }
   ];
 };
 
@@ -2474,14 +2468,6 @@ $('pForm').addEventListener('submit', async e => {
   window.print();
 });
 
-function applyTitle() { const t = (cfg.title || '').trim() || '교무실 도우미'; $('appTitle').textContent = t; $('lockTitle').textContent = t; document.title = t; }
-$('cfgSchool').value = cfg.school || ''; $('cfgClass').value = cfg.cls || ''; $('cfgTitle').value = cfg.title || '';
-['cfgSchool', 'cfgClass', 'cfgTitle'].forEach(id => $(id).addEventListener('input', () => {
-  cfg = { school: $('cfgSchool').value.trim(), cls: $('cfgClass').value.trim(), title: $('cfgTitle').value.trim() };
-  store(CFG_KEY, cfg); applyTitle();
-}));
-applyTitle();
-
 /* ===== 앱 잠금 (초기 0000 → 강한 비밀번호로 변경 필수) ===== */
 const PW_KEY = 'gm-pw';
 const hex = b => [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
@@ -2557,7 +2543,7 @@ if (isOff()) $('lock').classList.add('hidden'); else showLock('login');
 const G_KEY = 'gm-grades-all', GEX_KEY = 'gm-gex';
 let gAll = (() => { try { const a = JSON.parse(localStorage.getItem(G_KEY)); if (a) return a; const old = JSON.parse(localStorage.getItem('gm-grades')); return old ? { [old.term || '이전 성적']: old } : {}; } catch (e) { return {}; } })();
 let curTerm = Object.keys(gAll).sort().pop() || '', grades = gAll[curTerm] || null;
-let gex = (() => { try { const v = localStorage.getItem(GEX_KEY); return v === null ? [] : JSON.parse(v); } catch (e) { return []; } })();
+let gex = (() => { try { const v = localStorage.getItem(GEX_KEY); return v === null ? ['박지훈', '박한결', '배에스더'] : JSON.parse(v); } catch (e) { return []; } })();
 $('gEx').value = gex.join(', ');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const numOf = v => { const m = /^\s*(-?\d+(?:\.\d+)?)/.exec(String(v == null ? '' : v)); return m ? +m[1] : null; };
@@ -2721,7 +2707,7 @@ $('nSearch').addEventListener('click', async () => {
     if (!rows.length) { pick.classList.add('hidden'); say('검색 결과가 없습니다.'); return; }
     rows.forEach((r, i) => { const o = el('option', '', `${r.SCHUL_NM} · ${r.LCTN_SC_NM || ''} ${r.SCHUL_KND_SC_NM || ''}`); o.value = i; pick.appendChild(o); });
     pick.classList.remove('hidden');
-    const use = () => { const r = rows[+pick.value]; neis = { ...neis, atpt: r.ATPT_OFCDC_SC_CODE, code: r.SD_SCHUL_CODE, sname: r.SCHUL_NM, kind: r.SCHUL_KND_SC_NM }; saveNeis(); say(`선택한 학교: ${r.SCHUL_NM}`, true); };
+    const use = () => { const r = rows[+pick.value]; neis = { ...neis, atpt: r.ATPT_OFCDC_SC_CODE, code: r.SD_SCHUL_CODE, sname: r.SCHUL_NM, kind: r.SCHUL_KND_SC_NM }; saveNeis(); renderMeal(); say(`선택한 학교: ${r.SCHUL_NM}`, true); };
     pick.onchange = use; use();
   } catch (e) { fail(e); }
 });
@@ -3011,6 +2997,49 @@ function eventsOn(date) {
   (ch.sheets[ch.sel] || []).filter(e => e.date === date).forEach(e => out.push({ src: e.area, text: e.name, sub: [e.per ? `${e.per}교시` : '', e.dept].filter(Boolean).join(' · '), rank: '1' }));
   evs.filter(e => e.date <= date && (e.to || e.date) >= date).forEach(e => { const st = e.date === date, md = s => s.slice(5).replace('-', '/'); out.push({ src: '내 일정', id: e.id, text: e.text, time: st ? e.time : '', end: st ? e.end : '', cont: !st, sub: e.to && e.to !== e.date ? `${md(e.date)} ~ ${md(e.to)}` : '', rank: '2' + (st && e.time ? e.time : '99:99') }); });
   return out.sort((a, b) => a.rank.localeCompare(b.rank));
+}
+/* ===== 이번 주 급식 (나이스 급식식단정보) ===== */
+const MEAL_KEY = 'gm-meal', MEAL_DEF = { atpt: 'N10', code: '8140267', name: '청양고등학교' };
+let mealC = (() => { const v = jl(MEAL_KEY); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; })(), mealOff = 0, mealAl = false, mealTried = {};
+const mealSchool = () => neis.code ? { atpt: neis.atpt, code: neis.code, name: neis.sname } : MEAL_DEF;
+function mealMon(off) { const d = new Date(now.getFullYear(), now.getMonth(), now.getDate()), w = d.getDay(); d.setDate(d.getDate() + (w === 0 ? 1 : w === 6 ? 2 : 1 - w) + off * 7); return d; }
+async function mealLoad(sc, mon) {
+  const fri = new Date(mon); fri.setDate(fri.getDate() + 4); const f = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
+  const size = neis.key ? 100 : 5; let all = [], p = 1;
+  for (; p <= 6; p++) { const rows = await neisGet('mealServiceDietInfo', { ATPT_OFCDC_SC_CODE: sc.atpt, SD_SCHUL_CODE: sc.code, MLSV_FROM_YMD: f(mon), MLSV_TO_YMD: f(fri), pIndex: p, pSize: size }); all = all.concat(rows); if (rows.length < size) break; }
+  const by = {}; all.forEach(r => { const d = ymdOf(r.MLSV_YMD); (by[d] = by[d] || []).push({ n: r.MMEAL_SC_NM, d: String(r.DDISH_NM || '').split(/<br\s*\/?>/i).map(s => s.trim()).filter(Boolean), k: r.CAL_INFO || '' }); });
+  return by;
+}
+function renderMeal() {
+  const box = $('homeMeal'); if (!box) return; box.innerHTML = '';
+  const sc = mealSchool(), mon = mealMon(mealOff), key = `${sc ? sc.code : ''}_${ymd(mon)}`, t = ymd(now);
+  const head = el('div', 'flex items-center gap-2 flex-wrap mb-2');
+  const btn = (txt, fn) => { const b = el('button', 'px-2.5 py-1 rounded-full border border-slate-300 bg-white text-sm', txt); b.type = 'button'; b.onclick = fn; return b; };
+  const fri = new Date(mon); fri.setDate(fri.getDate() + 4);
+  head.append(el('h2', 'font-bold text-lg mr-auto', '🍚 이번 주 급식'), btn('◀', () => { mealOff--; renderMeal(); }), el('span', 'text-xs text-slate-600', `${mon.getMonth() + 1}/${mon.getDate()} ~ ${fri.getMonth() + 1}/${fri.getDate()}`), btn('▶', () => { mealOff++; renderMeal(); }));
+  if (mealOff) head.appendChild(btn('이번 주', () => { mealOff = 0; renderMeal(); }));
+  const al = el('label', 'text-xs flex items-center gap-1 cursor-pointer'); const cb = el('input'); cb.type = 'checkbox'; cb.checked = mealAl; cb.onchange = () => { mealAl = cb.checked; renderMeal(); }; al.append(cb, '알레르기 번호'); head.appendChild(al);
+  box.appendChild(head);
+  if (!sc) { box.appendChild(el('p', 'text-sm text-slate-500', '설정(⚙️)에서 학교를 검색해 선택하면 급식이 표시됩니다.')); return; }
+  const data = mealC[key], list = el('div', 'space-y-1.5'); box.appendChild(list);
+  const st = el('p', 'text-xs text-slate-500 mt-2'); box.appendChild(st);
+  const draw = () => {
+    list.innerHTML = ''; const d0 = mealC[key] || {};
+    for (let i = 0; i < 5; i++) {
+      const d = new Date(mon); d.setDate(d.getDate() + i); const ds = ymd(d), ms = d0[ds];
+      const row = el('div', `rounded-lg border p-2 text-sm ${ds === t ? 'border-sky-400 bg-sky-50' : 'border-slate-200 bg-slate-50'}`);
+      row.appendChild(el('div', `font-bold text-xs mb-0.5 ${ds === t ? 'text-sky-700' : 'text-slate-600'}`, `${'월화수목금'[i]} ${d.getMonth() + 1}/${d.getDate()}${ds === t ? ' · 오늘' : ''}`));
+      if (!ms || !ms.length) row.appendChild(el('div', 'text-xs text-slate-400', d0 && Object.keys(d0).length ? '급식 없음' : '정보 없음'));
+      else ms.forEach(m => { const dishes = m.d.map(x => mealAl ? x : x.replace(/\s*\([\d.\s]+\)\s*$/, '')).join(' · '); row.appendChild(el('div', 'leading-snug', (ms.length > 1 ? `[${m.n}] ` : '') + dishes + (m.k ? `  (${m.k})` : ''))); });
+      list.appendChild(row);
+    }
+  };
+  draw();
+  if (!mealTried[key]) {
+    mealTried[key] = 1; st.textContent = '불러오는 중…';
+    mealLoad(sc, mon).then(by => { mealC[key] = by; const ks = Object.keys(mealC); if (ks.length > 12) delete mealC[ks[0]]; store(MEAL_KEY, mealC); draw(); st.textContent = `${sc.name} · 나이스 급식정보`; })
+      .catch(e => { delete mealTried[key]; st.textContent = '불러오기 실패: ' + e.message + (mealC[key] ? ' (저장된 정보를 표시 중)' : window.desk ? '' : ' (일반 브라우저에서는 막힐 수 있습니다)'); });
+  } else st.textContent = `${sc.name} · 나이스 급식정보`;
 }
 function renderHome() {
   const box = $('homeCal'); box.innerHTML = '';
@@ -3643,7 +3672,7 @@ $('syncBtn').addEventListener('click', () => syncNow(true));
 renderSyncOpts(); syncUI();
 if (syncCfg.url && syncCfg.token) setTimeout(() => syncNow(false), 1500);
 
-function renderAll() { renderSch(); renderToday(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); absInit(); }
+function renderAll() { renderSch(); renderToday(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); absInit(); renderMeal(); }
 renderAll();
 </script>
 </body>
