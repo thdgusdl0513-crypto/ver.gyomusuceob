@@ -66,6 +66,55 @@
   @media print { body > *:not(#printArea) { display: none !important; } #printArea { display: block !important; width: 72mm; border: 1px solid #000; padding: 6mm; margin: 10mm auto 0; font-size: 11pt; line-height: 1.6; } }
   @media print { #printArea.seat-print { width: 180mm !important; } }
   @media print { #printArea.abs-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 10mm auto 0 !important; } #printArea.abs-print img { max-width: 100%; max-height: 275mm; width: auto; height: auto; display: block; margin: 0 auto; } }
+
+  /* 급식 카드 (우리학교 급식 형식) */
+  #homeMeal { --ink:#17323d; --sub:#5b7480; --line:#cfe6ea; --accent:#0e8fa8; --accent-soft:#dff4f8; --today:#0d9488; --today-soft:#d9f5ee; --warn:#d64545; --warn-soft:#fdeaea; --chip:#e6f4f7; --shadow:0 1px 2px rgba(14,100,120,.06),0 3px 10px rgba(14,100,120,.06); background:#f2fbfc; color:var(--ink); }
+  #homeMeal button { font: inherit; cursor: pointer; }
+  #homeMeal .ml-top { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  #homeMeal .ml-logo { width:28px; height:28px; border-radius:9px; background:var(--accent); display:grid; place-items:center; font-size:15px; flex:none; }
+  #homeMeal .ml-title { font-size:15px; font-weight:800; letter-spacing:-.02em; margin:0; }
+  #homeMeal .ml-sub { font-size:11px; color:var(--sub); margin:0; }
+  #homeMeal .ml-bar { display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+  #homeMeal .ml-nav { display:flex; align-items:center; gap:6px; }
+  #homeMeal .ml-arrow { width:28px; height:28px; border-radius:50%; border:1px solid var(--line); background:#fff; font-size:14px; }
+  #homeMeal .ml-label { font-size:14px; font-weight:800; min-width:90px; text-align:center; }
+  #homeMeal .ml-btn { border:1px solid var(--line); background:#fff; border-radius:10px; padding:4px 9px; font-size:12px; font-weight:600; }
+  #homeMeal .ml-btn:hover { border-color:var(--accent); }
+  #homeMeal .ml-tabs { display:flex; background:var(--chip); border-radius:10px; padding:3px; }
+  #homeMeal .ml-tabs button { border:0; background:transparent; padding:3px 9px; border-radius:8px; font-size:12px; font-weight:600; color:var(--sub); }
+  #homeMeal .ml-tabs button.on { background:#fff; color:var(--ink); box-shadow:var(--shadow); }
+  #homeMeal details.ml-al { background:#fff; border:1px solid var(--line); border-radius:10px; padding:5px 10px; margin-bottom:8px; }
+  #homeMeal details.ml-al summary { cursor:pointer; font-weight:700; font-size:12px; list-style:none; display:flex; justify-content:space-between; }
+  #homeMeal details.ml-al summary::-webkit-details-marker { display:none; }
+  #homeMeal .ml-cnt { color:var(--warn); font-weight:600; }
+  #homeMeal .ml-chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  #homeMeal .ml-chips button { border:1px solid var(--line); background:var(--chip); border-radius:999px; padding:3px 10px; font-size:12px; }
+  #homeMeal .ml-chips button.on { background:var(--warn-soft); border-color:var(--warn); color:var(--warn); font-weight:700; }
+  #homeMeal .ml-hint { font-size:11px; color:var(--sub); margin:6px 0 0; }
+  #homeMeal .ml-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+  @media (max-width:900px) { #homeMeal .ml-grid { grid-template-columns:1fr; } }
+  #homeMeal .ml-day { background:#fff; border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; min-width:0; }
+  #homeMeal .ml-day.today { border:2px solid var(--today); }
+  #homeMeal .ml-dh { padding:6px 10px; display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px solid var(--line); }
+  #homeMeal .ml-day.today .ml-dh { background:var(--today-soft); }
+  #homeMeal .ml-dow { font-weight:800; font-size:13px; }
+  #homeMeal .ml-date { color:var(--sub); font-size:11px; }
+  #homeMeal .ml-badge { background:var(--today); color:#fff; font-size:10px; font-weight:700; padding:2px 6px; border-radius:999px; margin-left:6px; vertical-align:2px; }
+  #homeMeal .ml-meal { padding:6px 10px; }
+  #homeMeal .ml-meal + .ml-meal { border-top:1px dashed var(--line); }
+  #homeMeal .ml-mt { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+  #homeMeal .ml-mt b { font-size:11px; background:var(--accent-soft); color:var(--accent); padding:2px 8px; border-radius:6px; }
+  #homeMeal .ml-mt span { font-size:11px; color:var(--sub); }
+  #homeMeal ul.ml-dishes { list-style:none; margin:0; padding:0; }
+  #homeMeal ul.ml-dishes li { font-size:12px; line-height:1.35; padding:0; display:flex; gap:6px; align-items:baseline; flex-wrap:wrap; }
+  #homeMeal ul.ml-dishes li .al { font-size:10px; color:var(--sub); }
+  #homeMeal ul.ml-dishes li.hit { color:var(--warn); font-weight:700; }
+  #homeMeal ul.ml-dishes li.hit .al { color:var(--warn); }
+  #homeMeal .ml-empty { padding:10px 10px; color:var(--sub); font-size:13px; text-align:center; }
+  #homeMeal .ml-more { margin:2px 12px 10px; align-self:flex-start; border:0; background:none; color:var(--sub); font-size:11px; text-decoration:underline; padding:0; }
+  #homeMeal .ml-extra { margin:0 12px 10px; font-size:11px; color:var(--sub); background:var(--chip); border-radius:8px; padding:7px 9px; white-space:pre-line; }
+  #homeMeal .ml-note { font-size:12px; color:var(--sub); margin:10px 0 0; }
+  #homeMeal .ml-err { background:var(--warn-soft); color:var(--warn); border-radius:10px; padding:8px 12px; font-size:12px; margin-top:10px; }
 </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen">
@@ -80,7 +129,7 @@
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3</p>
   </form>
 </div>
 
@@ -131,10 +180,9 @@
 
   <!-- 대시보드 -->
   <section id="tab-dash" class="tab-panel">
-    <div class="grid gap-5 lg:grid-cols-2 items-start">
+        <div class="grid gap-5 lg:grid-cols-2 items-start">
       <div class="space-y-5 min-w-0">
         <div id="dashTasks" class="bg-white rounded-xl border border-slate-200 p-4 md:p-5"></div>
-        <div id="homeMeal" class="bg-white rounded-xl border border-slate-200 p-4 md:p-5"></div>
         <div id="homeCal" class="bg-white rounded-xl border border-slate-200 p-3 md:p-4"></div>
       </div>
       <div class="space-y-5 min-w-0">
@@ -150,6 +198,7 @@
         </div>
       </div>
     </div>
+    <div id="homeMeal" class="rounded-xl border border-sky-200 p-3 md:p-4 mt-5"></div>
   </section>
 
   <!-- 스티커 메모 -->
@@ -533,7 +582,7 @@
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3</p>
   </div>
 </dialog>
 
@@ -2998,48 +3047,69 @@ function eventsOn(date) {
   evs.filter(e => e.date <= date && (e.to || e.date) >= date).forEach(e => { const st = e.date === date, md = s => s.slice(5).replace('-', '/'); out.push({ src: '내 일정', id: e.id, text: e.text, time: st ? e.time : '', end: st ? e.end : '', cont: !st, sub: e.to && e.to !== e.date ? `${md(e.date)} ~ ${md(e.to)}` : '', rank: '2' + (st && e.time ? e.time : '99:99') }); });
   return out.sort((a, b) => a.rank.localeCompare(b.rank));
 }
-/* ===== 이번 주 급식 (나이스 급식식단정보) ===== */
-const MEAL_KEY = 'gm-meal', MEAL_DEF = { atpt: 'N10', code: '8140267', name: '청양고등학교' };
-let mealC = (() => { const v = jl(MEAL_KEY); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; })(), mealOff = 0, mealAl = false, mealTried = {};
+/* ===== 이번 주 급식 (나이스 급식식단정보 · 우리학교 급식 형식) ===== */
+const MEAL_KEY = 'gm-meal2', MEAL_DEF = { atpt: 'N10', code: '8140267', name: '청양고등학교' };
+const MEAL_AL = { 1: '난류', 2: '우유', 3: '메밀', 4: '땅콩', 5: '대두', 6: '밀', 7: '고등어', 8: '게', 9: '새우', 10: '돼지고기', 11: '복숭아', 12: '토마토', 13: '아황산류', 14: '호두', 15: '닭고기', 16: '쇠고기', 17: '오징어', 18: '조개류', 19: '잣' };
+const MEAL_NM = { 1: '조식', 2: '중식', 3: '석식' }, MEAL_DOW = '일월화수목금토';
+const lsGet = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
+let mealC = (() => { const v = jl(MEAL_KEY); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; })(), mealOff = 0, mealTried = {}, mealTab = lsGet('gm-meal-tab', '2'), mealAlg = new Set(lsGet('gm-meal-al', [])), mealOpen = lsGet('gm-meal-open', true), mealAlOpen = false;
 const mealSchool = () => neis.code ? { atpt: neis.atpt, code: neis.code, name: neis.sname } : MEAL_DEF;
 function mealMon(off) { const d = new Date(now.getFullYear(), now.getMonth(), now.getDate()), w = d.getDay(); d.setDate(d.getDate() + (w === 0 ? 1 : w === 6 ? 2 : 1 - w) + off * 7); return d; }
-async function mealLoad(sc, mon) {
+function mealWeekLabel(mon) { const first = new Date(mon.getFullYear(), mon.getMonth(), 1), fw = first.getDay(), fm = new Date(first); fm.setDate(1 + (fw === 0 ? 1 : fw === 6 ? 2 : 1 - fw)); if (fm > mon) fm.setDate(fm.getDate() - 7); const n = Math.round((mon - fm) / (7 * 864e5)) + 1; return `${mon.getMonth() + 1}월 ${Math.max(1, n)}주차`; }
+function mealDishes(s) { return String(s || '').split(/<br\s*\/?>/i).map(x => x.trim()).filter(Boolean).map(x => { const m = x.match(/\(([\d.\s]+)\)\s*$/); return { name: (m ? x.slice(0, m.index) : x).trim(), codes: m ? m[1].split('.').map(n => parseInt(n, 10)).filter(n => MEAL_AL[n]) : [] }; }); }
+async function mealLoad(sc, mon, mc) {
   const fri = new Date(mon); fri.setDate(fri.getDate() + 4); const f = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
-  const size = neis.key ? 100 : 5; let all = [], p = 1;
-  for (; p <= 6; p++) { const rows = await neisGet('mealServiceDietInfo', { ATPT_OFCDC_SC_CODE: sc.atpt, SD_SCHUL_CODE: sc.code, MLSV_FROM_YMD: f(mon), MLSV_TO_YMD: f(fri), pIndex: p, pSize: size }); all = all.concat(rows); if (rows.length < size) break; }
-  const by = {}; all.forEach(r => { const d = ymdOf(r.MLSV_YMD); (by[d] = by[d] || []).push({ n: r.MMEAL_SC_NM, d: String(r.DDISH_NM || '').split(/<br\s*\/?>/i).map(s => s.trim()).filter(Boolean), k: r.CAL_INFO || '' }); });
-  return by;
+  const rows = await neisGet('mealServiceDietInfo', { ATPT_OFCDC_SC_CODE: sc.atpt, SD_SCHUL_CODE: sc.code, MMEAL_SC_CODE: mc, MLSV_FROM_YMD: f(mon), MLSV_TO_YMD: f(fri), pIndex: 1, pSize: neis.key ? 100 : 5 });
+  return rows.map(r => ({ y: ymdOf(r.MLSV_YMD), c: +r.MMEAL_SC_CODE || +mc, n: r.MMEAL_SC_NM, d: r.DDISH_NM || '', k: r.CAL_INFO || '', t: r.NTR_INFO || '', o: r.ORPLC_INFO || '' }));
 }
 function renderMeal() {
   const box = $('homeMeal'); if (!box) return; box.innerHTML = '';
-  const sc = mealSchool(), mon = mealMon(mealOff), key = `${sc ? sc.code : ''}_${ymd(mon)}`, t = ymd(now);
-  const head = el('div', 'flex items-center gap-2 flex-wrap mb-2');
-  const btn = (txt, fn) => { const b = el('button', 'px-2.5 py-1 rounded-full border border-slate-300 bg-white text-sm', txt); b.type = 'button'; b.onclick = fn; return b; };
-  const fri = new Date(mon); fri.setDate(fri.getDate() + 4);
-  head.append(el('h2', 'font-bold text-lg mr-auto', '🍚 이번 주 급식'), btn('◀', () => { mealOff--; renderMeal(); }), el('span', 'text-xs text-slate-600', `${mon.getMonth() + 1}/${mon.getDate()} ~ ${fri.getMonth() + 1}/${fri.getDate()}`), btn('▶', () => { mealOff++; renderMeal(); }));
-  if (mealOff) head.appendChild(btn('이번 주', () => { mealOff = 0; renderMeal(); }));
-  const al = el('label', 'text-xs flex items-center gap-1 cursor-pointer'); const cb = el('input'); cb.type = 'checkbox'; cb.checked = mealAl; cb.onchange = () => { mealAl = cb.checked; renderMeal(); }; al.append(cb, '알레르기 번호'); head.appendChild(al);
-  box.appendChild(head);
-  if (!sc) { box.appendChild(el('p', 'text-sm text-slate-500', '설정(⚙️)에서 학교를 검색해 선택하면 급식이 표시됩니다.')); return; }
-  const data = mealC[key], list = el('div', 'space-y-1.5'); box.appendChild(list);
-  const st = el('p', 'text-xs text-slate-500 mt-2'); box.appendChild(st);
+  const sc = mealSchool(), mon = mealMon(mealOff), fri = new Date(mon); fri.setDate(fri.getDate() + 4); const t = ymd(now);
+  const top = el('div', 'ml-top'), logo = el('div', 'ml-logo', '🍱'), tt = el('div'); tt.style.cssText = 'min-width:0;margin-right:auto';
+  tt.append(el('h2', 'ml-title', '이번 주 급식'), el('p', 'ml-sub', sc ? sc.name : '학교를 선택해 주세요'));
+  const tog = el('button', 'ml-btn', mealOpen ? '접기 ▲' : '펼치기 ▼'); tog.type = 'button'; tog.onclick = () => { mealOpen = !mealOpen; try { localStorage.setItem('gm-meal-open', JSON.stringify(mealOpen)); } catch (e) {} renderMeal(); };
+  top.append(logo, tt, tog); box.appendChild(top);
+  if (!mealOpen) return;
+  if (!sc) { box.appendChild(el('p', 'ml-note', '설정(⚙️)에서 학교를 검색해 선택하면 급식이 표시됩니다.')); return; }
+  const bar = el('div', 'ml-bar'), nav = el('div', 'ml-nav'), mk = (c, x, fn) => { const b = el('button', c, x); b.type = 'button'; b.onclick = fn; return b; };
+  const lab = el('div', 'ml-label', mealWeekLabel(mon)); lab.title = `${mon.getMonth() + 1}/${mon.getDate()} ~ ${fri.getMonth() + 1}/${fri.getDate()}`;
+  nav.append(mk('ml-arrow', '◀', () => { mealOff--; renderMeal(); }), lab, mk('ml-arrow', '▶', () => { mealOff++; renderMeal(); }), mk('ml-btn', '이번 주', () => { mealOff = 0; renderMeal(); }));
+  const tabs = el('div', 'ml-tabs'); [['all', '전체'], ['1', '조식'], ['2', '중식'], ['3', '석식']].forEach(([v, x]) => { const b = mk(mealTab === v ? 'on' : '', x, () => { mealTab = v; try { localStorage.setItem('gm-meal-tab', JSON.stringify(v)); } catch (e) {} renderMeal(); }); tabs.appendChild(b); });
+  bar.append(nav, tabs); box.appendChild(bar);
+  const det = el('details', 'ml-al'); det.open = mealAlOpen; det.addEventListener('toggle', () => { mealAlOpen = det.open; });
+  const sm = el('summary'); const cnt = el('span', 'ml-cnt', mealAlg.size ? `${mealAlg.size}개 선택` : ''); sm.append(el('span', '', '⚠️ 내 알레르기 표시'), cnt); det.appendChild(sm);
+  const chips = el('div', 'ml-chips'); Object.entries(MEAL_AL).forEach(([n, nm]) => { const num = +n, b = mk(mealAlg.has(num) ? 'on' : '', nm, () => { mealAlg.has(num) ? mealAlg.delete(num) : mealAlg.add(num); try { localStorage.setItem('gm-meal-al', JSON.stringify([...mealAlg])); } catch (e) {} renderMeal(); }); chips.appendChild(b); });
+  det.append(chips, el('p', 'ml-hint', '선택한 알레르기 성분이 들어간 메뉴가 빨간색으로 표시돼요. 이 기기에만 저장됩니다.')); box.appendChild(det);
+  const grid = el('div', 'ml-grid'); box.appendChild(grid); const st = el('p', 'ml-note'); box.appendChild(st);
+  const codes = mealTab === 'all' ? [1, 2, 3] : [+mealTab], ck = c => `${sc.code}_${ymd(mon)}_${c}`;
   const draw = () => {
-    list.innerHTML = ''; const d0 = mealC[key] || {};
+    grid.innerHTML = '';
     for (let i = 0; i < 5; i++) {
-      const d = new Date(mon); d.setDate(d.getDate() + i); const ds = ymd(d), ms = d0[ds];
-      const row = el('div', `rounded-lg border p-2 text-sm ${ds === t ? 'border-sky-400 bg-sky-50' : 'border-slate-200 bg-slate-50'}`);
-      row.appendChild(el('div', `font-bold text-xs mb-0.5 ${ds === t ? 'text-sky-700' : 'text-slate-600'}`, `${'월화수목금'[i]} ${d.getMonth() + 1}/${d.getDate()}${ds === t ? ' · 오늘' : ''}`));
-      if (!ms || !ms.length) row.appendChild(el('div', 'text-xs text-slate-400', d0 && Object.keys(d0).length ? '급식 없음' : '정보 없음'));
-      else ms.forEach(m => { const dishes = m.d.map(x => mealAl ? x : x.replace(/\s*\([\d.\s]+\)\s*$/, '')).join(' · '); row.appendChild(el('div', 'leading-snug', (ms.length > 1 ? `[${m.n}] ` : '') + dishes + (m.k ? `  (${m.k})` : ''))); });
-      list.appendChild(row);
+      const d = new Date(mon); d.setDate(d.getDate() + i); const ds = ymd(d), isT = ds === t;
+      const meals = [].concat(...codes.map(c => mealC[ck(c)] || [])).filter(r => r.y === ds).sort((a, b) => a.c - b.c);
+      const card = el('section', 'ml-day' + (isT ? ' today' : '')), hd = el('div', 'ml-dh'), dw = el('div', 'ml-dow', `${MEAL_DOW[d.getDay()]}요일`);
+      if (isT) dw.appendChild(el('span', 'ml-badge', '오늘'));
+      hd.append(dw, el('div', 'ml-date', `${d.getMonth() + 1}/${d.getDate()}`)); card.appendChild(hd);
+      if (!meals.length) card.appendChild(el('div', 'ml-empty', codes.every(c => mealC[ck(c)]) ? '급식 정보가 없어요' : '불러오는 중…'));
+      meals.forEach(r => {
+        const m = el('div', 'ml-meal'), mt = el('div', 'ml-mt'); mt.append(el('b', '', MEAL_NM[r.c] || r.n), el('span', '', r.k)); m.appendChild(mt);
+        const ul = el('ul', 'ml-dishes'); mealDishes(r.d).forEach(x => { const li = el('li'), hit = x.codes.some(n => mealAlg.has(n)); if (hit) li.className = 'hit'; li.appendChild(el('span', '', (hit ? '⚠ ' : '') + x.name)); if (x.codes.length) li.appendChild(el('span', 'al', x.codes.map(n => MEAL_AL[n]).join('·'))); ul.appendChild(li); });
+        m.appendChild(ul); card.appendChild(m);
+        const ex = [r.t ? '영양정보\n' + r.t.replace(/<br\s*\/?>/gi, '\n') : '', r.o ? '원산지\n' + r.o.replace(/<br\s*\/?>/gi, '\n') : ''].filter(Boolean).join('\n\n');
+        if (ex) { const more = el('button', 'ml-more', `${MEAL_NM[r.c] || ''} 영양·원산지 보기`), xe = el('div', 'ml-extra', ex); more.type = 'button'; xe.hidden = true; more.onclick = () => { xe.hidden = !xe.hidden; }; card.append(more, xe); }
+      });
+      grid.appendChild(card);
     }
   };
-  draw();
-  if (!mealTried[key]) {
-    mealTried[key] = 1; st.textContent = '불러오는 중…';
-    mealLoad(sc, mon).then(by => { mealC[key] = by; const ks = Object.keys(mealC); if (ks.length > 12) delete mealC[ks[0]]; store(MEAL_KEY, mealC); draw(); st.textContent = `${sc.name} · 나이스 급식정보`; })
-      .catch(e => { delete mealTried[key]; st.textContent = '불러오기 실패: ' + e.message + (mealC[key] ? ' (저장된 정보를 표시 중)' : window.desk ? '' : ' (일반 브라우저에서는 막힐 수 있습니다)'); });
-  } else st.textContent = `${sc.name} · 나이스 급식정보`;
+  draw(); st.textContent = `${sc.name} · 나이스 급식정보`;
+  const need = codes.filter(c => !mealTried[ck(c)]);
+  if (need.length) {
+    need.forEach(c => { mealTried[ck(c)] = 1; });
+    Promise.all(need.map(c => mealLoad(sc, mon, c).then(rows => { mealC[ck(c)] = rows; return null; }).catch(e => { delete mealTried[ck(c)]; return e; }))).then(errs => {
+      const ks = Object.keys(mealC); if (ks.length > 40) ks.slice(0, ks.length - 40).forEach(k => delete mealC[k]); store(MEAL_KEY, mealC);
+      if ($('homeMeal') === box) { draw(); const e = errs.find(Boolean); if (e) { const er = el('div', 'ml-err', '급식을 불러오지 못했어요: ' + e.message + (window.desk ? '' : ' (일반 브라우저에서는 막힐 수 있습니다. 설치한 프로그램에서 확인해 보세요.)')); box.appendChild(er); } }
+    });
+  }
 }
 function renderHome() {
   const box = $('homeCal'); box.innerHTML = '';
