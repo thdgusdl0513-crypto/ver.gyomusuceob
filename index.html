@@ -147,12 +147,13 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <p id="lockMsg" class="text-sm text-slate-600"></p>
     <input id="lockPw" type="password" autocomplete="off" placeholder="비밀번호" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
     <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:#12343b"><input id="lockShow" type="checkbox"> 비밀번호 보기</label>
+    <label id="lockRemL" class="flex items-center gap-2 text-sm cursor-pointer" style="color:#12343b"><input id="lockRem" type="checkbox"> 이 기기에서 비밀번호 저장 (다음부터 자동으로 열기)</label>
     <input id="lockPw2" type="password" autocomplete="off" placeholder="새 비밀번호 확인" class="hidden w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
     <button class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">확인</button>
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치</p>
   </form>
 </div>
 
@@ -2647,11 +2648,16 @@ async function hashPw(pw, salt) {
 const strongPw = p => p.length >= 8 && /[a-z]/.test(p) && /[A-Z]/.test(p) && /[^A-Za-z0-9]/.test(p);
 const getPw = () => { try { return JSON.parse(localStorage.getItem(PW_KEY)); } catch (e) { return null; } };
 let lockMode = 'login', changing = false, fails = 0, until = 0, pendingOff = false;
+const REM_KEY = 'gm-remember';
+const isRem = () => { try { const r = JSON.parse(localStorage.getItem(REM_KEY)), p = getPw(); return !!(r && p && r.h === p.hash); } catch (e) { return false; } };
+const setRem = on => { try { const p = getPw(); if (on && p) localStorage.setItem(REM_KEY, JSON.stringify({ h: p.hash })); else localStorage.removeItem(REM_KEY); } catch (e) {} };
 const isOff = () => { try { return localStorage.getItem('gm-lockoff') === '1'; } catch (e) { return false; } };
 function showLock(mode) {
   lockMode = mode; if ($('dlg').open) $('dlg').close();
   $('lock').classList.remove('hidden'); $('lockPw').value = ''; $('lockPw2').value = '';
   $('lockPw2').classList.toggle('hidden', mode !== 'setup');
+  $('lockRemL').classList.toggle('hidden', mode === 'reset' || pendingOff || (mode === 'login' && !getPw()));
+  $('lockRem').checked = isRem();
   $('lockCancel').classList.toggle('hidden', !(changing || mode === 'reset'));
   $('lockReset').classList.toggle('hidden', !(mode === 'login' && !changing && getPw()));
   $('lockSkip').classList.toggle('hidden', !(mode === 'login' && !changing && !getPw()));
@@ -2676,13 +2682,15 @@ $('lockForm').addEventListener('submit', async e => {
     if (!ok) { if (++fails >= 5) { until = Date.now() + 30000; fails = 0; } msg('비밀번호가 맞지 않습니다.'); $('lockPw').value = ''; return; }
     fails = 0;
     if (pendingOff) { pendingOff = false; changing = false; try { localStorage.setItem('gm-lockoff', '1'); } catch (err) {} $('lock').classList.add('hidden'); syncLockUI(); return; }
-    if (!s || changing) showLock('setup'); else $('lock').classList.add('hidden');
+    if (!s || changing) { showLock('setup'); return; }
+    setRem($('lockRem').checked); $('lock').classList.add('hidden');
   } else {
     if (!strongPw(pw)) { msg('8자 이상, 영문 대문자·소문자·특수문자를 모두 포함해야 합니다.'); return; }
     if (pw === '0000' || pw !== $('lockPw2').value) { msg(pw === '0000' ? '초기 비밀번호는 사용할 수 없습니다.' : '확인 비밀번호가 다릅니다.'); return; }
     const salt = hex(crypto.getRandomValues(new Uint8Array(16)));
     store(PW_KEY, { salt, hash: await hashPw(pw, salt) });
     try { localStorage.removeItem('gm-lockoff'); } catch (err) {}
+    setRem($('lockRem').checked);
     changing = false; $('lock').classList.add('hidden'); syncLockUI();
   }
 });
@@ -2703,7 +2711,7 @@ $('lockToggle').addEventListener('change', () => {
   try { localStorage.setItem('gm-lockoff', '1'); } catch (e) {} syncLockUI();
 });
 syncLockUI();
-if (isOff()) $('lock').classList.add('hidden'); else showLock('login');
+if (isOff() || isRem()) $('lock').classList.add('hidden'); else showLock('login');
 
 /* ===== 성적관리: 학기말 성적 종합일람표 ===== */
 const G_KEY = 'gm-grades-all', GEX_KEY = 'gm-gex';
