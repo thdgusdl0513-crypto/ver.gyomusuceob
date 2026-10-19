@@ -78,6 +78,7 @@
   @media print { body > *:not(#printArea) { display: none !important; } #printArea { display: block !important; width: 72mm; border: 1px solid #000; padding: 6mm; margin: 10mm auto 0; font-size: 11pt; line-height: 1.6; } }
   @media print { #printArea.seat-print { width: 180mm !important; } }
   @media print { #printArea.abs-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 10mm auto 0 !important; } #printArea.abs-print img { max-width: 100%; max-height: 275mm; width: auto; height: auto; display: block; margin: 0 auto; } }
+  @media print { #printArea.abs-multi img { break-after: page; page-break-after: always; } #printArea.abs-multi img:last-child { break-after: auto; page-break-after: auto; } }
 
   /* 급식 카드 (우리학교 급식 형식) */
   #homeMeal { --ink:#17323d; --sub:#5b7480; --line:#cfe6ea; --accent:#0e8fa8; --accent-soft:#dff4f8; --today:#0d9488; --today-soft:#d9f5ee; --warn:#d64545; --warn-soft:#fdeaea; --chip:#e6f4f7; --shadow:0 1px 2px rgba(14,100,120,.06),0 3px 10px rgba(14,100,120,.06); background:#f2fbfc; color:var(--ink); }
@@ -153,7 +154,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치</p>
   </form>
 </div>
 
@@ -560,6 +561,22 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           <button id="abSave" type="button" class="w-full border border-slate-300 bg-white hover:bg-slate-50 font-bold rounded-lg py-2.5">💾 이미지로 저장</button>
           <button id="abShare" type="button" class="hidden w-full border border-slate-300 bg-white hover:bg-slate-50 font-bold rounded-lg py-2.5">📤 이미지 공유 (프린터 앱 등)</button>
         </div>
+        <div class="rounded-lg border border-sky-200 bg-sky-50 p-3 space-y-2">
+          <div class="flex gap-2">
+            <button id="abAdd" type="button" class="flex-1 bg-[#0e8fa8] hover:bg-[#0b7a90] text-white font-bold rounded-lg py-2">✅ 확인했어요 · 목록에 저장</button>
+            <button id="abClear" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 font-bold rounded-lg px-3 py-2 text-xs">🧹 입력 칸 초기화</button>
+          </div>
+          <div id="abListBox" class="hidden space-y-2">
+            <div class="flex items-center gap-2"><b id="abListTitle" class="text-xs">저장된 결석신고서</b><button id="abListAll" type="button" class="ml-auto text-xs underline">전체 선택/해제</button></div>
+            <div id="abList" class="max-h-56 overflow-y-auto space-y-1"></div>
+            <div class="grid gap-2">
+              <button id="abPrintAll" type="button" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2">🖨️ 선택한 것 한 번에 인쇄</button>
+              <button id="abPdfAll" type="button" class="w-full border border-slate-300 bg-white hover:bg-slate-50 font-bold rounded-lg py-2">📄 선택한 것 PDF 한 파일로 저장</button>
+              <button id="abListClear" type="button" class="w-full text-xs text-rose-600 underline">저장 목록 모두 비우기</button>
+            </div>
+          </div>
+          <p class="text-xs text-slate-600">작성 → 미리보기 확인 → <b>목록에 저장</b>을 반복한 뒤, 한꺼번에 인쇄하거나 PDF 한 파일로 받을 수 있어요. 저장 목록은 이 기기에만 남습니다.</p>
+        </div>
         <p class="text-xs text-slate-500">A4 크기 양식이라 53mm 소형 프린터에는 맞지 않습니다. 일반 프린터로 인쇄하거나 이미지를 저장해 사용하세요. (인) 칸은 비워 두니 출력 후 직접 서명하세요.</p>
       </div>
       <div class="bg-white rounded-xl border border-slate-200 p-3 md:p-5 overflow-auto"><img id="abView" alt="결석신고서 미리보기" class="mx-auto border border-slate-300 bg-white w-full max-w-[640px]"></div>
@@ -657,7 +674,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
 
     <section>
       <h3 class="font-bold text-sm mb-2">📥 학생 명단 불러오기 (엑셀/CSV)</h3>
-      <p class="text-xs text-slate-500 mb-2">기초조사서 시트의 열 이름(학번, 이름, 전화번호, 보호자1성함·관계·번호, 건강특이사항)을 읽어 등록합니다. 이미 있는 학번은 건너뜁니다. CSV는 UTF-8로 저장해 주세요.</p>
+      <p class="text-xs text-slate-500 mb-2">양식은 자유입니다. <b>학번(또는 번호)과 이름</b>만 있으면 불러옵니다. 제목 줄이 없어도, 한 칸에 '10101 홍길동'처럼 적혀 있어도, 학년·반·번호 열이 따로 있어도 읽습니다. 전화번호·보호자·특이사항 열이 있으면 함께 등록합니다. 여러 시트도 모두 읽고, 이미 있는 학번은 건너뜁니다. CSV는 UTF-8로 저장해 주세요.</p>
       <input id="xlFile" type="file" accept=".xlsx,.xls,.csv" class="text-sm">
     </section>
 
@@ -2217,28 +2234,61 @@ $('rstBtn').addEventListener('click', () => {
   gAll = {}; curTerm = ''; store(G_KEY, {}); renderAll(); $('dlg').close();
 });
 
+
+function parseStudentsFlex(wb) {
+  const out = [], seen = new Set(), none = ['', '없음', '없습', '없어요', '튼튼함', '건강은 보통이에요'];
+  const nrm = v => String(v == null ? '' : v).replace(/\s+/g, ''), cl = v => String(v == null ? '' : v).trim();
+  const BAD = new Set(['이름', '성명', '학번', '번호', '비고', '반', '학년', '남', '여', '남자', '여자', '합계', '계', '담임']);
+  const nameOk = v => { const t = cl(v).replace(/\s+/g, ''); return /^[가-힣]{2,5}$/.test(t) && !BAD.has(t) ? t : ''; };
+  const add = (no, name, ex) => { no = String(no).replace(/\D/g, ''); name = cl(name).replace(/\s+/g, ''); if (!no || !name || seen.has(no)) return; seen.add(no); out.push(Object.assign({ no, name }, ex || {})); };
+  for (const sn of wb.SheetNames) {
+    const rows = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, defval: '' });
+    let hi = -1, c = {};
+    for (let r = 0; r < Math.min(rows.length, 30) && hi < 0; r++) {
+      const h = rows[r].map(nrm), f = re => h.findIndex(x => re.test(x));
+      const ni = f(/^(이름|성명|학생이름|학생명|성함)$/); if (ni < 0) continue;
+      const si = f(/^(학번|학생번호|학생학번)$/), gi = f(/^학년$/), ci = f(/^(반|학급)$/), bi = f(/^(번호|번)$/);
+      if (si >= 0 || (gi >= 0 && ci >= 0 && bi >= 0) || bi >= 0) { hi = r; c = { ni, si, gi, ci, bi, ph: f(/^(전화번호|연락처|휴대폰|핸드폰|학생연락처)$/), gn: f(/^(보호자1성함|보호자성함|보호자)$/), gr: f(/^(보호자1관계|보호자관계)$/), gp: f(/^(보호자1번호|보호자연락처|보호자번호|보호자전화)$/), nt: f(/^(특이사항|건강특이사항)$/) }; }
+    }
+    if (hi >= 0) {
+      for (let r = hi + 1; r < rows.length; r++) {
+        const row = rows[r], name = cl(row[c.ni]); if (!name) continue;
+        const g = k => (k >= 0 ? cl(row[k]) : '');
+        let no = '';
+        if (c.si >= 0) no = g(c.si);
+        if (!/\d/.test(no) && c.gi >= 0 && c.ci >= 0 && c.bi >= 0) { const a = +g(c.gi), b = +g(c.ci), n = +g(c.bi); if (a && b && n) no = `${a}${String(b).padStart(2, '0')}${String(n).padStart(2, '0')}`; }
+        if (!/\d/.test(no) && c.bi >= 0) no = g(c.bi);
+        const gn = g(c.gn), gr = g(c.gr), gp = g(c.gp), nt = g(c.nt);
+        add(no, name, { phone: g(c.ph), guard: gp ? (gn ? `${gn}${gr ? `(${gr})` : ''} ${gp}` : gp) : '', note: none.includes(nt) ? '' : nt });
+      }
+    } else {
+      rows.forEach(row => {
+        const line = row.map(cl).filter(Boolean).join(' ');
+        let m = /(\d{1,2})\s*학년\s*(\d{1,2})\s*반\s*(\d{1,2})\s*번\s*([가-힣]{2,5})/.exec(line);
+        if (m) { add(`${+m[1]}${String(+m[2]).padStart(2, '0')}${String(+m[3]).padStart(2, '0')}`, m[4]); return; }
+        const cells = row.map(cl), ni = cells.findIndex(x => nameOk(x)), noi = cells.findIndex(x => /^\d{3,6}$/.test(x.replace(/\s+/g, '')));
+        if (ni >= 0 && noi >= 0) { add(cells[noi], nameOk(cells[ni])); return; }
+        m = /(?:^|\s)(\d{3,6})\s*([가-힣]{2,5})(?:\s|$)/.exec(line) || /(?:^|\s)([가-힣]{2,5})\s*(\d{3,6})(?:\s|$)/.exec(line);
+        if (m) { const a = /^\d/.test(m[1]); const no = a ? m[1] : m[2], nm = a ? m[2] : m[1]; if (nameOk(nm)) add(no, nm); }
+      });
+    }
+  }
+  return out;
+}
 /* 엑셀/CSV 학생 명단 불러오기 */
 $('xlFile').addEventListener('change', async e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
   if (typeof XLSX === 'undefined') { alert('엑셀 읽기 도구를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'); return; }
   try {
     const wb = XLSX.read(await f.arrayBuffer());
-    const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' });
-    const none = ['', '없음', '없습', '없어요', '튼튼함', '건강은 보통이에요'];
+    const list = parseStudentsFlex(wb);
     let added = 0, skipped = 0;
-    rows.forEach(raw => {
-      const r = {}; Object.keys(raw).forEach(k => r[k.trim()] = String(raw[k]).trim());
-      const pick = (...ks) => { for (const k of ks) if (r[k]) return r[k]; return ''; };
-      const no = pick('학번'), name = pick('이름', '성명');
-      if (!no || !name) return;
-      if (students.some(s => s.no === no)) { skipped++; return; }
-      const gn = pick('보호자1성함', '보호자성함'), rel = pick('보호자1관계', '보호자관계'), num = pick('보호자1번호', '보호자연락처', '보호자 연락처', '보호자번호');
-      const note = pick('특이사항', '건강특이사항');
-      students.push({ id: uid(), no, name, phone: pick('전화번호', '연락처', '휴대폰'), guard: num ? (gn ? `${gn}${rel ? `(${rel})` : ''} ${num}` : num) : '', note: none.includes(note) ? '' : note });
-      added++;
+    list.forEach(x => {
+      if (students.some(s => s.no === x.no)) { skipped++; return; }
+      students.push({ id: uid(), no: x.no, name: x.name, phone: x.phone || '', guard: x.guard || '', note: x.note || '' }); added++;
     });
     store('gm-students', students); renderAll();
-    alert(`${added}명을 추가했습니다.${skipped ? ` 학번이 겹치는 ${skipped}명은 건너뛰었습니다.` : ''}${added === 0 && !skipped ? ' 열 이름(학번, 이름)을 확인해 주세요.' : ''}`);
+    alert(`${added}명을 추가했습니다.${skipped ? ` 학번이 겹치는 ${skipped}명은 건너뛰었습니다.` : ''}${added === 0 && !skipped ? ' 학생을 찾지 못했습니다. 학번(숫자)과 이름이 한 줄에 있는지 확인해 주세요.' : ''}`);
   } catch (err) { alert('불러오기 실패: ' + err.message); }
 });
 
@@ -3994,6 +4044,84 @@ function absInit() {
   const saveOpin = () => { try { if ($('abOpinFix').checked) { localStorage.setItem('gm-abs-fix', '1'); localStorage.setItem('gm-abs-opin', $('abOpin').value); } else { localStorage.removeItem('gm-abs-fix'); localStorage.removeItem('gm-abs-opin'); } } catch (e) {} };
   $('abOpin').addEventListener('input', saveOpin); $('abOpinFix').addEventListener('change', saveOpin);
   absInit(); absRender();
+})();
+
+/* ===== 결석신고서: 확인 후 저장 → 한 번에 인쇄 · PDF 한 파일 · 칸 초기화 ===== */
+(() => {
+  const KEY = 'gm-abs-list', fields = ['abNo', 'abName', 'abTel', 'abPar', 'abFrom', 'abTo', 'abReason', 'abDate', 'abOpin', 'abTeacher', 'abSchool'];
+  let list = []; try { const v = JSON.parse(localStorage.getItem(KEY)); if (Array.isArray(v)) list = v; } catch (e) {}
+  let editId = '', sel = new Set(list.map(x => x.id));
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) { alert('저장 공간이 부족합니다. 목록을 비워 주세요.'); } };
+  const snap = () => { const d = absData(); return { no: d.no, name: d.name, tel: d.tel, par: d.par, from: $('abFrom').value, to: $('abTo').value, reason: d.reason, kind: d.kind, date: $('abDate').value, c: d.c, opin: d.opin, teacher: d.teacher, school: d.school }; };
+  const toD = s => {
+    const f = s.from ? new Date(s.from + 'T00:00:00') : null, t = s.to ? new Date(s.to + 'T00:00:00') : f, dt = s.date ? new Date(s.date + 'T00:00:00') : null;
+    return { no: s.no, name: s.name, tel: s.tel, par: s.par, f, t, days: f && t && t >= f ? Math.round((t - f) / 86400000) + 1 : (f ? 1 : 0), reason: s.reason, kind: s.kind, dt, c: s.c || [false, false, false], opin: s.opin, teacher: s.teacher, school: s.school };
+  };
+  const md = v => v ? v.slice(5).replace('-', '/') : '';
+  function draw() {
+    const box = $('abListBox'), L = $('abList'); box.classList.toggle('hidden', !list.length); L.innerHTML = '';
+    $('abListTitle').textContent = `저장된 결석신고서 ${list.length}건 (선택 ${[...sel].filter(i => list.some(x => x.id === i)).length}건)`;
+    list.forEach(s => {
+      const row = el('div', `flex items-center gap-2 text-xs rounded-lg border px-2 py-1.5 ${editId === s.id ? 'border-sky-400 bg-white' : 'border-slate-200 bg-white'}`);
+      const c = el('input'); c.type = 'checkbox'; c.checked = sel.has(s.id); c.onchange = () => { c.checked ? sel.add(s.id) : sel.delete(s.id); draw(); };
+      const b = el('button', 'flex-1 text-left truncate', `${s.no || ''} ${s.name || '(이름 없음)'} · ${md(s.from)}${s.to && s.to !== s.from ? '~' + md(s.to) : ''} · ${s.reason || ''}`); b.type = 'button'; b.title = '눌러서 다시 불러와 고치기';
+      b.onclick = () => { fields.forEach(id => { $(id).value = s[id === 'abNo' ? 'no' : id === 'abName' ? 'name' : id === 'abTel' ? 'tel' : id === 'abPar' ? 'par' : id === 'abFrom' ? 'from' : id === 'abTo' ? 'to' : id === 'abReason' ? 'reason' : id === 'abDate' ? 'date' : id === 'abOpin' ? 'opin' : id === 'abTeacher' ? 'teacher' : 'school'] || ''; }); document.querySelectorAll('.abK').forEach(k => k.checked = k.value === s.kind); ['abC1', 'abC2', 'abC3'].forEach((id, i) => $(id).checked = !!(s.c && s.c[i])); $('abStu').value = ''; editId = s.id; $('abAdd').textContent = '✅ 수정 내용 저장'; absRender(); draw(); };
+      const x = el('button', 'text-slate-400 hover:text-rose-600', '삭제'); x.type = 'button'; x.onclick = () => { list = list.filter(y => y.id !== s.id); sel.delete(s.id); if (editId === s.id) { editId = ''; $('abAdd').textContent = '✅ 확인했어요 · 목록에 저장'; } save(); draw(); };
+      row.append(c, b, x); L.appendChild(row);
+    });
+  }
+  function clearForm() {
+    ['abNo', 'abName', 'abTel', 'abPar', 'abReason'].forEach(id => $(id).value = ''); $('abStu').value = '';
+    const t = ymd(new Date()); $('abFrom').value = t; $('abTo').value = t; $('abDate').value = t;
+    document.querySelectorAll('.abK').forEach(k => k.checked = k.value === '질병'); ['abC1', 'abC2', 'abC3'].forEach(id => $(id).checked = false);
+    if (!$('abOpinFix').checked) $('abOpin').value = '';
+    editId = ''; $('abAdd').textContent = '✅ 확인했어요 · 목록에 저장'; absRender(); draw();
+  }
+  $('abClear').addEventListener('click', clearForm);
+  $('abAdd').addEventListener('click', () => {
+    const s = snap(); if (!s.name) { alert('성명을 입력하거나 학생을 선택해 주세요.'); return; }
+    if (editId) { const i = list.findIndex(x => x.id === editId); if (i >= 0) list[i] = Object.assign({ id: editId }, s); }
+    else { const id = 'ab' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); list.push(Object.assign({ id }, s)); sel.add(id); }
+    save(); clearForm();
+  });
+  $('abListAll').addEventListener('click', () => { if (list.every(x => sel.has(x.id))) sel.clear(); else list.forEach(x => sel.add(x.id)); draw(); });
+  $('abListClear').addEventListener('click', () => { if (!list.length || !confirm(`저장된 결석신고서 ${list.length}건을 모두 지울까요?`)) return; list = []; sel.clear(); save(); clearForm(); });
+  const chosen = () => list.filter(x => sel.has(x.id));
+  const imgs = async (type, q) => { try { await document.fonts.load("16px 'Noto Sans KR'"); } catch (e) {} return chosen().map(s => absCanvas(toD(s))).map(cv => ({ w: cv.width, h: cv.height, url: cv.toDataURL(type, q) })); };
+  $('abPrintAll').addEventListener('click', async () => {
+    if (!chosen().length) { alert('인쇄할 결석신고서를 선택해 주세요.'); return; }
+    const arr = await imgs('image/png'), pa = $('printArea'); pa.innerHTML = ''; pa.classList.add('abs-print', 'abs-multi');
+    const ims = arr.map(a => { const im = new Image(); im.src = a.url; pa.appendChild(im); return im; });
+    await Promise.all(ims.map(im => new Promise(r => { im.onload = r; setTimeout(r, 800); })));
+    const pg = document.createElement('style'); pg.textContent = '@page{size:A4;margin:0}'; document.head.appendChild(pg);
+    const done = () => { pg.remove(); pa.classList.remove('abs-print', 'abs-multi'); pa.innerHTML = ''; window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done); window.print(); setTimeout(done, 120000);
+  });
+  function pdf(pages) { // JPEG 이미지로 A4 여러 쪽짜리 PDF 만들기
+    const enc = new TextEncoder(), parts = [], off = []; let len = 0;
+    const put = d => { const u = typeof d === 'string' ? enc.encode(d) : d; parts.push(u); len += u.length; };
+    const obj = (n, d) => { off[n] = len; put(`${n} 0 obj\n`); put(d); put('\nendobj\n'); };
+    const W = 595.28, H = 841.89, n = pages.length; put('%PDF-1.4\n');
+    obj(1, '<< /Type /Catalog /Pages 2 0 R >>');
+    obj(2, `<< /Type /Pages /Count ${n} /Kids [${pages.map((_, i) => `${3 + i * 3} 0 R`).join(' ')}] >>`);
+    pages.forEach((p, i) => {
+      const pn = 3 + i * 3, sc = Math.min(W / p.w, H / p.h), w = p.w * sc, h = p.h * sc, x = (W - w) / 2, y = (H - h) / 2;
+      const bin = atob(p.url.split(',')[1]), u = new Uint8Array(bin.length); for (let k = 0; k < bin.length; k++) u[k] = bin.charCodeAt(k);
+      obj(pn, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /XObject << /Im0 ${pn + 2} 0 R >> >> /Contents ${pn + 1} 0 R >>`);
+      const c = `q ${w.toFixed(2)} 0 0 ${h.toFixed(2)} ${x.toFixed(2)} ${y.toFixed(2)} cm /Im0 Do Q`; obj(pn + 1, `<< /Length ${c.length} >>\nstream\n${c}\nendstream`);
+      off[pn + 2] = len; put(`${pn + 2} 0 obj\n<< /Type /XObject /Subtype /Image /Width ${p.w} /Height ${p.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${u.length} >>\nstream\n`); put(u); put('\nendstream\nendobj\n');
+    });
+    const total = 3 + n * 3, xr = len; put(`xref\n0 ${total}\n0000000000 65535 f \n`);
+    for (let i = 1; i < total; i++) put(String(off[i]).padStart(10, '0') + ' 00000 n \n');
+    put(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xr}\n%%EOF`);
+    const all = new Uint8Array(len); let o = 0; parts.forEach(p => { all.set(p, o); o += p.length; }); return new Blob([all], { type: 'application/pdf' });
+  }
+  $('abPdfAll').addEventListener('click', async () => {
+    if (!chosen().length) { alert('저장할 결석신고서를 선택해 주세요.'); return; }
+    const arr = await imgs('image/jpeg', 0.92), b = pdf(arr), a = document.createElement('a'), d = new Date(), p2 = n => String(n).padStart(2, '0');
+    a.href = URL.createObjectURL(b); a.download = `결석신고서_${arr.length}건_${d.getFullYear()}${p2(d.getMonth() + 1)}${p2(d.getDate())}.pdf`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  });
+  draw();
 })();
 /* ===== 우리 학교 결석계 양식 (사진·PDF 위에 글자 얹기) ===== */
 const ABFONT = "'Noto Sans KR','Malgun Gothic',sans-serif";
