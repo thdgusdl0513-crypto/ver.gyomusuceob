@@ -152,7 +152,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치</p>
   </form>
 </div>
 
@@ -3598,6 +3598,21 @@ function parseClassTT(rows) {
   }
   return out;
 }
+function parseClassTT2(rows) {
+  const out = {}, per = {};
+  for (let i = 0; i < rows.length; i++) {
+    const r = rows[i].map(schClean), m0 = /(\d+)\s*학년\s*(\d+)\s*반/.exec(r[0] || ''), cols = DAYN.map(d => r.indexOf(d));
+    if (!m0 || cols.some(c => c < 1)) continue;
+    const name = `${+m0[1]}-${+m0[2]}`, cells = {};
+    for (let j = i + 1; j < rows.length; j++) {
+      const rr = rows[j].map(schClean), m = /^(\d+)\s*교시/.exec(rr[0] || ''); if (!m) break;
+      const p = +m[1], tm = /\(([^)]*)\)?/.exec(rr[0].replace(/\n/g, ' ')); if (tm && tm[1].trim() && !per[p]) per[p] = tm[1].trim();
+      cols.forEach((c, d) => { if (rr[c]) cells[`${d}-${p}`] = rr[c]; });
+    }
+    if (Object.keys(cells).length) out[name] = cells;
+  }
+  return { classes: out, periods: per };
+}
 function schGrid(kind, name, editing) {
   const cells = (kind === 't' ? sch.teachers : sch.classes)[name] || {}, ed = schE[kind][name] || {}, td = (now.getDay() + 6) % 7;
   const maxP = Math.max(7, ...Object.keys(cells).concat(Object.keys(ed)).map(k => +k.split('-')[1] || 0));
@@ -3662,8 +3677,9 @@ async function schUpload(e, expect) {
     try {
       const wb = XLSX.read(await f.arrayBuffer()); let done = false;
       for (const n of wb.SheetNames) {
-        const rows = XLSX.utils.sheet_to_json(wb.Sheets[n], { header: 1, defval: '' }), cl = expect === 't' ? null : parseClassTT(rows);
+        const rows = XLSX.utils.sheet_to_json(wb.Sheets[n], { header: 1, defval: '' }), cl0 = expect === 't' ? null : parseClassTT(rows), cl2 = expect === 't' || cl0 ? null : parseClassTT2(rows), cl = cl0 || (cl2 && cl2.classes);
         if (cl && Object.keys(cl).length) {
+          if (cl2) sch.periods = Object.assign({}, cl2.periods, sch.periods);
           if (Object.keys(schE.c).length && confirm('새 학급 시간표입니다. 이전에 직접 고친 학급 시간표 내용을 지울까요? (취소하면 고친 내용이 남습니다)')) schE.c = {};
           sch.classes = cl; sch.cFile = f.name; msg.push(`${f.name}: 학급 ${Object.keys(cl).length}개를 불러왔습니다.`); done = true; break;
         }
