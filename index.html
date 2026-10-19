@@ -3075,6 +3075,21 @@ function recExportXlsx() {
   });
   const cmp = (a, b) => String(a.sub).localeCompare(String(b.sub), 'ko') || String(a.no).localeCompare(String(b.no), 'ko', { numeric: true });
   const wb = XLSX.utils.book_new(); let total = 0;
+  { // 전체 학생 한 장: 학생 한 줄, 기록 종류·과목·동아리는 열
+    const cols = ['행특', '자율·자치'], pick = {};
+    const subs = [...new Set(by['교과세특'].map(x => x.sub))].sort((a, b) => a.localeCompare(b, 'ko')), clubs = [...new Set(by['동아리'].map(x => x.sub))].sort((a, b) => a.localeCompare(b, 'ko'));
+    subs.forEach(x => cols.push('교과세특·' + x)); clubs.forEach(x => cols.push('동아리·' + x));
+    const stu = new Map(); sorted().forEach(x => stu.set(String(x.no), { no: x.no, name: x.name, v: {} }));
+    const put = (x, col) => { const k = String(x.no); if (!stu.has(k)) stu.set(k, { no: x.no, name: x.name, v: {} }); stu.get(k).v[col] = x.txt; };
+    by['행특'].forEach(x => put(x, '행특')); by['자율·자치'].forEach(x => put(x, '자율·자치'));
+    by['교과세특'].forEach(x => put(x, '교과세특·' + x.sub)); by['동아리'].forEach(x => put(x, '동아리·' + x.sub));
+    const rows = [...stu.values()].sort((a, b) => String(a.no).localeCompare(String(b.no), 'ko', { numeric: true })).map(x => [x.no, x.name, ...cols.map(c => x.v[c] || '')]);
+    if (rows.length) {
+      const ws = XLSX.utils.aoa_to_sheet([['번호', '이름', ...cols], ...rows]);
+      ws['!cols'] = [{ wch: 8 }, { wch: 10 }, ...cols.map(() => ({ wch: 50 }))];
+      XLSX.utils.book_append_sheet(wb, ws, '전체(학생별)');
+    }
+  }
   RTYPES.forEach(t => {
     const L = by[t].sort(cmp); if (!L.length) return; total += L.length;
     const sub = t === '교과세특' ? '과목' : t === '동아리' ? '동아리' : '';
