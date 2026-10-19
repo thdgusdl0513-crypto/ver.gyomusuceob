@@ -152,7 +152,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치</p>
   </form>
 </div>
 
@@ -308,7 +308,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <div class="bg-white rounded-xl border border-slate-200 p-5">
         <p id="recWho" class="font-bold mb-2"></p>
         <textarea id="recText" rows="12" disabled class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></textarea>
-        <div class="flex items-center gap-3 mt-2 flex-wrap"><span id="recCount" class="text-xs text-slate-500"></span><button id="recCopy" type="button" class="ml-auto border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">복사</button><button id="recAll" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">전체 복사 (연말용)</button></div>
+        <div class="flex items-center gap-3 mt-2 flex-wrap"><span id="recCount" class="text-xs text-slate-500"></span><button id="recCopy" type="button" class="ml-auto border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">복사</button><button id="recAll" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">전체 복사 (연말용)</button><button id="recXlsx" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">📊 엑셀로 받기</button></div>
         <p id="recHint" class="text-xs text-emerald-600 mt-2"></p>
         <div class="mt-5 pt-4 border-t border-slate-200 space-y-2">
           <div class="font-bold text-sm">✨ AI로 초안 쓰기 <span class="font-normal text-xs text-slate-500">(요청문을 만들어 드려요 · 결과를 위 칸에 붙여넣기)</span></div>
@@ -3059,6 +3059,38 @@ $('recAll').addEventListener('click', async () => {
   const txt = recPeople().map(s => { const t = (recs[recKey(s.id)] || '').trim(); return t ? `${s.no} ${s.name}\n${t}` : null; }).filter(Boolean).join('\n\n');
   $('recHint').textContent = !txt ? '작성된 내용이 없습니다.' : (await copyText(txt)) ? '작성한 전체 내용을 복사했습니다.' : '복사에 실패했습니다.';
 });
+
+function recExportXlsx() {
+  if (typeof XLSX === 'undefined') { $('recHint').textContent = '엑셀 도구를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'; return; }
+  const who = (sid, type, sub) => {
+    const s = students.find(y => y.id === sid); if (s) return { no: s.no, name: s.name };
+    if (String(sid).startsWith('r:')) { const no = sid.slice(2), r = ((recRost[type] || {})[sub] || []).find(x => String(x.no) === no); return { no, name: r ? r.name : '' }; }
+    return { no: '', name: '(삭제된 학생)' };
+  };
+  const by = {}; RTYPES.forEach(t => by[t] = []);
+  Object.keys(recs).forEach(k => {
+    const [type, sub, ...rest] = k.split('|'), sid = rest.join('|'), txt = String(recs[k] || '').trim();
+    if (!txt || !by[type]) return; const w = who(sid, type, sub);
+    by[type].push({ sub, no: w.no, name: w.name, txt });
+  });
+  const cmp = (a, b) => String(a.sub).localeCompare(String(b.sub), 'ko') || String(a.no).localeCompare(String(b.no), 'ko', { numeric: true });
+  const wb = XLSX.utils.book_new(); let total = 0;
+  RTYPES.forEach(t => {
+    const L = by[t].sort(cmp); if (!L.length) return; total += L.length;
+    const sub = t === '교과세특' ? '과목' : t === '동아리' ? '동아리' : '';
+    const head = [...(sub ? [sub] : []), '번호', '이름', '내용', '글자수', '바이트(한글3)'];
+    const rows = L.map(x => [...(sub ? [x.sub] : []), x.no, x.name, x.txt, [...x.txt].length, bytesOf(x.txt)]);
+    const ws = XLSX.utils.aoa_to_sheet([head, ...rows]);
+    ws['!cols'] = [...(sub ? [{ wch: 14 }] : []), { wch: 8 }, { wch: 10 }, { wch: 90 }, { wch: 8 }, { wch: 12 }];
+    XLSX.utils.book_append_sheet(wb, ws, t.replace('·', ''));
+  });
+  if (!total) { $('recHint').textContent = '작성된 내용이 없습니다.'; return; }
+  const d = new Date(), pad = n => String(n).padStart(2, '0');
+  const bl = new Blob([XLSX.write(wb, { type: 'array', bookType: 'xlsx' })], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), an = document.createElement('a');
+  an.href = URL.createObjectURL(bl); an.download = `기록작성_${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}.xlsx`; document.body.appendChild(an); an.click(); an.remove(); setTimeout(() => URL.revokeObjectURL(an.href), 4000);
+  $('recHint').textContent = `엑셀로 저장했습니다. (${total}명분, 다운로드 폴더를 확인하세요)`;
+}
+$('recXlsx').addEventListener('click', recExportXlsx);
 /* ===== 기록 작성: 과목·동아리 명단(출석부) · 자율자치 일정 ===== */
 let recRost = (() => { const v = jl('gm-rec-rost'); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; })();
 const saveRecRost = () => store('gm-rec-rost', recRost);
