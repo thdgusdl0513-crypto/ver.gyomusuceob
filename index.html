@@ -155,7 +155,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관</p>
   </form>
 </div>
 
@@ -597,8 +597,9 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
               <button id="abPdfAll" type="button" class="w-full border border-slate-300 bg-white hover:bg-slate-50 font-bold rounded-lg py-2">📄 선택한 것 PDF 한 파일로 저장</button>
               <button id="abListClear" type="button" class="w-full text-xs text-rose-600 underline">저장 목록 모두 비우기</button>
             </div>
+            <p id="abKeep" class="text-xs text-slate-500">💾 이 목록은 <b>직접 비우기 전까지</b> 계속 보관됩니다. (설정의 백업 파일과 PC·휴대폰 연동에도 함께 저장돼요)</p>
           </div>
-          <p class="text-xs text-slate-600">작성 → 미리보기 확인 → <b>목록에 저장</b>을 반복한 뒤, 한꺼번에 인쇄하거나 PDF 한 파일로 받을 수 있어요. 저장 목록은 이 기기에만 남습니다.</p>
+          <p class="text-xs text-slate-600">작성 → 미리보기 확인 → <b>목록에 저장</b>을 반복한 뒤, 한꺼번에 인쇄하거나 PDF 한 파일로 받을 수 있어요. 저장한 목록은 직접 비우기 전까지 계속 남아 있습니다.</p>
         </div>
         <p class="text-xs text-slate-500">A4 크기 양식이라 53mm 소형 프린터에는 맞지 않습니다. 일반 프린터로 인쇄하거나 이미지를 저장해 사용하세요. (인) 칸은 비워 두니 출력 후 직접 서명하세요.</p>
       </div>
@@ -740,9 +741,9 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
         <label class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm" style="cursor:pointer">백업에서 복원<input id="rsFile" type="file" accept=".json" class="hidden"></label>
         <button id="rstBtn" class="border border-red-300 text-red-600 hover:bg-red-50 rounded-lg px-3 py-2 text-sm">새 학년 초기화</button>
       </div>
-      <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
+      <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록과 결석신고서 저장 목록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관</p>
   </div>
 </dialog>
 
@@ -2223,7 +2224,7 @@ $('dlgClose').addEventListener('click', () => $('dlg').close());
 
 /* 백업 · 복원 · 초기화 */
 $('bkBtn').addEventListener('click', () => {
-  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, subjects: subjList, clubs: clubList, teacher: $('pTeacher').value };
+  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), teacher: $('pTeacher').value };
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
   a.download = `교무실_백업_${ymd(new Date())}.json`; a.click();
@@ -2246,18 +2247,19 @@ $('rsFile').addEventListener('change', async e => {
     if (d.schEdit) { schE = { t: d.schEdit.t || {}, c: d.schEdit.c || {} }; saveSchE(); }
     if (Array.isArray(d.subjects)) { subjList = d.subjects; store('gm-subj', subjList); }
     if (Array.isArray(d.clubs)) { clubList = d.clubs; store('gm-clubs', clubList); }
+    if (Array.isArray(d.absList) && window.absStore) absStore.set(d.absList);
     store('gm-students', students); store('gm-counsels', counsels); store('gm-pass', passes); store('gm-dday', ddays);
     renderAll(); alert('복원했습니다.');
   } catch (err) { alert('복원 실패: ' + err.message); }
 });
 $('rstBtn').addEventListener('click', () => {
-  if (!confirm('학생, 상담, 조퇴 기록을 모두 삭제합니다. 백업 파일을 먼저 저장했나요?')) return;
+  if (!confirm('학생, 상담, 조퇴 기록과 결석신고서 저장 목록을 모두 삭제합니다. 백업 파일을 먼저 저장했나요?')) return;
   if (!confirm('정말 삭제할까요? 되돌릴 수 없습니다.')) return;
   students = []; counsels = []; passes = []; memos = []; store('gm-memos', memos); evs = []; myTT = {}; store('gm-events', evs); store('gm-tt', myTT); renderMyTT();
   bg = { items: [], spends: [] }; ch = { sheets: {}, files: [], sel: '' }; saveCh(); sch = schNorm({ me: sch.me }); schE = { t: {}, c: {} }; saveSch(); saveSchE(); neisCache = {}; store(NC_KEY, {}); recs = {}; subjList = []; clubList = []; saveBg(); store(REC_KEY, recs); store('gm-subj', subjList); store('gm-clubs', clubList);
   store('gm-students', students); store('gm-counsels', counsels); store('gm-pass', passes);
   seat = normSeat(null); saveSeat(); seatRoster = []; saveRoster();
-  gAll = {}; curTerm = ''; store(G_KEY, {}); renderAll(); $('dlg').close();
+  gAll = {}; curTerm = ''; store(G_KEY, {}); if (window.absStore) absStore.clear(); renderAll(); $('dlg').close();
 });
 
 
@@ -4148,10 +4150,26 @@ function absInit() {
 
 /* ===== 결석신고서: 확인 후 저장 → 한 번에 인쇄 · PDF 한 파일 · 칸 초기화 ===== */
 (() => {
-  const KEY = 'gm-abs-list', fields = ['abNo', 'abName', 'abTel', 'abPar', 'abFrom', 'abTo', 'abReason', 'abDate', 'abOpin', 'abTeacher', 'abSchool'];
+  const KEY = 'gm-abs-list', DBN = 'gh-gm-abs', fields = ['abNo', 'abName', 'abTel', 'abPar', 'abFrom', 'abTo', 'abReason', 'abDate', 'abOpin', 'abTeacher', 'abSchool'];
   let list = []; try { const v = JSON.parse(localStorage.getItem(KEY)); if (Array.isArray(v)) list = v; } catch (e) {}
-  let editId = '', sel = new Set(list.map(x => x.id));
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) { alert('저장 공간이 부족합니다. 목록을 비워 주세요.'); } };
+  let editId = '', sel = new Set(list.map(x => x.id)), warned = false;
+  /* 저장 공간이 꽉 차거나 비워져도 목록이 날아가지 않도록 브라우저 DB에도 함께 보관 */
+  const idb = (() => {
+    let p = null;
+    const open = () => p || (p = new Promise((res, rej) => {
+      try { const r = indexedDB.open(DBN, 1); r.onupgradeneeded = () => r.result.createObjectStore('kv'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); } catch (e) { rej(e); }
+    }));
+    const tx = (mode, fn) => open().then(db => new Promise((res, rej) => { const t = db.transaction('kv', mode); const out = fn(t.objectStore('kv')); t.oncomplete = () => res(out && out.result); t.onerror = () => rej(t.error); }));
+    return { put: v => tx('readwrite', st => st.put(JSON.parse(JSON.stringify(v)), 'list')).catch(() => {}), get: () => tx('readonly', st => st.get('list')).catch(() => null) };
+  })();
+  const save = () => {
+    let ok = true;
+    try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) { ok = false; }
+    idb.put(list);
+    const k = $('abKeep');
+    if (k) { k.innerHTML = ok ? '💾 이 목록은 <b>직접 비우기 전까지</b> 계속 보관됩니다. (설정의 백업 파일과 PC·휴대폰 연동에도 함께 저장돼요)' : '⚠️ 저장 공간이 거의 찼습니다. 목록은 예비 저장소에 보관했지만, 설정에서 <b>백업 파일</b>을 받아 두세요.'; k.className = ok ? 'text-xs text-slate-500' : 'text-xs text-rose-600'; }
+    if (!ok && !warned) { warned = true; alert('이 기기의 저장 공간이 거의 찼습니다.\n\n결석신고서 목록은 예비 저장소에 보관해 두었지만, 안전하게 쓰시려면 설정에서 백업 파일을 받아 두시고 쓰지 않는 자료(학교 양식 사진 등)를 정리해 주세요.'); }
+  };
   const snap = () => { const d = absData(); return { no: d.no, name: d.name, tel: d.tel, par: d.par, from: $('abFrom').value, to: $('abTo').value, reason: d.reason, kind: d.kind, date: $('abDate').value, c: d.c, opin: d.opin, teacher: d.teacher, school: d.school }; };
   const toD = s => {
     const f = s.from ? new Date(s.from + 'T00:00:00') : null, t = s.to ? new Date(s.to + 'T00:00:00') : f, dt = s.date ? new Date(s.date + 'T00:00:00') : null;
@@ -4185,7 +4203,7 @@ function absInit() {
     save(); clearForm();
   });
   $('abListAll').addEventListener('click', () => { if (list.every(x => sel.has(x.id))) sel.clear(); else list.forEach(x => sel.add(x.id)); draw(); });
-  $('abListClear').addEventListener('click', () => { if (!list.length || !confirm(`저장된 결석신고서 ${list.length}건을 모두 지울까요?`)) return; list = []; sel.clear(); save(); clearForm(); });
+  $('abListClear').addEventListener('click', () => { if (!list.length || !confirm(`저장된 결석신고서 ${list.length}건을 모두 지울까요?\n\n이 목록은 지금 비우지 않으면 계속 보관됩니다. 되돌릴 수 없습니다.`)) return; list = []; sel.clear(); save(); clearForm(); });
   const chosen = () => list.filter(x => sel.has(x.id));
   const imgs = async (type, q) => { try { await document.fonts.load("16px 'Noto Sans KR'"); } catch (e) {} return chosen().map(s => absCanvas(toD(s))).map(cv => ({ w: cv.width, h: cv.height, url: cv.toDataURL(type, q) })); };
   $('abPrintAll').addEventListener('click', async () => {
@@ -4222,6 +4240,18 @@ function absInit() {
     a.href = URL.createObjectURL(b); a.download = `결석신고서_${arr.length}건_${d.getFullYear()}${p2(d.getMonth() + 1)}${p2(d.getDate())}.pdf`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   });
   draw();
+  /* 저장 공간이 비워져 목록이 사라졌으면 브라우저 DB에서 되살리기 */
+  idb.get().then(v => {
+    if (!Array.isArray(v) || !v.length || list.length) return;
+    list = v; sel = new Set(list.map(x => x.id));
+    try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {}
+    draw();
+  });
+  window.absStore = {
+    get: () => list,
+    set: v => { list = Array.isArray(v) ? v : []; sel = new Set(list.map(x => x.id)); editId = ''; save(); draw(); },
+    clear: () => { list = []; sel.clear(); editId = ''; save(); draw(); }
+  };
 })();
 /* ===== 우리 학교 결석계 양식 (사진·PDF 위에 글자 얹기) ===== */
 const ABFONT = "'Noto Sans KR','Malgun Gothic',sans-serif";
@@ -4375,6 +4405,7 @@ const SYNC_KEYS = [
   ['gm-grades-all', '성적 분석 자료', () => gAll, v => { gAll = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; curTerm = Object.keys(gAll).sort().pop() || ''; grades = gAll[curTerm] || null; }, 'gr'],
   ['gm-gex', '성적 제외 학생', () => gex, v => { gex = Array.isArray(v) ? v : []; $('gEx').value = gex.join(', '); }, 'gr'],
   ['gm-seat', '자리 배치', () => seat, v => { seat = normSeat(v); }, 'stu'],
+  ['gm-abs-list', '결석신고서 저장 목록', () => (window.absStore ? absStore.get() : []), v => { if (window.absStore) absStore.set(v); }, 'stu'],
   ['gm-seat-roster', '자리 배치 명단', () => seatRoster, v => { seatRoster = Array.isArray(v) ? v : []; }, 'stu'],
   ['gm-budget', '예산', () => bg, v => { bg = normBg(v); }, 'bg']
 ];
