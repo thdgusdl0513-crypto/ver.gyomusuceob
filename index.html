@@ -78,6 +78,7 @@
   @media print { body > *:not(#printArea) { display: none !important; } #printArea { display: block !important; width: 72mm; border: 1px solid #000; padding: 6mm; margin: 10mm auto 0; font-size: 11pt; line-height: 1.6; } }
   @media print { #printArea.seat-print { width: 180mm !important; } }
   @media print { #printArea.gr-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 0 auto !important; font-size: 10pt; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; } #printArea.gr-print .gr-page { break-after: page; page-break-after: always; } #printArea.gr-print .gr-page:last-child { break-after: auto; page-break-after: auto; } #printArea.gr-print table { width: 100%; border-collapse: collapse; } #printArea.gr-print th, #printArea.gr-print td { border: 1px solid #94a3b8; padding: 3px 6px; text-align: center; } #printArea.gr-print th { background: #e2e8f0; } #printArea.gr-print td:first-child { text-align: left; } }
+  @media print { #printArea.as-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 0 auto !important; font-size: 10pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; } #printArea.as-print table { width: 100%; border-collapse: collapse; } #printArea.as-print th, #printArea.as-print td { border: 1px solid #94a3b8; padding: 3px 6px; text-align: center; } #printArea.as-print th { background: #e2e8f0; } #printArea.as-print td.l { text-align: left; } }
   @media print { #printArea.abs-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 10mm auto 0 !important; } #printArea.abs-print img { max-width: 100%; max-height: 275mm; width: auto; height: auto; display: block; margin: 0 auto; } }
   @media print { #printArea.abs-multi img { break-after: page; page-break-after: always; } #printArea.abs-multi img:last-child { break-after: auto; page-break-after: auto; } }
 
@@ -155,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황</p>
   </form>
 </div>
 
@@ -605,6 +606,24 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       </div>
       <div class="bg-white rounded-xl border border-slate-200 p-3 md:p-5 overflow-auto"><img id="abView" alt="결석신고서 미리보기" class="mx-auto border border-slate-300 bg-white w-full max-w-[640px]"></div>
     </div>
+
+    <details class="fold bg-white rounded-xl border border-slate-200 mt-6" id="fold-abs" open>
+      <summary class="fold-sum font-bold px-5 py-3">📊 결석 현황 (저장한 결석신고서 모음)</summary>
+      <div class="px-5 pb-5 space-y-3">
+        <div class="flex flex-wrap items-end gap-3">
+          <label class="text-sm">시작일<input id="asFrom" type="date" class="mt-1 block border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+          <label class="text-sm">종료일<input id="asTo" type="date" class="mt-1 block border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+          <button id="asAll" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">전체 기간</button>
+          <label class="text-sm">정렬<select id="asSort" class="mt-1 block border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><option value="days">결석일수 많은 순</option><option value="no">학번 순</option><option value="name">이름 순</option></select></label>
+          <div class="ml-auto flex gap-2">
+            <button id="asPrint" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">🖨️ 인쇄</button>
+            <button id="asXlsx" type="button" class="px-3 py-2 rounded-lg bg-[#0f2747] text-white text-sm">📊 엑셀로 저장</button>
+          </div>
+        </div>
+        <p id="asInfo" class="text-xs text-slate-500"></p>
+        <div id="asOut"></div>
+      </div>
+    </details>
   </section>
 
   <section id="tab-pass" class="tab-panel hidden">
@@ -743,7 +762,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록과 결석신고서 저장 목록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황</p>
   </div>
 </dialog>
 
@@ -4187,6 +4206,7 @@ function absInit() {
       const x = el('button', 'text-slate-400 hover:text-rose-600', '삭제'); x.type = 'button'; x.onclick = () => { list = list.filter(y => y.id !== s.id); sel.delete(s.id); if (editId === s.id) { editId = ''; $('abAdd').textContent = '✅ 확인했어요 · 목록에 저장'; } save(); draw(); };
       row.append(c, b, x); L.appendChild(row);
     });
+    if (window.absStatRender) absStatRender();
   }
   function clearForm() {
     ['abNo', 'abName', 'abTel', 'abPar', 'abReason'].forEach(id => $(id).value = ''); $('abStu').value = '';
@@ -4252,6 +4272,82 @@ function absInit() {
     set: v => { list = Array.isArray(v) ? v : []; sel = new Set(list.map(x => x.id)); editId = ''; save(); draw(); },
     clear: () => { list = []; sel.clear(); editId = ''; save(); draw(); }
   };
+})();
+
+/* ===== 결석 현황 (저장한 결석신고서 집계) ===== */
+(() => {
+  const KINDS = ['질병', '인정', '기타'];
+  const nd = v => v ? new Date(v + 'T00:00:00') : null;
+  const md = v => v ? v.slice(5).replace('-', '/') : '';
+  function rows() {
+    const f = $('asFrom').value, t = $('asTo').value, map = new Map();
+    (window.absStore ? absStore.get() : []).forEach(s => {
+      const a = s.from || ''; if (!a) return;
+      let b = s.to || a; if (b < a) b = a;
+      if (f && b < f) return; if (t && a > t) return;
+      const s1 = f && a < f ? f : a, e1 = t && b > t ? t : b;
+      const days = Math.round((nd(e1) - nd(s1)) / 86400000) + 1;
+      const key = (s.no || '') + '|' + (s.name || '(이름 없음)');
+      let o = map.get(key);
+      if (!o) { o = { no: s.no || '', name: s.name || '(이름 없음)', days: 0, cnt: 0, k: { 질병: 0, 인정: 0, 기타: 0 }, items: [] }; map.set(key, o); }
+      const kind = KINDS.includes(s.kind) ? s.kind : '기타';
+      o.days += days; o.cnt++; o.k[kind] += days;
+      o.items.push({ s1, e1, days, kind, reason: s.reason || '' });
+    });
+    const L = [...map.values()], by = $('asSort').value;
+    L.sort((x, y) => by === 'no' ? String(x.no).localeCompare(String(y.no)) : by === 'name' ? x.name.localeCompare(y.name, 'ko') : (y.days - x.days) || String(x.no).localeCompare(String(y.no)));
+    L.forEach(o => o.items.sort((x, y) => x.s1.localeCompare(y.s1)));
+    return L;
+  }
+  const span = i => `${md(i.s1)}${i.e1 !== i.s1 ? '~' + md(i.e1) : ''}`;
+  function table(L, print) {
+    if (!L.length) return print ? '' : '<p class="text-sm text-slate-500 py-6 text-center">해당 기간에 저장된 결석신고서가 없습니다.</p>';
+    const tot = L.reduce((a, o) => ({ days: a.days + o.days, cnt: a.cnt + o.cnt, 질병: a.질병 + o.k.질병, 인정: a.인정 + o.k.인정, 기타: a.기타 + o.k.기타 }), { days: 0, cnt: 0, 질병: 0, 인정: 0, 기타: 0 });
+    const cls = print ? '' : ' class="px-2 py-1.5 text-center"', hcls = print ? '' : ' class="px-2 py-1 font-medium text-center whitespace-nowrap"';
+    const head = ['학번', '이름', '결석일수', '질병', '인정', '기타', '신고서', '결석 기간'].map(h => `<th${hcls}>${h}</th>`).join('');
+    const body = L.map(o => `<tr${print ? '' : ' class="border-t border-slate-100"'}><td${cls}>${esc(o.no)}</td><td${print ? ' class="l"' : ' class="px-2 py-1.5 text-center font-medium"'}>${esc(o.name)}</td><td${print ? '' : ' class="px-2 py-1.5 text-center font-bold"'}>${o.days}</td><td${cls}>${o.k.질병 || '-'}</td><td${cls}>${o.k.인정 || '-'}</td><td${cls}>${o.k.기타 || '-'}</td><td${cls}>${o.cnt}</td><td${print ? ' class="l"' : ' class="px-2 py-1.5 text-left text-xs text-slate-500"'}>${o.items.map(i => esc(span(i) + (i.reason ? ` (${i.reason})` : ''))).join(', ')}</td></tr>`).join('');
+    const foot = `<tr${print ? '' : ' class="border-t-2 border-slate-300 font-bold"'}><td${cls}></td><td${print ? ' class="l"' : ' class="px-2 py-1.5 text-center"'}>합계 ${L.length}명</td><td${cls}>${tot.days}</td><td${cls}>${tot.질병}</td><td${cls}>${tot.인정}</td><td${cls}>${tot.기타}</td><td${cls}>${tot.cnt}</td><td${cls}></td></tr>`;
+    return `<div class="overflow-x-auto"><table${print ? '' : ' class="w-full text-sm"'}><thead${print ? '' : ' class="text-slate-500 bg-slate-50"'}><tr>${head}</tr></thead><tbody>${body}${foot}</tbody></table></div>`;
+  }
+  const period = () => { const f = $('asFrom').value, t = $('asTo').value; return f || t ? `${f || '처음'} ~ ${t || '오늘'}` : '전체 기간'; };
+  function render() {
+    if (!$('asOut')) return;
+    const L = rows(), d = L.reduce((a, o) => a + o.days, 0), c = L.reduce((a, o) => a + o.cnt, 0);
+    $('asOut').innerHTML = table(L, false);
+    $('asInfo').textContent = `${period()} · 학생 ${L.length}명 · 결석 ${d}일 · 신고서 ${c}건 (저장한 결석신고서를 모아 센 값입니다)`;
+  }
+  window.absStatRender = render;
+  ['asFrom', 'asTo', 'asSort'].forEach(id => $(id).addEventListener('change', render));
+  $('asAll').addEventListener('click', () => { $('asFrom').value = ''; $('asTo').value = ''; render(); });
+  $('asPrint').addEventListener('click', () => {
+    const L = rows(); if (!L.length) { alert('인쇄할 내용이 없습니다.'); return; }
+    const c = (typeof cfg === 'object' && cfg) || {}, now = new Date();
+    const pa = $('printArea');
+    pa.innerHTML = `<h2 style="text-align:center;font-size:15pt;font-weight:700;margin:0 0 2px">결석 현황</h2>
+      <p style="text-align:center;font-size:9.5pt;color:#475569;margin:0 0 10px">${esc([c.school || '', c.cls || ''].filter(Boolean).join(' '))} · ${esc(period())} · 출력 ${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}</p>
+      ${table(L, true)}
+      <p style="font-size:8.5pt;color:#64748b;margin-top:8px">※ 저장한 결석신고서를 모아 센 값입니다. 개인정보가 담겨 있으니 보관과 폐기에 유의하세요.</p>`;
+    pa.classList.add('as-print');
+    const pg = document.createElement('style'); pg.textContent = '@page{size:A4;margin:12mm}'; document.head.appendChild(pg);
+    const done = () => { pg.remove(); pa.classList.remove('as-print'); pa.innerHTML = ''; window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done); window.print(); setTimeout(done, 60000);
+  });
+  $('asXlsx').addEventListener('click', () => {
+    const L = rows(); if (!L.length) { alert('저장할 내용이 없습니다.'); return; }
+    if (typeof XLSX === 'undefined') { alert('엑셀 도구를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'); return; }
+    const aoa = [['학번', '이름', '결석일수', '질병', '인정', '기타', '신고서 건수', '결석 기간']];
+    L.forEach(o => aoa.push([o.no, o.name, o.days, o.k.질병, o.k.인정, o.k.기타, o.cnt, o.items.map(i => span(i) + (i.reason ? ` (${i.reason})` : '')).join(', ')]));
+    aoa.push(['', `합계 ${L.length}명`, L.reduce((a, o) => a + o.days, 0), L.reduce((a, o) => a + o.k.질병, 0), L.reduce((a, o) => a + o.k.인정, 0), L.reduce((a, o) => a + o.k.기타, 0), L.reduce((a, o) => a + o.cnt, 0), '']);
+    const det = [['학번', '이름', '시작일', '종료일', '일수', '종별', '사유']];
+    L.forEach(o => o.items.forEach(i => det.push([o.no, o.name, i.s1, i.e1, i.days, i.kind, i.reason])));
+    const wb = XLSX.utils.book_new();
+    const s1 = XLSX.utils.aoa_to_sheet(aoa); s1['!cols'] = [{ wch: 8 }, { wch: 10 }, { wch: 9 }, { wch: 6 }, { wch: 6 }, { wch: 6 }, { wch: 10 }, { wch: 46 }];
+    const s2 = XLSX.utils.aoa_to_sheet(det); s2['!cols'] = [{ wch: 8 }, { wch: 10 }, { wch: 12 }, { wch: 12 }, { wch: 6 }, { wch: 7 }, { wch: 30 }];
+    XLSX.utils.book_append_sheet(wb, s1, '학생별 요약'); XLSX.utils.book_append_sheet(wb, s2, '건별 내역');
+    const n = new Date(), p2 = v => String(v).padStart(2, '0');
+    XLSX.writeFile(wb, `결석현황_${n.getFullYear()}${p2(n.getMonth() + 1)}${p2(n.getDate())}.xlsx`);
+  });
+  render();
 })();
 /* ===== 우리 학교 결석계 양식 (사진·PDF 위에 글자 얹기) ===== */
 const ABFONT = "'Noto Sans KR','Malgun Gothic',sans-serif";
@@ -4409,7 +4505,7 @@ const SYNC_KEYS = [
   ['gm-seat-roster', '자리 배치 명단', () => seatRoster, v => { seatRoster = Array.isArray(v) ? v : []; }, 'stu'],
   ['gm-budget', '예산', () => bg, v => { bg = normBg(v); }, 'bg']
 ];
-const SYNC_GROUPS = [['stu', '👩‍🎓 학생 명단·기록, 상담, 조퇴·외출 기록', true], ['rec', '📝 작성한 세특·행특·동아리 기록', true], ['gr', '📊 성적 분석 자료', true], ['bg', '💰 예산', false]];
+const SYNC_GROUPS = [['stu', '👩‍🎓 학생 명단·기록, 상담, 조퇴·외출, 결석신고서 목록, 자리 배치', true], ['rec', '📝 작성한 세특·행특·동아리 기록', true], ['gr', '📊 성적 분석 자료', true], ['bg', '💰 예산', false]];
 const syncOn = g => !g || !!syncCfg.opt[g];
 const hashStr = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0; return h.toString(36) + ':' + s.length; };
 const isEmptyVal = v => v == null || v === '' || (Array.isArray(v) ? v.length === 0 : typeof v === 'object' ? Object.values(v).every(isEmptyVal) : false);
