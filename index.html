@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정</p>
   </form>
 </div>
 
@@ -422,7 +422,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <div class="grid lg:grid-cols-[380px_1fr] gap-6 items-start">
       <div class="space-y-6">
       <form id="cForm" class="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
-        <h2 class="font-bold text-lg">📝 상담 기록 작성</h2>
+        <h2 id="cFormTitle" class="font-bold text-lg">📝 상담 기록 작성</h2>
         <label class="text-sm block">학생
           <select id="cStu" required class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></select>
         </label>
@@ -440,7 +440,10 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
         <label class="text-sm block">상세 내용
           <textarea id="cDetail" rows="6" required class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></textarea>
         </label>
-        <button class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">상담 저장</button>
+        <div class="flex gap-2">
+          <button id="cSubmit" class="flex-1 bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">상담 저장</button>
+          <button id="cCancel" type="button" class="hidden border border-slate-300 bg-white hover:bg-slate-50 font-bold rounded-lg px-4 py-2.5 text-sm">취소</button>
+        </div>
       </form>
 
       <section class="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
@@ -762,7 +765,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록과 결석신고서 저장 목록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정</p>
   </div>
 </dialog>
 
@@ -2420,19 +2423,38 @@ $('sSearch').addEventListener('input', renderStudents);
 /* 상담 관리자 */
 $('cDate').value = ymd(now);
 const TYPE_CLR = { 면담: 'bg-sky-100 text-sky-900', 전화: 'bg-emerald-100 text-emerald-700', 방문: 'bg-amber-100 text-amber-900' };
+let cEdit = '';
+function cSyncForm() {
+  const on = !!cEdit, f = $('cForm');
+  $('cFormTitle').textContent = on ? '✏️ 상담 기록 수정' : '📝 상담 기록 작성';
+  $('cSubmit').textContent = on ? '수정 내용 저장' : '상담 저장';
+  $('cCancel').classList.toggle('hidden', !on);
+  f.classList.toggle('ring-2', on); f.classList.toggle('ring-sky-400', on);
+}
+function cLoad(c) {
+  $('cStu').value = c.sid; $('cDate').value = c.date || ymd(new Date());
+  $('cType').value = c.type || '면담'; $('cArea').value = c.area || '진로'; $('cDetail').value = c.detail || '';
+  cEdit = c.id; cSyncForm(); renderTimeline();
+  try { $('cForm').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+  $('cDetail').focus();
+}
+function cReset() { cEdit = ''; $('cDetail').value = ''; $('cDate').value = ymd(new Date()); cSyncForm(); renderTimeline(); }
 function renderTimeline() {
   const f = $('cFilter').value;
+  if (cEdit && !counsels.some(x => x.id === cEdit)) { cEdit = ''; cSyncForm(); }
   const list = counsels.filter(c => !f || c.sid === f).sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
   $('timeline').innerHTML = '';
   list.forEach(c => {
-    const li = el('li', 'relative pl-6');
+    const li = el('li', 'relative pl-6' + (cEdit === c.id ? ' bg-sky-50 rounded-lg py-1' : ''));
     li.appendChild(el('span', 'absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-[#0f2747] ring-4 ring-white'));
     const head = el('div', 'flex items-center gap-2 flex-wrap');
     head.append(el('span', 'font-bold', c.date), el('span', 'text-sm', stuName(c.sid)),
       el('span', `text-xs px-2 py-0.5 rounded ${TYPE_CLR[c.type]}`, c.type), el('span', 'text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-600', c.area));
-    const del = el('button', 'ml-auto text-xs text-slate-400 hover:text-red-600', '삭제');
-    del.onclick = () => { if (confirm('이 상담 기록을 삭제할까요?')) { counsels = counsels.filter(x => x.id !== c.id); store('gm-counsels', counsels); renderAll(); } };
-    head.appendChild(del);
+    const edit = el('button', 'ml-auto text-xs text-slate-400 hover:text-sky-700', '수정');
+    edit.type = 'button'; edit.onclick = () => cLoad(c);
+    const del = el('button', 'text-xs text-slate-400 hover:text-red-600', '삭제'); del.type = 'button';
+    del.onclick = () => { if (confirm('이 상담 기록을 삭제할까요?')) { counsels = counsels.filter(x => x.id !== c.id); if (cEdit === c.id) cEdit = ''; store('gm-counsels', counsels); cSyncForm(); renderAll(); } };
+    head.append(edit, del);
     li.append(head, el('p', 'text-sm text-slate-600 mt-1 whitespace-pre-wrap', c.detail));
     $('timeline').appendChild(li);
   });
@@ -2442,9 +2464,13 @@ $('cFilter').addEventListener('change', renderTimeline);
 $('cForm').addEventListener('submit', e => {
   e.preventDefault();
   if (!$('cStu').value) { alert('학생을 먼저 선택하세요. 학생이 없다면 "학생 기록 관리"에서 등록하세요.'); return; }
-  counsels.push({ id: uid(), sid: $('cStu').value, date: $('cDate').value, type: $('cType').value, area: $('cArea').value, detail: $('cDetail').value.trim() });
-  store('gm-counsels', counsels); $('cDetail').value = ''; $('cFilter').value = $('cStu').value; renderAll();
+  const v = { sid: $('cStu').value, date: $('cDate').value, type: $('cType').value, area: $('cArea').value, detail: $('cDetail').value.trim() };
+  if (cEdit) { const i = counsels.findIndex(x => x.id === cEdit); if (i >= 0) counsels[i] = Object.assign({}, counsels[i], v); cEdit = ''; }
+  else counsels.push(Object.assign({ id: uid() }, v));
+  store('gm-counsels', counsels); $('cDetail').value = ''; $('cFilter').value = v.sid; cSyncForm(); renderAll();
 });
+$('cCancel').addEventListener('click', cReset);
+cSyncForm();
 
 /* 학부모 문자 도우미: 요청문 복사 → 외부 AI 채팅에 붙여넣기 → 결과를 붙여넣고 다듬어 복사 */
 const copyText = async t => {
