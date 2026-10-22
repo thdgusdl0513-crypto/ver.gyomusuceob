@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정</p>
   </form>
 </div>
 
@@ -762,7 +762,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록과 결석신고서 저장 목록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 저장공간 분리 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정</p>
   </div>
 </dialog>
 
@@ -2975,13 +2975,47 @@ $('gFile').addEventListener('change', async e => {
 
 /* ===== 할 일 · 스티커 메모 ===== */
 const MEMO_KEY = 'gm-memos', MC = { y: 'bg-yellow-200', p: 'bg-orange-200', g: 'bg-green-200', b: 'bg-sky-200' }, CATS = ['담임', '수업', '업무'], CEMO = { 담임: '🧑‍🏫', 수업: '📚', 업무: '💼' };
-let memos = load(MEMO_KEY), mmColor = 'y', mmView = 'all', mmCat = 'all', mmRange = 'all';
+let memos = load(MEMO_KEY), mmColor = 'y', mmView = 'all', mmCat = 'all', mmRange = 'all', mmEdit = '';
 const weekEnd = () => { const d = new Date(base); d.setDate(d.getDate() + (7 - d.getDay()) % 7); return ymd(d); };
 function chips(box, items, cur, set) {
   items.forEach(([k, t]) => {
     const b = el('button', `px-3 py-1 rounded-full border ${cur === k ? 'bg-[#0f2747] text-white border-[#0f2747]' : 'border-slate-300 bg-white'}`, t);
     b.onclick = () => { set(k); renderMemos(); }; box.appendChild(b);
   });
+}
+function memoEditCard(m) {
+  const card = el('div', `rounded-lg p-4 shadow-sm flex flex-col gap-2 ring-2 ring-slate-700 ${MC[m.color] || MC.y}`);
+  const ta = el('textarea', 'w-full border border-slate-300 rounded-lg px-2 py-1.5 text-sm bg-white resize-y');
+  ta.rows = 4; ta.maxLength = 1000; ta.value = m.text || '';
+  const row = el('div', 'flex flex-wrap gap-2');
+  const cat = el('select', 'border border-slate-300 rounded-lg px-2 py-1.5 text-xs bg-white');
+  [['', '분류 없음'], ...CATS.map(c => [c, `${CEMO[c]} ${c}`])].forEach(([v, t]) => { const o = el('option', '', t); o.value = v; cat.appendChild(o); });
+  cat.value = m.cat || '';
+  const due = el('input', 'border border-slate-300 rounded-lg px-2 py-1.5 text-xs bg-white'); due.type = 'date'; due.title = '마감일'; due.value = m.due || '';
+  const noDue = el('button', 'text-xs underline text-slate-600', '마감 지우기'); noDue.type = 'button'; noDue.onclick = () => { due.value = ''; };
+  row.append(cat, due, noDue);
+  const cols = el('div', 'flex gap-2'); let color = m.color || 'y';
+  const paint = () => [...cols.children].forEach(b => { b.className = `w-6 h-6 rounded-full ${MC[b.dataset.c]} ${b.dataset.c === color ? 'ring-2 ring-offset-1 ring-slate-700' : ''}`; });
+  Object.keys(MC).forEach(k => { const b = el('button'); b.type = 'button'; b.dataset.c = k; b.setAttribute('aria-label', '색상 선택'); b.onclick = () => { color = k; paint(); }; cols.appendChild(b); });
+  paint();
+  const btns = el('div', 'flex gap-2 justify-end items-center');
+  const cancel = el('button', 'text-xs border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5', '취소');
+  cancel.type = 'button'; cancel.onclick = () => { mmEdit = ''; renderMemos(); };
+  const save = el('button', 'text-xs bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg px-3 py-1.5', '저장');
+  save.type = 'button';
+  save.onclick = () => {
+    const tx = ta.value.trim(); if (!tx) { alert('메모 내용을 입력해 주세요.'); ta.focus(); return; }
+    m.text = tx; m.cat = cat.value; m.due = due.value; m.color = color;
+    store(MEMO_KEY, memos); mmEdit = ''; renderMemos(); renderDash();
+  };
+  btns.append(cancel, save);
+  ta.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); save.click(); }
+    else if (e.key === 'Escape') { e.preventDefault(); cancel.click(); }
+  });
+  setTimeout(() => { try { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); } catch (e) {} }, 0);
+  card.append(ta, row, cols, el('p', 'text-xs text-slate-600', 'Ctrl+Enter로 저장, Esc로 취소'), btns);
+  return card;
 }
 function renderMemos() {
   const cbox = $('mmColors'); cbox.innerHTML = '';
@@ -3003,17 +3037,22 @@ function renderMemos() {
   const list = memos.filter(m => (mmView === 'all' || (mmView === 'done') === m.done) && (mmCat === 'all' || m.cat === mmCat) && (mmRange === 'all' || (m.due && m.due <= lim)))
     .sort((a, b) => a.done - b.done || (a.due || '9').localeCompare(b.due || '9'));
   const board = $('mmBoard'); board.innerHTML = '';
+  if (mmEdit && !memos.some(x => x.id === mmEdit)) mmEdit = '';
   list.forEach(m => {
+    if (mmEdit === m.id) { board.appendChild(memoEditCard(m)); return; }
     const card = el('div', `rounded-lg p-4 shadow-sm flex flex-col gap-3 ${MC[m.color] || MC.y} ${m.done ? 'opacity-60' : ''}`);
     const lab = el('label', 'flex items-start gap-2 cursor-pointer');
     const cb = el('input'); cb.type = 'checkbox'; cb.checked = m.done; cb.className = 'mt-1 w-4 h-4';
-    cb.onchange = () => { m.done = cb.checked; store(MEMO_KEY, memos); renderMemos(); };
+    cb.onchange = () => { m.done = cb.checked; store(MEMO_KEY, memos); renderMemos(); renderDash(); };
     lab.append(cb, el('span', `text-sm whitespace-pre-wrap break-words ${m.done ? 'line-through' : ''}`, m.text));
     const foot = el('div', 'flex items-center justify-between text-xs text-slate-600');
     const late = m.due && m.due < t && !m.done, meta = [m.cat ? `${CEMO[m.cat] || ''} ${m.cat}` : '', m.due ? '마감 ' + m.due.slice(5).replace('-', '/') : ''].filter(Boolean).join(' · ');
-    const del = el('button', 'hover:text-red-600', '삭제');
-    del.onclick = () => { memos = memos.filter(x => x !== m); store(MEMO_KEY, memos); renderMemos(); };
-    foot.append(el('span', late ? 'text-red-600 font-bold' : '', meta || m.date), del); card.append(lab, foot); board.appendChild(card);
+    const edit = el('button', 'hover:text-sky-700', '수정'); edit.type = 'button';
+    edit.onclick = () => { mmEdit = m.id; renderMemos(); };
+    const del = el('button', 'hover:text-red-600', '삭제'); del.type = 'button';
+    del.onclick = () => { if (!confirm('이 메모를 지울까요?')) return; memos = memos.filter(x => x !== m); store(MEMO_KEY, memos); renderMemos(); renderDash(); };
+    const acts = el('div', 'flex gap-2 shrink-0'); acts.append(edit, del);
+    foot.append(el('span', late ? 'text-red-600 font-bold' : '', meta || m.date), acts); card.append(lab, foot); board.appendChild(card);
   });
   $('mmEmpty').classList.toggle('hidden', list.length > 0);
 }
