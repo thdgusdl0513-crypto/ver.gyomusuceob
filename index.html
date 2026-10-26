@@ -144,7 +144,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 표준</p>
   </form>
 </div>
 
@@ -651,7 +651,8 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
             <label class="text-sm">종료 시간 (선택)<input id="pEnd" type="time" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
           </div>
           <label class="text-sm block">담임(학년부장) 성함<input id="pTeacher" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
-          <button class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">발급 및 인쇄하기</button>
+          <button id="pIssue" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">발급 및 인쇄하기</button>
+          <p id="pMsg" class="hidden text-xs text-center text-slate-600"></p>
           <button id="pImgBtn" type="button" class="w-full border border-slate-300 bg-white hover:bg-slate-50 font-bold rounded-lg py-2.5">🖼️ 이미지로 저장·공유 (Phomemo 앱 등으로 출력)</button>
           <div id="pImgOut" class="hidden text-center space-y-2 p-3 rounded-lg bg-slate-50 border border-slate-200">
             <p class="text-xs text-slate-600">이미지를 길게 눌러 저장하거나, 아래 버튼으로 공유·저장하세요. 프린터 앱에서 이 이미지를 열어 출력합니다.</p>
@@ -665,14 +666,19 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           <select id="pType" class="mt-2 w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm">
             <option value="escpos">58mm 영수증 프린터 (PPS1 등)</option>
             <option value="niimbot">님봇 B1 라벨 프린터 (50×90mm)</option>
-            <option value="m02s">Meemo/Phomemo M02S (53mm 용지)</option>
+            <option value="m02s">Phomemo·Meemo M02 계열 (M02 / M02S / M03 / T02)</option>
           </select>
-          <label id="m02Row" class="hidden block mt-2 text-xs text-slate-500">M02S 인쇄 폭(픽셀) · 출력이 잘리거나 비뚤어지면 다른 값을 선택하세요
-            <select id="m02Width" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm text-slate-800"><option value="576">576 (기본)</option><option value="512">512</option><option value="384">384</option></select>
-          </label>
+          <div id="m02Row" class="hidden mt-2 space-y-2">
+            <label class="block text-xs text-slate-500">전송 방식 · 종이가 안 나오고 불만 깜빡이면 다른 방식으로 바꿔 보세요
+              <select id="m02Mode" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm text-slate-800"><option value="std">표준 (M02 · M02S · T02)</option><option value="old">예전 방식</option></select>
+            </label>
+            <label class="block text-xs text-slate-500">인쇄 폭(픽셀) · 출력이 잘리면 다른 값을 선택하세요 (M02·T02는 384)
+              <select id="m02Width" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm text-slate-800"><option value="384">384 (M02·T02)</option><option value="576">576 (M02S)</option><option value="512">512</option></select>
+            </label>
+          </div>
           <div class="flex items-center gap-2 mt-2">
             <button id="btConn" type="button" class="bg-slate-800 hover:bg-slate-700 text-white text-sm rounded-lg px-4 py-2">블루투스 연결</button>
-            <button id="btDisc" type="button" class="text-sm text-slate-500 hover:text-red-600 hidden">연결 해제</button>
+            <button id="btTest" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">🧾 테스트 인쇄</button><button id="btDisc" type="button" class="text-sm text-slate-500 hover:text-red-600 hidden">연결 해제</button>
           </div>
           <p id="btStatus" class="text-xs text-slate-500 mt-2">연결 안 됨 · 발급 시 브라우저 인쇄창이 열립니다.</p>
         </div>
@@ -747,7 +753,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록과 결석신고서 저장 목록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 표준</p>
   </div>
 </dialog>
 
@@ -2646,10 +2652,60 @@ async function nbConnect() {
   } catch (e) { nbOn = false; btMsg(btWhy(e), false); }
 }
 /* Meemo/Phomemo M02S: 접두 10 FF FE 01 + ESC @ + ESC 7 + GS v 0 래스터, 서비스 FF00 / 쓰기 FF02 */
-try { const w = localStorage.getItem('gm-m02w'); if (w) $('m02Width').value = w; } catch (e) {}
+try { const w = localStorage.getItem('gm-m02w'); if (w) $('m02Width').value = w; const md = localStorage.getItem('gm-m02m'); if (md) $('m02Mode').value = md; } catch (e) {}
 const syncM02 = () => $('m02Row').classList.toggle('hidden', $('pType').value !== 'm02s');
 $('pType').addEventListener('change', syncM02); syncM02();
 $('m02Width').addEventListener('change', () => { try { localStorage.setItem('gm-m02w', $('m02Width').value); } catch (e) {} });
+$('m02Mode').addEventListener('change', () => { try { localStorage.setItem('gm-m02m', $('m02Mode').value); } catch (e) {} });
+const m02Mode = () => ($('m02Mode') && $('m02Mode').value) || 'std';
+/* 캔버스 → 프린터 자료 (조퇴증과 테스트 인쇄가 같은 길을 쓰도록 분리) */
+function packRaster(cv, mode) {
+  const W = cv.width, H = cv.height, x = cv.getContext('2d');
+  const d = x.getImageData(0, 0, W, H).data, bw = W / 8;
+  /* std: Phomemo M02 계열이 실제로 쓰는 순서 (초기화 → 가운데 정렬 → 1F 11 02 04 → 래스터 → 마무리) */
+  const out = mode === 'escpos' ? [0x1b, 0x40]
+    : mode === 'old' ? [0x10, 0xff, 0xfe, 0x01, 0x1b, 0x40, 0x1b, 0x37, 0x07, 0x8c, 0x02]
+    : [0x1b, 0x40, 0x1b, 0x61, 0x01, 0x1f, 0x11, 0x02, 0x04];
+  const step = mode === 'escpos' ? 128 : 255;
+  for (let r0 = 0; r0 < H; r0 += step) {
+    const h = Math.min(step, H - r0);
+    out.push(0x1d, 0x76, 0x30, 0, bw & 255, bw >> 8, h & 255, h >> 8);
+    for (let r = r0; r < r0 + h; r++) for (let b = 0; b < bw; b++) {
+      let v = 0; for (let j = 0; j < 8; j++) if (d[(r * W + b * 8 + j) * 4] < 128) v |= 0x80 >> j;
+      out.push(v);
+    }
+  }
+  if (mode === 'escpos') out.push(0x1b, 0x64, 4);
+  else if (mode === 'old') out.push(0x1b, 0x4a, 0x50);
+  else out.push(0x1b, 0x64, 0x02, 0x1b, 0x64, 0x02, 0x1f, 0x11, 0x08, 0x1f, 0x11, 0x0e, 0x1f, 0x11, 0x07, 0x1f, 0x11, 0x09);
+  return new Uint8Array(out);
+}
+function testCanvas(W) {
+  const k = W / 384, cv = document.createElement('canvas'), H = Math.ceil(260 * k);
+  cv.width = W; cv.height = H;
+  const x = cv.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.fillStyle = '#000'; x.textBaseline = 'top';
+  x.textAlign = 'center'; x.font = `700 ${Math.round(30 * k)}px 'Noto Sans KR','Malgun Gothic',sans-serif`;
+  x.fillText('테스트 인쇄', W / 2, 16 * k);
+  x.font = `${Math.round(20 * k)}px 'Noto Sans KR','Malgun Gothic',sans-serif`;
+  x.fillText(`가로 ${W}점 · ${new Date().toLocaleTimeString('ko-KR')}`, W / 2, 60 * k);
+  x.fillText('ABC 가나다 123', W / 2, 92 * k);
+  x.fillRect(0, 130 * k, W, 18 * k);                       // 꽉 찬 검은 띠
+  for (let i = 0; i < 16; i++) { if (i % 2 === 0) x.fillRect(i * (W / 16), 160 * k, W / 16, 18 * k); }
+  x.fillText('↑ 띠가 끝까지 나오면 폭이 맞습니다', W / 2, 190 * k);
+  return cv;
+}
+async function btTestPrint() {
+  const t = $('pType').value;
+  if (t === 'niimbot') { alert('님봇 라벨 프린터는 테스트 인쇄를 지원하지 않습니다. 조퇴증을 직접 발급해 보세요.'); return; }
+  if (!(btChar && btDev && btDev.gatt && btDev.gatt.connected)) { alert('먼저 "블루투스 연결"을 눌러 프린터를 연결해 주세요.'); return; }
+  const W = t === 'm02s' ? (+$('m02Width').value || 576) : 384;
+  try {
+    try { await document.fonts.load("24px 'Noto Sans KR'"); } catch (e) {}
+    btMsg('테스트 자료를 보내는 중…', false);
+    await btSend(packRaster(testCanvas(W), t === 'm02s' ? m02Mode() : 'escpos'));
+    btMsg('테스트 자료를 보냈습니다. 종이가 안 나오면 ① 용지 방향을 뒤집고 ② 덮개를 다시 닫고 ③ 충전기를 꽂은 뒤, 그래도 안 되면 프린터 종류와 인쇄 폭을 바꿔 보세요.', true);
+  } catch (e) { btMsg('테스트 전송 실패: ' + e.message, false); }
+}
 function m02Receipt(p) {
   const W = +$('m02Width').value, k = W / 384, L = receiptLines(p), cv = document.createElement('canvas');
   const H = Math.ceil(L.reduce((a, l) => a + ((l.s || 24) + 14) * k, 0) + 40 * k);
@@ -2663,17 +2719,7 @@ function m02Receipt(p) {
     x.textAlign = l.c ? 'center' : 'left';
     x.fillText(l.t, l.c ? W / 2 : 6 * k, y); y += s + 14 * k;
   }
-  const d = x.getImageData(0, 0, W, H).data, bw = W / 8, out = [0x10, 0xff, 0xfe, 0x01, 0x1b, 0x40, 0x1b, 0x37, 0x07, 0x8c, 0x02];
-  for (let r0 = 0; r0 < H; r0 += 255) {
-    const h = Math.min(255, H - r0);
-    out.push(0x1d, 0x76, 0x30, 0, bw & 255, bw >> 8, h & 255, h >> 8);
-    for (let r = r0; r < r0 + h; r++) for (let b = 0; b < bw; b++) {
-      let v = 0; for (let j = 0; j < 8; j++) if (d[(r * W + b * 8 + j) * 4] < 128) v |= 0x80 >> j;
-      out.push(v);
-    }
-  }
-  out.push(0x1b, 0x4a, 0x50); // 종이 조금 밀어내기
-  return new Uint8Array(out);
+  return packRaster(cv, m02Mode());
 }
 const btWhy = e => e.name === 'TimeoutError' ? '프린터가 응답하지 않습니다. ① 프린터 전원을 껐다 켜고 ② 폰의 프린터 앱·다른 PC에 연결돼 있으면 끊고 ③ Windows 설정 > Bluetooth에 등록된 프린터가 있으면 "장치 제거" 후 다시 연결해 주세요.' : e.name === 'NotFoundError' ? `기기를 고르지 않았거나 찾지 못했습니다. (${e.message}) 프린터 전원과 PC 블루투스를 확인한 뒤 다시 눌러 주세요.` : e.name === 'SecurityError' ? '이 화면에서는 블루투스를 쓸 수 없습니다. 설치한 프로그램이나 Chrome·Edge에서 열어 주세요.' : `연결 실패: ${e.message}`;
 async function btReady() {
@@ -2728,6 +2774,19 @@ $('btDisc').addEventListener('click', () => {
   if (nbOn) { try { Niimbot.disconnect(); } catch (e) {} nbOn = false; btMsg('연결 해제됨 · 발급 시 브라우저 인쇄창이 열립니다.', false); return; }
   if (btDev && btDev.gatt.connected) btDev.gatt.disconnect(); });
 
+$('btTest').addEventListener('click', btTestPrint);
+/* 발급 전 확인: 빈 칸이 있으면 조용히 멈추지 않고 무엇이 비었는지 알려 준다 */
+function pMsg(t) { const e = $('pMsg'); if (!e) return; e.textContent = t || ''; e.classList.toggle('hidden', !t); }
+$('pIssue').addEventListener('click', e => {
+  if (!$('pStart').value) setNow();
+  const f = $('pForm'); if (f.checkValidity()) { pMsg(''); return; }
+  e.preventDefault();
+  const L = { pNo: '학번', pName: '이름', pStart: '시작 시간' };
+  const bad = [...f.elements].find(x => x.willValidate && !x.checkValidity());
+  alert(`${(bad && L[bad.id]) || '빈'} 칸을 채워야 발급할 수 있습니다.\n\n위에서 학생을 고르면 학번과 이름이 자동으로 들어갑니다. 명단이 비어 있으면 직접 적어 주세요.`);
+  if (bad) bad.focus();
+  f.reportValidity();
+});
 /* 인쇄 직전 정리: 앞서 쓴 인쇄 전용 서식이 남아 있으면 지운다 */
 function printReset() {
   try {
@@ -2783,17 +2842,18 @@ $('pForm').addEventListener('submit', async e => {
     try {
       await document.fonts.load("24px 'Noto Sans KR'");
       await Niimbot.printImage(labelImage(p), { model: NB_MODEL, size: NB_SIZE, onProgress: s => console.log(s) });
-      btMsg('인쇄 완료', true); $('btDisc').classList.remove('hidden'); return;
+      btMsg('프린터로 보냈습니다. 종이가 안 나오고 전원 표시등이 깜빡이면 용지 방향·덮개·배터리를 확인하세요.', true); $('btDisc').classList.remove('hidden'); return;
     } catch (err) { btMsg('라벨 출력 실패, 브라우저 인쇄로 전환합니다: ' + err.message, false); }
   } else if ($('pType').value !== 'niimbot' && btChar && btDev && btDev.gatt.connected) {
     try {
       await document.fonts.load("24px 'Noto Sans KR'");
       await btSend($('pType').value === 'm02s' ? m02Receipt(p) : escposReceipt(p));
-      btMsg('인쇄 완료', true); return;
+      btMsg('프린터로 보냈습니다. 종이가 안 나오고 전원 표시등이 깜빡이면 용지 방향·덮개·배터리, 그리고 위의 프린터 종류가 맞는지 확인하세요.', true); return;
     } catch (err) { btMsg('프린터 전송 실패, 브라우저 인쇄로 전환합니다: ' + err.message, false); }
   }
   printReset();
   const pa = $('printArea'); pa.innerHTML = '';
+  pMsg('인쇄 창을 열었습니다. 창이 뜨지 않으면 아래 "🖼️ 이미지로 저장·공유"로 출력해 주세요.');
   receiptLines(p).forEach(l => { const d = el('div', '', l.t || '\u00a0'); if (l.c) d.style.textAlign = 'center'; if (l.b) d.style.fontWeight = '700'; if (l.s) d.style.fontSize = Math.round(l.s * 0.5) + 'pt'; pa.appendChild(d); });
   window.print();
 });
