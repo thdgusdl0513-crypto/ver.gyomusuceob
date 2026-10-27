@@ -146,7 +146,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄</p>
   </form>
 </div>
 
@@ -172,7 +172,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="gong">📑 공문 작성</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="counsel">💬 상담 관리자</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="records">🎒 학생 기록 관리</button>
-    <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="pass">🎫 조퇴증 발급</button>
+    <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="pass">🎫 조퇴/외출증 발급</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="seat">🪑 자리 배치</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="absent">📄 결석신고서</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="gicho">🌱 기초조사서</button>
@@ -687,7 +687,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <div class="grid lg:grid-cols-[400px_1fr] gap-6 items-start">
       <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-4">
         <form id="pForm" class="space-y-4">
-          <h2 class="font-bold text-lg">🎫 조퇴증(외출증) 발급</h2>
+          <h2 class="font-bold text-lg">🎫 조퇴/외출증 발급</h2>
           <label class="text-sm block">학생 선택
             <select id="pStu" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></select>
           </label>
@@ -747,6 +747,31 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
             <button id="btTest" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">🧾 테스트 인쇄</button><button id="btDisc" type="button" class="text-sm text-slate-500 hover:text-red-600 hidden">연결 해제</button>
           </div>
           <p id="btStatus" class="text-xs text-slate-500 mt-2">연결 안 됨 · 발급 시 브라우저 인쇄창이 열립니다.</p>
+        </div>
+
+        <div class="border border-slate-200 rounded-lg p-4 bg-slate-50 space-y-3">
+          <p class="text-sm font-bold">🖼️ 사진·그림 그대로 인쇄</p>
+          <p class="text-xs text-slate-500">사진이나 그림 파일을 올리면 프린터 폭에 맞춰 흑백으로 바꿔 그대로 찍어 줍니다. 메모, 안내문, QR 코드 등에 쓰세요.</p>
+          <input id="picFile" type="file" accept="image/*" class="block text-sm w-full">
+          <div id="picBox" class="hidden space-y-3">
+            <label class="block text-xs text-slate-500">진하기 <span id="picThV" class="text-slate-700 font-bold"></span>
+              <input id="picTh" type="range" min="60" max="200" value="128" class="w-full">
+            </label>
+            <label class="flex items-center gap-2 text-xs"><input id="picDither" type="checkbox" checked> 사진처럼 부드럽게 (끄면 글씨·도장이 또렷해집니다)</label>
+            <div class="bg-white border border-slate-200 rounded-lg p-2 text-center overflow-auto max-h-80">
+              <canvas id="picCv" class="mx-auto max-w-full" style="image-rendering:pixelated"></canvas>
+            </div>
+            <p id="picInfo" class="text-xs text-slate-500"></p>
+            <div class="grid gap-2">
+              <button id="picBt" type="button" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2">🖨️ 블루투스 프린터로 인쇄</button>
+              <div class="flex gap-2">
+                <button id="picPrn" type="button" class="flex-1 border border-slate-300 bg-white hover:bg-slate-50 rounded-lg py-2 text-sm">🖨️ 일반 인쇄</button>
+                <button id="picSave" type="button" class="flex-1 border border-slate-300 bg-white hover:bg-slate-50 rounded-lg py-2 text-sm">💾 이미지 저장</button>
+                <button id="picDel" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">🗑️</button>
+              </div>
+            </div>
+            <p id="picMsg" class="text-xs text-slate-600"></p>
+          </div>
         </div>
       </div>
 
@@ -819,7 +844,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록과 결석신고서 저장 목록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄</p>
   </div>
 </dialog>
 
@@ -4488,6 +4513,85 @@ function absInit() {
 })();
 
 
+
+/* ===== 올린 사진을 프린터로 그대로 인쇄 ===== */
+(() => {
+  let img = null;
+  const msg = (t, ok) => { $('picMsg').textContent = t || ''; $('picMsg').className = 'text-xs ' + (ok ? 'text-emerald-700' : 'text-slate-600'); };
+  const printW = () => $('pType').value === 'm02s' ? (+$('m02Width').value || 576) : 384;
+  function render() {
+    if (!img) return;
+    const w = printW(), scale = w / img.width;
+    let h = Math.max(1, Math.round(img.height * scale));
+    if (h > 2400) h = 2400;                       // 너무 길면 자름 (약 30cm)
+    const cv = $('picCv'); cv.width = w; cv.height = h;
+    const x = cv.getContext('2d', { willReadFrequently: true });
+    x.fillStyle = '#fff'; x.fillRect(0, 0, w, h);
+    x.drawImage(img, 0, 0, w, Math.round(img.height * scale));
+    const d = x.getImageData(0, 0, w, h), p = d.data, th = +$('picTh').value, n = w * h;
+    const g = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const a = p[i * 4 + 3] / 255;               // 투명한 곳은 흰색으로
+      g[i] = (0.299 * p[i * 4] + 0.587 * p[i * 4 + 1] + 0.114 * p[i * 4 + 2]) * a + 255 * (1 - a);
+    }
+    if ($('picDither').checked) {
+      for (let y = 0; y < h; y++) for (let xx = 0; xx < w; xx++) {
+        const i = y * w + xx, old = g[i], nv = old < th ? 0 : 255, err = old - nv;
+        g[i] = nv;
+        if (xx + 1 < w) g[i + 1] += err * 7 / 16;
+        if (y + 1 < h) {
+          if (xx > 0) g[i + w - 1] += err * 3 / 16;
+          g[i + w] += err * 5 / 16;
+          if (xx + 1 < w) g[i + w + 1] += err * 1 / 16;
+        }
+      }
+    } else for (let i = 0; i < n; i++) g[i] = g[i] < th ? 0 : 255;
+    for (let i = 0; i < n; i++) { const v = g[i] < 128 ? 0 : 255; p[i * 4] = p[i * 4 + 1] = p[i * 4 + 2] = v; p[i * 4 + 3] = 255; }
+    x.putImageData(d, 0, 0);
+    cv.style.width = Math.min(w, 260) + 'px';
+    $('picThV').textContent = th < 110 ? '연하게' : th > 150 ? '진하게' : '보통';
+    $('picInfo').textContent = `${w} × ${h} 점 · 종이 약 ${Math.round(h / 8)}mm 길이${Math.round(img.height * scale) > 2400 ? ' (너무 길어서 아래를 잘랐습니다)' : ''}`;
+  }
+  $('picFile').addEventListener('change', e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    if (!/^image\//.test(f.type)) { alert('사진이나 그림 파일(JPG·PNG 등)만 인쇄할 수 있습니다. 문서라면 화면을 캡처해서 올려 주세요.'); return; }
+    const url = URL.createObjectURL(f), im = new Image();
+    im.onload = () => { img = im; $('picBox').classList.remove('hidden'); render(); msg(''); URL.revokeObjectURL(url); };
+    im.onerror = () => { alert('그림을 읽지 못했습니다. 다른 파일로 해 보세요.'); URL.revokeObjectURL(url); };
+    im.src = url;
+  });
+  ['picTh', 'picDither'].forEach(id => $(id).addEventListener('input', render));
+  $('pType').addEventListener('change', render);
+  $('m02Width').addEventListener('change', render);
+  $('picDel').addEventListener('click', () => { img = null; $('picBox').classList.add('hidden'); msg(''); });
+  $('picBt').addEventListener('click', async () => {
+    if (!img) return;
+    const t = $('pType').value;
+    if (t === 'niimbot') { alert('님봇 라벨 프린터는 사진 인쇄를 지원하지 않습니다. "일반 인쇄"를 쓰거나 이미지를 저장해 라벨 앱에서 출력하세요.'); return; }
+    if (!(btChar && btDev && btDev.gatt && btDev.gatt.connected)) { alert('먼저 위에서 "블루투스 연결"을 눌러 프린터를 연결해 주세요.'); return; }
+    $('picBt').disabled = true; msg('프린터로 보내는 중… 사진이 길면 시간이 걸립니다.', true);
+    try {
+      await btSend(packRaster($('picCv'), t === 'm02s' ? m02Mode() : 'escpos'));
+      msg('프린터로 보냈습니다. 안 나오면 용지·덮개·배터리와 전송 방식을 확인하세요.', true);
+    } catch (e) { msg('전송 실패: ' + e.message); }
+    $('picBt').disabled = false;
+  });
+  $('picPrn').addEventListener('click', () => {
+    if (!img) return;
+    printReset();
+    const pa = $('printArea'); pa.innerHTML = '';
+    const im = new Image(); im.src = $('picCv').toDataURL('image/png'); im.style.width = '100%';
+    pa.appendChild(im);
+    im.onload = () => window.print();
+    setTimeout(() => window.print(), 600);
+  });
+  $('picSave').addEventListener('click', () => {
+    if (!img) return;
+    const a = document.createElement('a');
+    a.href = $('picCv').toDataURL('image/png'); a.download = `인쇄용_이미지_${ymd(new Date())}.png`;
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+})();
 /* ===== 공문 초안 (Gemini) ===== */
 (() => {
   /* 키 설정 — "기록 작성" 탭과 같은 키를 함께 씁니다 */
