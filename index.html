@@ -12,6 +12,8 @@
   .tab-btn.active { background: #f1f5f9; color: #0f2747; font-weight: 700; }
   button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
   nav[role=tablist] { overflow-x: auto; scrollbar-width: none; }
+  /* 메뉴가 많아지면 넓은 화면에서는 줄바꿈해서 전부 보이게 */
+  @media (min-width: 1024px) { nav[role=tablist] { flex-wrap: wrap; overflow-x: visible; row-gap: .25rem; } }
   .tab-btn { white-space: nowrap; flex-shrink: 0; }
   @media (max-width: 640px) {
     .max-w-6xl { padding-left: .75rem !important; padding-right: .75rem !important; }
@@ -144,7 +146,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정</p>
   </form>
 </div>
 
@@ -207,6 +209,16 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
         <h2 class="font-bold text-lg">📑 공문 초안 만들기</h2>
         <p class="text-xs text-slate-500">아래 칸을 채우거나, 받은 공문 파일을 올리고 버튼을 누르면 AI가 공문 형식으로 초안을 써 줍니다. <b>초안이니 반드시 읽고 고쳐서</b> 쓰세요.</p>
+        <details id="goGemDet" class="rounded-lg border border-sky-200 bg-sky-50 p-3 text-xs">
+          <summary class="font-bold cursor-pointer text-sm">🔑 Gemini 연결 설정 <span id="goGemState" class="font-normal text-slate-500"></span></summary>
+          <div class="mt-3 space-y-3">
+            <p class="text-slate-700"><b>Google AI Studio</b>(aistudio.google.com)에서 구글 계정으로 로그인한 뒤 <b>"API 키 받기"</b>로 키를 만들어 아래에 붙여넣고 <b>연결 테스트</b>를 누르세요. 키는 <b>이 컴퓨터(브라우저)에만</b> 저장되고, "기록 작성" 탭과 같은 키를 씁니다.</p>
+            <label class="block">API 키<input id="goGemKey" type="password" autocomplete="off" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm" placeholder="AIza..."></label>
+            <label class="block">모델 이름<input id="goGemModel" list="goGemList" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm" placeholder="gemini-2.5-flash"></label>
+            <div class="flex items-center gap-2 flex-wrap"><button id="goGemTest" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold">연결 테스트</button><button id="goGemModels" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold">모델 목록 불러오기</button><button id="goGemClear" type="button" class="text-slate-500 underline">키 지우기</button><datalist id="goGemList"></datalist><span id="goGemMsg" class="text-slate-600"></span></div>
+            <p class="text-slate-600">사진·PDF를 읽히려면 그림을 볼 수 있는 모델이 필요합니다. 요즘 flash 계열은 대부분 됩니다.</p>
+          </div>
+        </details>
         <label class="text-sm block">공문 종류
           <select id="goType" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
             <option>알림</option><option>협조 요청</option><option>자료 제출(보고)</option><option>계획 알림(시행)</option><option>회신</option><option>안내</option><option>기타</option>
@@ -807,7 +819,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록과 결석신고서 저장 목록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정</p>
   </div>
 </dialog>
 
@@ -3564,8 +3576,12 @@ $('recAiBtn').addEventListener('click', async () => {
 /* ===== Gemini 연동 (API 키) ===== */
 let gem = (() => { const v = jl('gm-gemini'); return { key: v.key || '', model: v.model || '', manual: !!v.manual }; })();
 const GEM_DEF = 'gemini-2.5-flash', saveGem = () => store('gm-gemini', gem);
-const gemMsg = (t, ok) => { $('recGemMsg').textContent = t; $('recGemMsg').className = ok ? 'text-emerald-700' : 'text-slate-600'; };
-function gemUI() { $('recGemKey').value = gem.key; $('recGemModel').value = gem.model; $('recGemState').textContent = gem.key ? '· 키 입력됨' : '· 키를 입력하면 바로 작성할 수 있어요'; }
+const gemMsg = (t, ok) => { ['recGemMsg', 'goGemMsg'].forEach(id => { const e = $(id); if (e) { e.textContent = t; e.className = ok ? 'text-emerald-700' : 'text-slate-600'; } }); };
+function gemUI() {
+  $('recGemKey').value = gem.key; $('recGemModel').value = gem.model;
+  $('recGemState').textContent = gem.key ? '· 키 입력됨' : '· 키를 입력하면 바로 작성할 수 있어요';
+  if ($('goGemKey')) { $('goGemKey').value = gem.key; $('goGemModel').value = gem.model; $('goGemState').textContent = gem.key ? '· 키 입력됨' : '· 키를 입력해야 초안을 쓸 수 있어요'; }
+}
 async function gemList() {
   let r; try { r = await fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=200', { headers: { 'x-goog-api-key': gem.key } }); } catch (e) { throw new Error('모델 목록을 불러오지 못했습니다. 인터넷 연결을 확인하세요.'); }
   const j = await r.json().catch(() => ({}));
@@ -3578,7 +3594,11 @@ function gemPick(list) {
   ok.sort((a, b) => ver(b) - ver(a) || (/preview/.test(a) ? 1 : 0) - (/preview/.test(b) ? 1 : 0) || a.length - b.length);
   return ok[0] || list.find(n => /^gemini-.*flash/.test(n)) || list.find(n => /^gemini-/.test(n)) || '';
 }
-async function gemFill() { const l = await gemList(); $('recGemList').innerHTML = ''; l.forEach(n => { const o = document.createElement('option'); o.value = n; $('recGemList').appendChild(o); }); return l; }
+async function gemFill() {
+  const l = await gemList();
+  ['recGemList', 'goGemList'].forEach(id => { const box = $(id); if (!box) return; box.innerHTML = ''; l.forEach(n => { const o = document.createElement('option'); o.value = n; box.appendChild(o); }); });
+  return l;
+}
 async function gemAsk(prompt, retried, tries, skip) {
   if (!gem.key) throw new Error('API 키가 없습니다. 위 "Gemini 연결 설정"에서 키를 입력하세요.');
   const model = (gem.model || GEM_DEF).trim(), parts = typeof prompt === 'string' ? [{ text: prompt }] : prompt;
@@ -4470,6 +4490,22 @@ function absInit() {
 
 /* ===== 공문 초안 (Gemini) ===== */
 (() => {
+  /* 키 설정 — "기록 작성" 탭과 같은 키를 함께 씁니다 */
+  $('goGemKey').addEventListener('change', () => { gem.key = $('goGemKey').value.trim(); saveGem(); gemUI(); });
+  $('goGemModel').addEventListener('change', () => { gem.model = $('goGemModel').value.trim(); gem.manual = !!gem.model; saveGem(); gemUI(); });
+  $('goGemClear').addEventListener('click', () => { gem.key = ''; saveGem(); gemUI(); gemMsg('키를 지웠습니다.'); });
+  $('goGemModels').addEventListener('click', async () => {
+    gem.key = $('goGemKey').value.trim(); saveGem(); gemUI();
+    if (!gem.key) { gemMsg('먼저 API 키를 입력하세요.'); return; }
+    gemMsg('모델 목록을 불러오는 중…');
+    try { const l = await gemFill(), p = gemPick(l); gemMsg(`사용 가능한 모델 ${l.length}개를 불러왔습니다. 모델 이름 칸을 눌러 고르세요.${p ? ` (추천: ${p})` : ''}`, true); if (p && !gem.model) { gem.model = p; gem.manual = false; saveGem(); gemUI(); } }
+    catch (e) { gemMsg(e.message); }
+  });
+  $('goGemTest').addEventListener('click', async () => {
+    gem.key = $('goGemKey').value.trim(); gem.model = $('goGemModel').value.trim(); gem.manual = !!gem.model; saveGem(); gemUI();
+    gemMsg('연결 확인 중…');
+    try { await gemAsk('"연결됨"이라고만 답하세요.'); gemMsg('연결됨! 이제 공문 초안을 만들 수 있어요.', true); } catch (e) { gemMsg(e.message); }
+  });
   const GO_KEY = 'gm-gongmun';
   let saved = (() => { try { const v = JSON.parse(localStorage.getItem(GO_KEY)); return Array.isArray(v) ? v : []; } catch (e) { return []; } })();
   let files = [];
@@ -4557,7 +4593,7 @@ function absInit() {
   }
 
   async function run(sum) {
-    if (!gem.key) { alert('먼저 "기록 작성" 탭의 Gemini 연결 설정에서 API 키를 넣어 주세요.'); goTab('rec'); return; }
+    if (!gem.key) { $('goGemDet').open = true; gemMsg('먼저 API 키를 입력하고 "연결 테스트"를 눌러 주세요.'); $('goGemKey').focus(); alert('먼저 위 "🔑 Gemini 연결 설정"에서 API 키를 넣어 주세요.'); return; }
     if (sum && !files.length && !$('goBody').value.trim()) { alert('요약할 공문 파일을 올리거나 내용을 적어 주세요.'); return; }
     if (!sum && !files.length && !$('goBody').value.trim() && !$('goTitle').value.trim()) { alert('핵심 내용을 적거나 받은 공문 파일을 올려 주세요.'); return; }
     const btns = [$('goRun'), $('goSum')]; btns.forEach(b => b.disabled = true);
