@@ -146,7 +146,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준</p>
   </form>
 </div>
 
@@ -677,6 +677,9 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           <label class="text-sm">시작일<input id="asFrom" type="date" class="mt-1 block border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
           <label class="text-sm">종료일<input id="asTo" type="date" class="mt-1 block border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
           <button id="asAll" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">전체 기간</button>
+          <label class="text-sm flex items-center gap-1.5 whitespace-nowrap"><input type="checkbox" id="asWeek" checked class="w-4 h-4"> 주말 빼기</label>
+          <label class="text-sm flex items-center gap-1.5 whitespace-nowrap"><input type="checkbox" id="asHoli" checked class="w-4 h-4"> 공휴일·휴업일 빼기</label>
+          <button id="asHoliEdit" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">🗓️ 쉬는 날 직접 넣기</button>
           <label class="text-sm">정렬<select id="asSort" class="mt-1 block border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><option value="days">결석일수 많은 순</option><option value="no">학번 순</option><option value="name">이름 순</option></select></label>
           <div class="ml-auto flex gap-2">
             <button id="asPrint" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">🖨️ 인쇄</button>
@@ -860,7 +863,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준</p>
   </div>
 </dialog>
 
@@ -2343,7 +2346,7 @@ $('dlgClose').addEventListener('click', () => $('dlg').close());
 
 /* 백업 · 복원 · 초기화 */
 $('bkBtn').addEventListener('click', () => {
-  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), teacher: $('pTeacher').value };
+  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), holidays: (() => { try { return JSON.parse(localStorage.getItem('gm-holidays')) || []; } catch (e) { return []; } })(), teacher: $('pTeacher').value };
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
   a.download = `교무실_백업_${ymd(new Date())}.json`; a.click();
@@ -2370,6 +2373,7 @@ $('rsFile').addEventListener('change', async e => {
     if (Array.isArray(d.clubs)) { clubList = d.clubs; store('gm-clubs', clubList); }
     if (Array.isArray(d.absList) && window.absStore) absStore.set(d.absList);
     if (Array.isArray(d.gongmun)) { try { localStorage.setItem('gm-gongmun', JSON.stringify(d.gongmun)); } catch (err) {} }
+    if (Array.isArray(d.holidays)) { try { localStorage.setItem('gm-holidays', JSON.stringify(d.holidays)); } catch (err) {} }
     store('gm-students', students); store('gm-counsels', counsels); store('gm-pass', passes); store('gm-dday', ddays);
     renderAll(); alert('복원했습니다.');
   } catch (err) { alert('복원 실패: ' + err.message); }
@@ -4867,6 +4871,30 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
 (() => {
   const KINDS = ['질병', '인정', '기타'];
   const nd = v => v ? new Date(v + 'T00:00:00') : null;
+  /* 쉬는 날: 주말 · 날짜가 정해진 공휴일 · 학사일정(나이스)의 휴업일 · 직접 넣은 날 */
+  const HOLI_KEY = 'gm-holidays';
+  const FIXED = ['01-01', '03-01', '05-05', '06-06', '08-15', '10-03', '10-09', '12-25'];
+  let holi = (() => { try { const v = JSON.parse(localStorage.getItem(HOLI_KEY)); return Array.isArray(v) ? v : []; } catch (e) { return []; } })();
+  const saveHoli = () => { try { localStorage.setItem(HOLI_KEY, JSON.stringify(holi)); } catch (e) {} };
+  function isOff(ds) {
+    const w = nd(ds).getDay();
+    if ($('asWeek').checked && (w === 0 || w === 6)) return true;
+    if (!$('asHoli').checked) return false;
+    if (holi.includes(ds)) return true;
+    if (FIXED.includes(ds.slice(5))) return true;
+    try {
+      const list = (typeof neisCache === 'object' && neisCache) ? (neisCache[ds.slice(0, 7)] || []) : [];
+      return list.some(e => e.date === ds && e.tag && /휴업|공휴|방학|휴일/.test(e.tag));
+    } catch (e) { return false; }
+  }
+  function countDays(a, b) {                       // a~b 중 실제 등교일만 셈
+    let n = 0;
+    for (const d = nd(a); d <= nd(b); d.setDate(d.getDate() + 1)) {
+      const ds = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      if (!isOff(ds)) n++;
+    }
+    return n;
+  }
   const md = v => v ? v.slice(5).replace('-', '/') : '';
   function rows() {
     const f = $('asFrom').value, t = $('asTo').value, map = new Map();
@@ -4875,7 +4903,7 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
       let b = s.to || a; if (b < a) b = a;
       if (f && b < f) return; if (t && a > t) return;
       const s1 = f && a < f ? f : a, e1 = t && b > t ? t : b;
-      const days = Math.round((nd(e1) - nd(s1)) / 86400000) + 1;
+      const days = countDays(s1, e1);
       const key = (s.no || '') + '|' + (s.name || '(이름 없음)');
       let o = map.get(key);
       if (!o) { o = { no: s.no || '', name: s.name || '(이름 없음)', days: 0, cnt: 0, k: { 질병: 0, 인정: 0, 기타: 0 }, items: [] }; map.set(key, o); }
@@ -4903,10 +4931,22 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
     if (!$('asOut')) return;
     const L = rows(), d = L.reduce((a, o) => a + o.days, 0), c = L.reduce((a, o) => a + o.cnt, 0);
     $('asOut').innerHTML = table(L, false);
-    $('asInfo').textContent = `${period()} · 학생 ${L.length}명 · 결석 ${d}일 · 신고서 ${c}건 (저장한 결석신고서를 모아 센 값입니다)`;
+    const how = [$('asWeek').checked ? '주말' : '', $('asHoli').checked ? '공휴일·휴업일' : ''].filter(Boolean).join('·');
+    $('asInfo').textContent = `${period()} · 학생 ${L.length}명 · 결석 ${d}일 · 신고서 ${c}건` + (how ? ` · ${how}은 빼고 센 값입니다${holi.length ? ` (직접 넣은 쉬는 날 ${holi.length}일 포함)` : ''}` : ' · 달력 날짜 그대로 센 값입니다');
   }
   window.absStatRender = render;
-  ['asFrom', 'asTo', 'asSort'].forEach(id => $(id).addEventListener('change', render));
+  ['asFrom', 'asTo', 'asSort', 'asWeek', 'asHoli'].forEach(id => $(id).addEventListener('change', () => {
+    if (id === 'asWeek' || id === 'asHoli') { try { localStorage.setItem('gm-as-opt', JSON.stringify({ w: $('asWeek').checked, h: $('asHoli').checked })); } catch (e) {} }
+    render();
+  }));
+  try { const o = JSON.parse(localStorage.getItem('gm-as-opt')); if (o) { $('asWeek').checked = o.w !== false; $('asHoli').checked = o.h !== false; } } catch (e) {}
+  $('asHoliEdit').addEventListener('click', () => {
+    const v = prompt('학교가 쉬는 날을 직접 넣습니다. (설날·추석·대체공휴일·재량휴업일 등)\n날짜를 2026-02-17 처럼 쓰고, 여러 날은 쉼표로 나눠 주세요.\n\n비우고 확인을 누르면 모두 지웁니다.', holi.join(', '));
+    if (v === null) return;
+    holi = v.split(/[,\s]+/).map(x => x.trim()).filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x)).filter((x, i, a) => a.indexOf(x) === i).sort();
+    saveHoli(); render();
+    alert(holi.length ? `쉬는 날 ${holi.length}일을 저장했습니다.` : '직접 넣은 쉬는 날을 모두 지웠습니다.');
+  });
   $('asAll').addEventListener('click', () => { $('asFrom').value = ''; $('asTo').value = ''; render(); });
   $('asPrint').addEventListener('click', () => {
     const L = rows(); if (!L.length) { alert('인쇄할 내용이 없습니다.'); return; }
@@ -4914,7 +4954,7 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
     printReset();
     const pa = $('printArea');
     pa.innerHTML = `<h2 style="text-align:center;font-size:15pt;font-weight:700;margin:0 0 2px">결석 현황</h2>
-      <p style="text-align:center;font-size:9.5pt;color:#475569;margin:0 0 10px">${esc([c.school || '', c.cls || ''].filter(Boolean).join(' '))} · ${esc(period())} · 출력 ${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}</p>
+      <p style="text-align:center;font-size:9.5pt;color:#475569;margin:0 0 10px">${esc([c.school || '', c.cls || ''].filter(Boolean).join(' '))} · ${esc(period())} · 출력 ${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}<br>${esc([$('asWeek').checked ? '주말' : '', $('asHoli').checked ? '공휴일·휴업일' : ''].filter(Boolean).join('·') ? [$('asWeek').checked ? '주말' : '', $('asHoli').checked ? '공휴일·휴업일' : ''].filter(Boolean).join('·') + '을 뺀 등교일 기준' : '달력 날짜 기준')}</p>
       ${table(L, true)}
       <p style="font-size:8.5pt;color:#64748b;margin-top:8px">※ 저장한 결석신고서를 모아 센 값입니다. 개인정보가 담겨 있으니 보관과 폐기에 유의하세요.</p>`;
     pa.classList.add('as-print');
