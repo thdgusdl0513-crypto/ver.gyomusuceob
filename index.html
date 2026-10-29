@@ -146,7 +146,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표</p>
   </form>
 </div>
 
@@ -826,6 +826,10 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <input id="syncUrl" placeholder="웹 앱 주소 (https://script.google.com/macros/s/.../exec)" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
       <input id="syncToken" type="password" autocomplete="off" placeholder="연동 암호 (Apps Script에 적은 값과 같게)" class="mt-2 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
       <div class="flex items-center gap-2 mt-2 flex-wrap"><button id="syncRun" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm font-bold">☁️ 지금 동기화</button><span id="syncMsg" class="text-xs text-slate-600"></span></div>
+      <details class="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+        <summary class="text-sm font-bold cursor-pointer">📋 항목별 연동 상태 보기</summary>
+        <div id="syncState" class="mt-2 overflow-x-auto"></div>
+      </details>
     </section>
 
     <section>
@@ -850,7 +854,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표</p>
   </div>
 </dialog>
 
@@ -5084,6 +5088,7 @@ async function syncNow(interactive) {
     if (pushed) { doc.v = 1; const p = await syncReq('POST', { token: syncCfg.token, doc }); if (!p.ok) throw new Error(p.error || '저장 실패'); }
     syncCfg.meta = meta; syncCfg.last = new Date().toLocaleString('ko-KR'); saveSync();
     if (pulled) renderAll();
+    renderSyncState();
     const off = SYNC_GROUPS.filter(([g]) => !syncOn(g)).map(([g, l]) => l.replace(/^\S+\s*/, ''));
     syncMsg(`${syncCfg.last} 동기화 완료${pushed ? ' · 보냄: ' + upNames.join(', ') : ''}${pulled ? ' · 받음: ' + downNames.join(', ') : ''}${!pushed && !pulled ? ' · 바뀐 내용 없음' : ''}${skipped.length ? ' · 양쪽 모두 바뀌어 건너뜀: ' + skipped.join(', ') + ' (지금 동기화를 눌러 선택)' : ''}${off.length ? ' · ⚠️ 연동하지 않는 항목: ' + off.join(', ') : ''}`, true);
   } catch (e) { syncMsg('동기화 실패: ' + e.message); if (interactive) alert('동기화 실패: ' + e.message); }
@@ -5091,16 +5096,31 @@ async function syncNow(interactive) {
 }
 const renderSyncOpts = () => {
   const box = $('syncOpts'); if (!box) return; box.innerHTML = '';
+  renderSyncState();
   SYNC_GROUPS.forEach(([g, label, pii]) => {
     const l = el('label', 'flex items-center gap-2 text-sm'), c = el('input'); c.type = 'checkbox'; c.checked = !!syncCfg.opt[g];
     c.addEventListener('change', () => {
       if (c.checked && pii && !confirm('학생 개인정보가 본인 구글 시트에 그대로 저장됩니다.\n학교 개인정보 보호 지침을 확인했고, 시트·웹 앱 주소·연동 암호를 안전하게 관리할 수 있나요?')) { c.checked = false; return; }
-      syncCfg.opt[g] = c.checked; saveSync();
+      syncCfg.opt[g] = c.checked; saveSync(); renderSyncState();
     });
     l.append(c, document.createTextNode(label)); box.appendChild(l);
     if (pii) l.title = '체크하지 않으면 이 자료는 연동되지 않습니다.';
   });
 };
+function renderSyncState() {
+  const box = $('syncState'); if (!box) return;
+  const cnt = v => { try { return Array.isArray(v) ? v.length : (v && typeof v === 'object') ? Object.keys(v).length : (v ? 1 : 0); } catch (e) { return 0; } };
+  const when = t => { if (!t) return ''; const d = new Date(t); return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
+  const rows = SYNC_KEYS.map(([k, label, get, set, grp]) => {
+    const n = cnt(get()), on = syncOn(grp), ts = syncCfg.meta && syncCfg.meta.ts ? syncCfg.meta.ts[k] : 0;
+    const state = !on ? '<span class="text-rose-600 font-bold">연동 안 함</span>'
+      : ts ? `<span class="text-emerald-700">${when(ts)}</span>`
+      : (n ? '<span class="text-amber-700">아직 안 올림</span>' : '<span class="text-slate-400">내용 없음</span>');
+    return `<tr class="border-t border-slate-200"><td class="py-1 pr-3">${esc(label)}</td><td class="py-1 pr-3 text-right">${n}</td><td class="py-1">${state}</td></tr>`;
+  }).join('');
+  box.innerHTML = `<table class="w-full text-xs"><thead class="text-slate-500 text-left"><tr><th class="pb-1 pr-3">항목</th><th class="pb-1 pr-3 text-right">이 기기</th><th class="pb-1">마지막 연동</th></tr></thead><tbody>${rows}</tbody></table>
+    <p class="text-xs text-slate-500 mt-2">"연동 안 함"은 위에서 체크해야 올라갑니다. "아직 안 올림"은 체크는 되어 있지만 아직 <b>☁️ 지금 동기화</b>를 누르지 않은 상태입니다.</p>`;
+}
 const syncUI = () => { $('syncBtn').classList.toggle('hidden', !(syncCfg.url && syncCfg.token)); if (syncCfg.last && !$('syncMsg').textContent) syncMsg(`마지막 동기화: ${syncCfg.last}`, true); };
 $('syncUrl').value = syncCfg.url; $('syncToken').value = syncCfg.token;
 ['syncUrl', 'syncToken'].forEach(id => $(id).addEventListener('change', () => { syncCfg.url = $('syncUrl').value.trim(); syncCfg.token = $('syncToken').value.trim(); syncCfg.meta = { h: {}, ts: {} }; saveSync(); syncUI(); }));
