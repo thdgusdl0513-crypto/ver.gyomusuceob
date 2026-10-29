@@ -146,7 +146,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시</p>
   </form>
 </div>
 
@@ -844,7 +844,13 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       </div>
       <p class="text-xs text-slate-500 mt-2">초기화는 학생·상담·조퇴 기록과 결석신고서 저장 목록을 모두 지웁니다(D-day는 유지). 먼저 백업 파일을 저장하세요.</p>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄</p>
+
+    <section>
+      <h3 class="font-bold text-sm mb-2">📦 자동 보관함 <span class="text-xs font-normal text-slate-500">(기록이 사라졌을 때 되돌리기)</span></h3>
+      <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
+      <div id="snapList" class="space-y-2 text-sm"></div>
+    </section>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시</p>
   </div>
 </dialog>
 
@@ -2327,7 +2333,7 @@ $('dlgClose').addEventListener('click', () => $('dlg').close());
 
 /* 백업 · 복원 · 초기화 */
 $('bkBtn').addEventListener('click', () => {
-  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), teacher: $('pTeacher').value };
+  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), teacher: $('pTeacher').value };
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
   a.download = `교무실_백업_${ymd(new Date())}.json`; a.click();
@@ -2345,6 +2351,8 @@ $('rsFile').addEventListener('change', async e => {
     if (d.timetable) { myTT = d.timetable; store(TT_KEY, myTT); renderMyTT(); }
     if (d.budget) { bg = normBg(d.budget); saveBg(); }
     if (d.recs) { recs = d.recs; store(REC_KEY, recs); }
+    if (d.recMemo && typeof d.recMemo === 'object') { recMemo = d.recMemo; store('gm-rec-memo', recMemo); }
+    if (d.recRost && typeof d.recRost === 'object') { recRost = d.recRost; store('gm-rec-rost', recRost); }
     if (d.ch) { ch = { sheets: d.ch.sheets || {}, files: d.ch.files || [], sel: d.ch.sel || '' }; saveCh(); }
     if (d.sch) { sch = schNorm(d.sch); saveSch(); }
     if (d.schEdit) { schE = { t: d.schEdit.t || {}, c: d.schEdit.c || {} }; saveSchE(); }
@@ -4514,6 +4522,61 @@ function absInit() {
 
 
 
+
+/* ===== 자동 보관함: 중요한 기록을 이 기기에 몰래 복사해 두고 되돌릴 수 있게 ===== */
+const SNAP_KEY = 'gm-snapshots';
+const SNAP_ITEMS = [
+  ['gm-recs', '작성한 기록'],
+  ['gm-rec-memo', '관찰 메모'],
+  ['gm-rec-rost', '과목·동아리 명단'],
+  ['gm-students', '학생 명단'],
+  ['gm-counsels', '상담 기록']
+];
+const snapLoad = () => { try { const v = JSON.parse(localStorage.getItem(SNAP_KEY)); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
+function snapTake(why) {
+  try {
+    const data = {};
+    let has = false;
+    SNAP_ITEMS.forEach(([k]) => { const v = localStorage.getItem(k); if (v && v !== '[]' && v !== '{}' && v !== 'null') { data[k] = v; has = true; } });
+    if (!has) return;
+    const sig = SNAP_ITEMS.map(([k]) => (data[k] || '').length).join('/');
+    let list = snapLoad();
+    if (list.length && list[0].sig === sig) return;                       // 바뀐 게 없으면 넘어감
+    list.unshift({ t: new Date().toISOString(), why: why || '열 때', sig, data });
+    while (list.length > 3) list.pop();
+    for (;;) {
+      try { localStorage.setItem(SNAP_KEY, JSON.stringify(list)); break; }
+      catch (e) { list.pop(); if (!list.length) return; }                 // 공간이 모자라면 오래된 것부터 버림
+    }
+    if ($('snapList')) snapDraw();
+  } catch (e) {}
+}
+function snapDraw() {
+  const box = $('snapList'); if (!box) return;
+  const list = snapLoad(); box.innerHTML = '';
+  if (!list.length) { box.appendChild(el('p', 'text-xs text-slate-500', '아직 보관된 내용이 없습니다.')); return; }
+  list.forEach((sn, i) => {
+    const d = new Date(sn.t), when = `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}. ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+    const parts = SNAP_ITEMS.filter(([k]) => sn.data[k]).map(([k, label]) => {
+      let n = 0; try { const v = JSON.parse(sn.data[k]); n = Array.isArray(v) ? v.length : Object.keys(v).length; } catch (e) {}
+      return `${label} ${n}`;
+    }).join(' · ');
+    const row = el('div', 'border border-slate-200 rounded-lg px-3 py-2 flex items-center gap-2 flex-wrap');
+    row.append(el('div', 'flex-1 min-w-[180px]', ''), el('span', '', ''));
+    row.firstChild.innerHTML = `<b>${when}</b> <span class="text-xs text-slate-500">${esc(sn.why)}</span><br><span class="text-xs text-slate-500">${esc(parts)}</span>`;
+    const b = el('button', 'border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs font-bold', '이 시점으로 되돌리기');
+    b.type = 'button';
+    b.onclick = () => {
+      if (!confirm(`${when}에 보관한 내용으로 되돌립니다.\n\n지금 이 기기의 작성한 기록·관찰 메모·학생 명단·상담 기록이 그때 내용으로 바뀝니다. 계속할까요?`)) return;
+      snapTake('되돌리기 직전');
+      try { Object.keys(sn.data).forEach(k => localStorage.setItem(k, sn.data[k])); } catch (e) { alert('되돌리지 못했습니다: ' + e.message); return; }
+      alert('되돌렸습니다. 화면을 새로 불러옵니다.');
+      location.reload();
+    };
+    row.appendChild(b); box.appendChild(row);
+  });
+}
+setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
 /* ===== 올린 사진을 프린터로 그대로 인쇄 ===== */
 (() => {
   let img = null;
@@ -5002,24 +5065,27 @@ async function syncNow(interactive) {
   try {
     const g = await syncReq('GET'); if (!g.ok) throw new Error(g.error || '서버 응답 오류');
     const doc = g.doc && g.doc.items ? g.doc : { v: 1, items: {} }, meta = syncCfg.meta, stamp = Date.now(), skipped = [];
-    let pushed = 0, pulled = 0;
+    let pushed = 0, pulled = 0; const upNames = [], downNames = [];
     for (const [k, label, get, set, grp] of SYNC_KEYS) {
       if (!syncOn(grp)) continue;
       const rem = doc.items[k], lh = hashStr(JSON.stringify(get())), empty = isEmptyVal(get());
-      const lc = lh !== meta.h[k] && !(empty && rem), rc = !!rem && rem.ts !== meta.ts[k];
+      const lc = lh !== meta.h[k] && !(empty && rem);
+      /* 이 기기가 비어 있는데 시트에 내용이 있으면, 기록이 지워진 것으로 보고 되살린다 */
+      const rc = !!rem && (rem.ts !== meta.ts[k] || (empty && !isEmptyVal(rem.data)));
       let use = !rem ? (empty ? 'none' : 'push') : lc && rc ? 'conflict' : lc ? 'push' : rc ? 'pull' : 'none';
       if (use === 'conflict') {
         if (!interactive) { skipped.push(label); continue; }
         use = confirm(`'${label}'이(가) 이 기기와 다른 기기에서 모두 바뀌었습니다.\n\n확인: 이 기기 내용으로 맞추기\n취소: 다른 기기 내용으로 맞추기`) ? 'push' : 'pull';
       }
-      if (use === 'push') { doc.items[k] = { ts: stamp, data: get() }; meta.h[k] = lh; meta.ts[k] = stamp; pushed++; }
-      else if (use === 'pull') { set(rem.data); store(k, get()); meta.h[k] = hashStr(JSON.stringify(get())); meta.ts[k] = rem.ts; pulled++; }
+      if (use === 'push') { doc.items[k] = { ts: stamp, data: get() }; meta.h[k] = lh; meta.ts[k] = stamp; pushed++; upNames.push(label); }
+      else if (use === 'pull') { snapTake('연동으로 받기 전'); set(rem.data); store(k, get()); meta.h[k] = hashStr(JSON.stringify(get())); meta.ts[k] = rem.ts; pulled++; downNames.push(label); }
       else if (rem) { meta.ts[k] = rem.ts; meta.h[k] = lh; }
     }
     if (pushed) { doc.v = 1; const p = await syncReq('POST', { token: syncCfg.token, doc }); if (!p.ok) throw new Error(p.error || '저장 실패'); }
     syncCfg.meta = meta; syncCfg.last = new Date().toLocaleString('ko-KR'); saveSync();
     if (pulled) renderAll();
-    syncMsg(`${syncCfg.last} 동기화 완료 · 보냄 ${pushed} · 받음 ${pulled}${skipped.length ? ' · 양쪽 모두 바뀌어 건너뜀: ' + skipped.join(', ') + ' (지금 동기화를 눌러 선택)' : ''}`, true);
+    const off = SYNC_GROUPS.filter(([g]) => !syncOn(g)).map(([g, l]) => l.replace(/^\S+\s*/, ''));
+    syncMsg(`${syncCfg.last} 동기화 완료${pushed ? ' · 보냄: ' + upNames.join(', ') : ''}${pulled ? ' · 받음: ' + downNames.join(', ') : ''}${!pushed && !pulled ? ' · 바뀐 내용 없음' : ''}${skipped.length ? ' · 양쪽 모두 바뀌어 건너뜀: ' + skipped.join(', ') + ' (지금 동기화를 눌러 선택)' : ''}${off.length ? ' · ⚠️ 연동하지 않는 항목: ' + off.join(', ') : ''}`, true);
   } catch (e) { syncMsg('동기화 실패: ' + e.message); if (interactive) alert('동기화 실패: ' + e.message); }
   finally { syncing = false; }
 }
@@ -5032,6 +5098,7 @@ const renderSyncOpts = () => {
       syncCfg.opt[g] = c.checked; saveSync();
     });
     l.append(c, document.createTextNode(label)); box.appendChild(l);
+    if (pii) l.title = '체크하지 않으면 이 자료는 연동되지 않습니다.';
   });
 };
 const syncUI = () => { $('syncBtn').classList.toggle('hidden', !(syncCfg.url && syncCfg.token)); if (syncCfg.last && !$('syncMsg').textContent) syncMsg(`마지막 동기화: ${syncCfg.last}`, true); };
@@ -5042,7 +5109,7 @@ $('syncBtn').addEventListener('click', () => syncNow(true));
 renderSyncOpts(); syncUI();
 if (syncCfg.url && syncCfg.token) setTimeout(() => syncNow(false), 1500);
 
-function renderAll() { renderSch(); renderToday(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); absInit(); renderMeal(); renderRsv(); renderHomeRsv(); }
+function renderAll() { renderSch(); renderToday(); renderCal(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); absInit(); renderMeal(); renderRsv(); renderHomeRsv(); }
 renderAll();
 
 (() => {
