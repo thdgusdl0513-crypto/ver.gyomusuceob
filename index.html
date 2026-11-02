@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체</p>
   </form>
 </div>
 
@@ -475,6 +475,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <div class="bg-white rounded-xl border border-slate-200 p-5">
         <div class="flex items-center gap-2 flex-wrap"><h2 class="font-bold text-lg mr-auto">🗓️ 학사일정</h2><input id="cMonth" type="month" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button id="cLoad" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">나이스에서 불러오기</button></div>
         <form id="cEvForm" class="flex gap-2 mt-3"><input id="evDate" type="date" required class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evEnd" type="date" title="종료일(여러 날일 때)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evTime" type="time" title="시간(선택)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evText" required placeholder="내 일정 추가" class="flex-1 min-w-0 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">추가</button></form>
+        <label class="flex items-center gap-2 text-xs text-slate-600 mb-2"><input type="checkbox" id="cNoCh" class="w-4 h-4"> 창체 일정(자율·자치, 동아리, 진로, 봉사) 숨기기</label>
         <ul id="cList" class="mt-3 divide-y divide-slate-100 text-sm"></ul>
         <p id="cEmpty" class="text-sm text-slate-500 py-6 text-center">표시할 일정이 없습니다.</p>
       </div>
@@ -1023,7 +1024,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체</p>
   </div>
 </dialog>
 
@@ -3489,19 +3490,29 @@ $('nSearch').addEventListener('click', async () => {
     pick.onchange = use; use();
   } catch (e) { fail(e); }
 });
+const chEmo = a => { try { return (CH_EMO[a] || '') + ' '; } catch (e) { return ''; } };
 function renderCal() {
   const mo = $('cMonth').value, ul = $('cList'); ul.innerHTML = '';
-  const list = [...fetched.filter(e => e.date.startsWith(mo)).map(e => ({ ...e, src: 'neis' })), ...evs.filter(e => e.date.slice(0, 7) <= mo && (e.to || e.date).slice(0, 7) >= mo).map(e => ({ ...e, src: 'me' }))].sort((a, b) => a.date.localeCompare(b.date));
+  const chOn = !$('cNoCh') || !$('cNoCh').checked;
+  let chList = [];
+  try {                                            /* 창체 자료가 아직 준비되기 전이면 건너뜀 */
+    if (chOn) chList = (ch.sheets[ch.sel] || []).filter(e => e.date.startsWith(mo))
+      .map(e => ({ date: e.date, text: e.name, tag: e.area, src: 'ch', sub: [e.per ? `${e.per}교시` : '', e.dept].filter(Boolean).join(' · ') }));
+  } catch (err) {}
+  const list = [...fetched.filter(e => e.date.startsWith(mo)).map(e => ({ ...e, src: 'neis' })), ...chList, ...evs.filter(e => e.date.slice(0, 7) <= mo && (e.to || e.date).slice(0, 7) >= mo).map(e => ({ ...e, src: 'me' }))].sort((a, b) => a.date.localeCompare(b.date) || String(a.src).localeCompare(String(b.src)));
   list.forEach(e => {
     const d = new Date(e.date + 'T00:00:00'), li = el('li', 'py-2 flex items-center gap-3');
-    li.append(el('span', 'w-24 text-slate-500 shrink-0', `${d.getMonth() + 1}/${d.getDate()} (${'일월화수목금토'[d.getDay()]})`), el('span', 'flex-1', (e.to ? `[~${e.to.slice(5).replace('-', '/')}] ` : '') + (e.time ? e.time + ' ' : '') + e.text));
+    li.append(el('span', 'w-24 text-slate-500 shrink-0', `${d.getMonth() + 1}/${d.getDate()} (${'일월화수목금토'[d.getDay()]})`), el('span', 'flex-1', (e.to ? `[~${e.to.slice(5).replace('-', '/')}] ` : '') + (e.time ? e.time + ' ' : '') + (e.src === 'ch' ? chEmo(e.tag) : '') + e.text + (e.sub ? ` (${e.sub})` : '')));
     if (e.src === 'me') { const x = el('button', 'text-xs text-slate-400 hover:text-red-600', '삭제'); x.onclick = () => { evs = evs.filter(v => v.id !== e.id); store(EV_KEY, evs); renderCal(); }; li.appendChild(x); }
+    else if (e.src === 'ch') { let cl = 'bg-slate-100 text-slate-600'; try { cl = (CH_CLR[e.tag] || ['', cl])[1]; } catch (err) {} li.appendChild(el('span', `text-xs px-2 py-0.5 rounded ${cl}`, e.tag)); }
     else if (e.tag) li.appendChild(el('span', 'text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-600', e.tag));
     ul.appendChild(li);
   });
   $('cEmpty').classList.toggle('hidden', list.length > 0);
 }
 $('cMonth').value = ymd(now).slice(0, 7); $('evDate').value = ymd(now);
+$('cNoCh').addEventListener('change', () => { try { localStorage.setItem('gm-cal-noch', $('cNoCh').checked ? '1' : '0'); } catch (e) {} renderCal(); });
+try { $('cNoCh').checked = localStorage.getItem('gm-cal-noch') === '1'; } catch (e) {}
 $('cMonth').addEventListener('change', () => { fetched = []; renderCal(); });
 $('cLoad').addEventListener('click', async () => {
   if (!neis.code) { say('먼저 학교를 검색해서 선택하세요.'); return; }
