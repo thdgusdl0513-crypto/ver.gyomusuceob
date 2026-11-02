@@ -146,7 +146,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키</p>
   </form>
 </div>
 
@@ -170,6 +170,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="budget">🐷 예산</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="rec">🖍️ 기록 작성</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="gong">📑 공문 작성</button>
+    <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="scho">🎓 추천서 작성</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="counsel">💬 상담 관리자</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="records">🎒 학생 기록 관리</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="pass">🎫 조퇴/외출증 발급</button>
@@ -202,6 +203,81 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <iframe id="gichoFrame" title="기초조사서" style="flex:1;width:100%;border:0;background:#f6fbef"></iframe>
     </div>
   </div>
+
+  <!-- 추천서 작성 -->
+  <section id="tab-scho" class="tab-panel hidden">
+    <div class="grid lg:grid-cols-[460px_1fr] gap-6 items-start">
+      <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-4">
+        <h2 class="font-bold text-lg">🎓 장학생 추천서 작성</h2>
+        <p class="text-xs text-slate-500">추천서 양식을 올리면 <b>써야 할 항목</b>을 뽑아 줍니다. 항목을 고르고 학생을 선택하면, 그동안 적어 둔 기록을 바탕으로 항목별 초안을 씁니다.</p>
+        <details id="scGemDet" class="rounded-lg border border-sky-200 bg-sky-50 p-3 text-xs">
+          <summary class="font-bold cursor-pointer text-sm">🔑 Gemini 연결 설정 <span id="scGemState" class="font-normal text-slate-500"></span></summary>
+          <div class="mt-3 space-y-3">
+            <p class="text-slate-700"><b>Google AI Studio</b>(aistudio.google.com)에서 <b>"API 키 받기"</b>로 키를 만들어 붙여넣고 <b>연결 테스트</b>를 누르세요. 다른 탭과 같은 키를 씁니다.</p>
+            <label class="block">API 키<input id="scGemKey" type="password" autocomplete="off" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm" placeholder="AIza..."></label>
+            <label class="block">모델 이름<input id="scGemModel" list="scGemList" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm" placeholder="gemini-2.5-flash"></label>
+            <div class="flex items-center gap-2 flex-wrap"><button id="scGemTest" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold">연결 테스트</button><button id="scGemModels" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold">모델 목록 불러오기</button><datalist id="scGemList"></datalist><span id="scGemMsg" class="text-slate-600"></span></div>
+          </div>
+        </details>
+
+        <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 space-y-2">
+          <p class="text-sm font-bold">1️⃣ 추천서 양식</p>
+          <input id="scFile" type="file" accept="image/*,.pdf,.txt" class="block text-sm w-full">
+          <div id="scFileList" class="hidden flex-wrap gap-2 text-xs"></div>
+          <div class="flex gap-2 flex-wrap">
+            <button id="scScan" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm font-bold">📄 양식에서 항목 뽑기</button>
+            <button id="scAdd" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">＋ 항목 직접 넣기</button>
+          </div>
+          <p id="scScanMsg" class="text-xs text-slate-600"></p>
+        </div>
+
+        <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 space-y-2">
+          <p class="text-sm font-bold">2️⃣ 쓸 항목 <span id="scItemCnt" class="text-xs font-normal text-slate-500"></span></p>
+          <div id="scItems" class="space-y-2"></div>
+        </div>
+
+        <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 space-y-2">
+          <p class="text-sm font-bold">3️⃣ 학생과 자료</p>
+          <label class="text-sm block">학생<select id="scStu" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></select></label>
+          <div class="grid grid-cols-2 gap-1 text-xs">
+            <label class="flex items-center gap-1.5"><input type="checkbox" id="scUseRec" checked class="w-4 h-4"> 작성한 기록</label>
+            <label class="flex items-center gap-1.5"><input type="checkbox" id="scUseMemo" checked class="w-4 h-4"> 관찰 메모</label>
+            <label class="flex items-center gap-1.5"><input type="checkbox" id="scUseCns" class="w-4 h-4"> 상담 기록</label>
+            <label class="flex items-center gap-1.5"><input type="checkbox" id="scUseGr" class="w-4 h-4"> 성적 요약</label>
+          </div>
+          <p id="scMat" class="text-xs text-slate-500"></p>
+          <label class="text-sm block">더 넣을 내용 <span class="text-xs text-slate-500">(수상, 역할, 가정 형편, 강조할 점)</span>
+            <textarea id="scMore" rows="4" placeholder="예: 2학년 학급 부회장, 교내 봉사상 수상, 아르바이트와 학업을 함께함" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm resize-y"></textarea>
+          </label>
+          <label class="text-sm block">문체 <select id="scTone" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
+            <option>정중하고 담백하게</option><option>따뜻하고 진심을 담아</option><option>성취 중심으로 간결하게</option>
+          </select></label>
+        </div>
+
+        <button id="scRun" type="button" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">✍️ 선택한 항목 작성하기</button>
+        <p id="scMsg" class="text-xs text-slate-600"></p>
+        <p class="text-xs text-slate-500">⚠️ 올린 양식과 학생 자료는 구글 AI로 전송됩니다. 학생 이름은 "본 학생"으로 바꿔 보내지만, 메모에 적힌 다른 개인정보는 그대로 가니 필요한 내용만 남겨 주세요. AI 초안은 반드시 확인하고 고쳐 쓰세요.</p>
+      </div>
+
+      <div class="space-y-4">
+        <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
+          <div class="flex items-center gap-2 flex-wrap">
+            <b class="text-sm">초안</b>
+            <div class="ml-auto flex gap-2">
+              <button id="scCopyAll" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm py-1.5">📋 전체 복사</button>
+              <button id="scSave" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm py-1.5">💾 저장</button>
+              <button id="scTxt" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm py-1.5">📄 파일로</button>
+            </div>
+          </div>
+          <div id="scOut" class="space-y-4"><p class="text-sm text-slate-500 py-8 text-center">왼쪽에서 항목과 학생을 고르고 "작성하기"를 누르세요.</p></div>
+        </div>
+        <details class="fold bg-white rounded-xl border border-slate-200" id="fold-scho" open>
+          <summary class="fold-sum px-5 py-3 font-bold">💾 저장한 추천서 <span id="scCnt" class="text-xs font-normal text-slate-500"></span></summary>
+          <div id="scList" class="px-5 pb-5 space-y-2"></div>
+        </details>
+      </div>
+    </div>
+  </section>
 
   <!-- 공문 작성 -->
   <section id="tab-gong" class="tab-panel hidden">
@@ -863,7 +939,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키</p>
   </div>
 </dialog>
 
@@ -2346,7 +2422,7 @@ $('dlgClose').addEventListener('click', () => $('dlg').close());
 
 /* 백업 · 복원 · 초기화 */
 $('bkBtn').addEventListener('click', () => {
-  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), holidays: (() => { try { return JSON.parse(localStorage.getItem('gm-holidays')) || []; } catch (e) { return []; } })(), teacher: $('pTeacher').value };
+  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), holidays: (() => { try { return JSON.parse(localStorage.getItem('gm-holidays')) || []; } catch (e) { return []; } })(), scho: (() => { try { return JSON.parse(localStorage.getItem('gm-scho')) || []; } catch (e) { return []; } })(), teacher: $('pTeacher').value };
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
   a.download = `교무실_백업_${ymd(new Date())}.json`; a.click();
@@ -2374,6 +2450,7 @@ $('rsFile').addEventListener('change', async e => {
     if (Array.isArray(d.absList) && window.absStore) absStore.set(d.absList);
     if (Array.isArray(d.gongmun)) { try { localStorage.setItem('gm-gongmun', JSON.stringify(d.gongmun)); } catch (err) {} }
     if (Array.isArray(d.holidays)) { try { localStorage.setItem('gm-holidays', JSON.stringify(d.holidays)); } catch (err) {} }
+    if (Array.isArray(d.scho)) { try { localStorage.setItem('gm-scho', JSON.stringify(d.scho)); } catch (err) {} }
     store('gm-students', students); store('gm-counsels', counsels); store('gm-pass', passes); store('gm-dday', ddays);
     renderAll(); alert('복원했습니다.');
   } catch (err) { alert('복원 실패: ' + err.message); }
@@ -3623,11 +3700,11 @@ $('recAiBtn').addEventListener('click', async () => {
 /* ===== Gemini 연동 (API 키) ===== */
 let gem = (() => { const v = jl('gm-gemini'); return { key: v.key || '', model: v.model || '', manual: !!v.manual }; })();
 const GEM_DEF = 'gemini-2.5-flash', saveGem = () => store('gm-gemini', gem);
-const gemMsg = (t, ok) => { ['recGemMsg', 'goGemMsg'].forEach(id => { const e = $(id); if (e) { e.textContent = t; e.className = ok ? 'text-emerald-700' : 'text-slate-600'; } }); };
+const gemMsg = (t, ok) => { ['recGemMsg', 'goGemMsg', 'scGemMsg'].forEach(id => { const e = $(id); if (e) { e.textContent = t; e.className = ok ? 'text-emerald-700' : 'text-slate-600'; } }); };
 function gemUI() {
   $('recGemKey').value = gem.key; $('recGemModel').value = gem.model;
   $('recGemState').textContent = gem.key ? '· 키 입력됨' : '· 키를 입력하면 바로 작성할 수 있어요';
-  if ($('goGemKey')) { $('goGemKey').value = gem.key; $('goGemModel').value = gem.model; $('goGemState').textContent = gem.key ? '· 키 입력됨' : '· 키를 입력해야 초안을 쓸 수 있어요'; }
+  ['go', 'sc'].forEach(p => { if ($(p + 'GemKey')) { $(p + 'GemKey').value = gem.key; $(p + 'GemModel').value = gem.model; $(p + 'GemState').textContent = gem.key ? '· 키 입력됨' : '· 키를 입력해야 초안을 쓸 수 있어요'; } });
 }
 async function gemList() {
   let r; try { r = await fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=200', { headers: { 'x-goog-api-key': gem.key } }); } catch (e) { throw new Error('모델 목록을 불러오지 못했습니다. 인터넷 연결을 확인하세요.'); }
@@ -3643,7 +3720,7 @@ function gemPick(list) {
 }
 async function gemFill() {
   const l = await gemList();
-  ['recGemList', 'goGemList'].forEach(id => { const box = $(id); if (!box) return; box.innerHTML = ''; l.forEach(n => { const o = document.createElement('option'); o.value = n; box.appendChild(o); }); });
+  ['recGemList', 'goGemList', 'scGemList'].forEach(id => { const box = $(id); if (!box) return; box.innerHTML = ''; l.forEach(n => { const o = document.createElement('option'); o.value = n; box.appendChild(o); }); });
   return l;
 }
 async function gemAsk(prompt, retried, tries, skip) {
@@ -4707,6 +4784,256 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
     document.body.appendChild(a); a.click(); a.remove();
   });
 })();
+
+/* ===== 장학생 추천서 (Gemini) ===== */
+(() => {
+  $('scGemKey').addEventListener('change', () => { gem.key = $('scGemKey').value.trim(); saveGem(); gemUI(); });
+  $('scGemModel').addEventListener('change', () => { gem.model = $('scGemModel').value.trim(); gem.manual = !!gem.model; saveGem(); gemUI(); });
+  $('scGemModels').addEventListener('click', async () => {
+    gem.key = $('scGemKey').value.trim(); saveGem(); gemUI();
+    if (!gem.key) { gemMsg('먼저 API 키를 입력하세요.'); return; }
+    gemMsg('모델 목록을 불러오는 중…');
+    try { const l = await gemFill(), p = gemPick(l); gemMsg(`사용 가능한 모델 ${l.length}개를 불러왔습니다.${p ? ` (추천: ${p})` : ''}`, true); if (p && !gem.model) { gem.model = p; gem.manual = false; saveGem(); gemUI(); } }
+    catch (e) { gemMsg(e.message); }
+  });
+  $('scGemTest').addEventListener('click', async () => {
+    gem.key = $('scGemKey').value.trim(); gem.model = $('scGemModel').value.trim(); gem.manual = !!gem.model; saveGem(); gemUI(); gemMsg('연결 확인 중…');
+    try { await gemAsk('"연결됨"이라고만 답하세요.'); gemMsg('연결됨! 이제 추천서를 쓸 수 있어요.', true); } catch (e) { gemMsg(e.message); }
+  });
+  const SC_KEY = 'gm-scho', SI_KEY = 'gm-scho-items';
+  let items = (() => { try { const v = JSON.parse(localStorage.getItem(SI_KEY)); return Array.isArray(v) ? v : []; } catch (e) { return []; } })();
+  let saved = (() => { try { const v = JSON.parse(localStorage.getItem(SC_KEY)); return Array.isArray(v) ? v : []; } catch (e) { return []; } })();
+  let files = [], out = [];
+  const msg = (t, ok) => { $('scMsg').textContent = t || ''; $('scMsg').className = 'text-xs ' + (ok ? 'text-emerald-700' : 'text-slate-600'); };
+  const saveItems = () => { try { localStorage.setItem(SI_KEY, JSON.stringify(items)); } catch (e) {} };
+  const saveList = () => { try { localStorage.setItem(SC_KEY, JSON.stringify(saved)); } catch (e) { alert('저장 공간이 부족합니다. 저장한 추천서를 지워 주세요.'); } };
+
+  /* --- 양식 파일 --- */
+  function drawFiles() {
+    const box = $('scFileList'); box.innerHTML = ''; box.classList.toggle('hidden', !files.length); box.classList.toggle('flex', !!files.length);
+    files.forEach((f, i) => {
+      const t = el('span', 'inline-flex items-center gap-1 bg-white border border-slate-200 rounded-full px-3 py-1', f.name);
+      const x = el('button', 'text-slate-500 hover:text-red-600 font-bold', '×'); x.type = 'button';
+      x.onclick = () => { files.splice(i, 1); drawFiles(); };
+      t.appendChild(x); box.appendChild(t);
+    });
+  }
+  $('scFile').addEventListener('change', e => {
+    for (const f of e.target.files) {
+      if (files.length >= 3) { alert('양식 파일은 3개까지 올릴 수 있습니다.'); break; }
+      if (f.size > 8 * 1024 * 1024) { alert(`${f.name}은(는) 8MB가 넘습니다.`); continue; }
+      files.push(f);
+    }
+    e.target.value = ''; drawFiles();
+  });
+  const partOf = f => new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onerror = () => rej(new Error(`${f.name}을(를) 읽지 못했습니다.`));
+    if (/^text\//.test(f.type) || /\.(txt|csv|md)$/i.test(f.name)) { r.onload = () => res({ text: `\n[양식 파일: ${f.name}]\n${r.result}` }); r.readAsText(f); return; }
+    if (/^image\//.test(f.type) || /\.pdf$/i.test(f.name) || f.type === 'application/pdf') {
+      r.onload = () => res({ inlineData: { mimeType: /\.pdf$/i.test(f.name) ? 'application/pdf' : (f.type || 'image/png'), data: String(r.result).split(',')[1] } });
+      r.readAsDataURL(f); return;
+    }
+    rej(new Error(`${f.name} 형식은 읽을 수 없습니다. 한글·워드 파일은 PDF로 저장하거나 화면을 캡처해 올려 주세요.`));
+  });
+  const jsonOf = t => {
+    const m = String(t).replace(/```json|```/g, '').trim();
+    const a = m.indexOf('['), b = m.lastIndexOf(']');
+    return JSON.parse(a >= 0 && b > a ? m.slice(a, b + 1) : m);
+  };
+
+  /* --- 항목 --- */
+  function drawItems() {
+    const box = $('scItems'); box.innerHTML = '';
+    $('scItemCnt').textContent = items.length ? `${items.filter(i => i.on).length}/${items.length}개 선택` : '';
+    if (!items.length) { box.appendChild(el('p', 'text-xs text-slate-500', '아직 항목이 없습니다. 양식을 올려 "항목 뽑기"를 누르거나 직접 넣어 주세요.')); return; }
+    items.forEach((it, i) => {
+      const row = el('div', 'flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-2 py-1.5');
+      const c = el('input'); c.type = 'checkbox'; c.checked = !!it.on; c.className = 'w-4 h-4';
+      c.onchange = () => { it.on = c.checked; saveItems(); drawItems(); };
+      const t = el('input', 'flex-1 min-w-0 border-0 bg-transparent text-sm'); t.value = it.title;
+      t.onchange = () => { it.title = t.value.trim(); saveItems(); };
+      const lim = el('input', 'w-20 border border-slate-200 rounded px-1 py-0.5 text-xs text-right'); lim.type = 'number'; lim.min = '0'; lim.value = it.limit || 0; lim.title = '글자 수 제한 (0이면 제한 없음)';
+      lim.onchange = () => { it.limit = +lim.value || 0; saveItems(); };
+      const x = el('button', 'text-xs text-slate-400 hover:text-red-600', '삭제'); x.type = 'button';
+      x.onclick = () => { items.splice(i, 1); saveItems(); drawItems(); };
+      row.append(c, t, lim, el('span', 'text-xs text-slate-400', '자'), x); box.appendChild(row);
+    });
+  }
+  $('scAdd').addEventListener('click', () => {
+    const t = prompt('항목 제목을 적어 주세요. (예: 지원 동기, 학업 태도, 인성 및 봉사)');
+    if (!t || !t.trim()) return;
+    const n = prompt('글자 수 제한이 있으면 숫자만 적어 주세요. 없으면 0.', '500');
+    items.push({ title: t.trim(), limit: +n || 0, on: true }); saveItems(); drawItems();
+  });
+  $('scScan').addEventListener('click', async () => {
+    if (!gem.key) { $('scGemDet').open = true; $('scGemKey').focus(); gemMsg('먼저 API 키를 입력하고 "연결 테스트"를 눌러 주세요.'); alert('먼저 위 "🔑 Gemini 연결 설정"에서 API 키를 넣어 주세요.'); return; }
+    if (!files.length) { alert('먼저 추천서 양식 파일(사진·PDF)을 올려 주세요.'); return; }
+    $('scScan').disabled = true; $('scScanMsg').textContent = '양식을 읽는 중…';
+    try {
+      const parts = [{ text: '첨부한 장학생 추천서 양식에서 "교사가 직접 글로 써야 하는 항목"만 뽑아 JSON 배열로만 답하세요.\n형식: [{"title":"지원 동기","limit":500}]\n- title은 항목 제목을 짧게.\n- limit은 글자 수 제한 숫자. 제한이 없으면 0.\n- 성명·학번·생년월일·연락처처럼 단순 기입란이나 서명란은 빼세요.\n- 설명 없이 JSON 배열만 출력하세요.' }];
+      for (const f of files) parts.push(await partOf(f));
+      const got = jsonOf(await gemAsk(parts));
+      if (!Array.isArray(got) || !got.length) throw new Error('항목을 찾지 못했습니다.');
+      got.forEach(g => { const t = String(g.title || '').trim(); if (t && !items.some(x => x.title === t)) items.push({ title: t, limit: +g.limit || 0, on: true }); });
+      saveItems(); drawItems();
+      $('scScanMsg').textContent = `항목 ${got.length}개를 찾았습니다. 아래에서 고치거나 빼고 쓰세요.`;
+    } catch (e) { $('scScanMsg').textContent = '실패: ' + e.message; }
+    $('scScan').disabled = false;
+  });
+
+  /* --- 학생 자료 --- */
+  function fillStu() {
+    const sel = $('scStu'), keep = sel.value;
+    sel.innerHTML = '<option value="">-- 학생 선택 --</option>';
+    (typeof students !== 'undefined' ? students : []).forEach(s => { const o = el('option', '', `${s.no} ${s.name}`); o.value = s.id; sel.appendChild(o); });
+    if (keep) sel.value = keep;
+  }
+  function material(sid) {
+    const s = students.find(x => x.id === sid); if (!s) return { txt: '', sum: '' };
+    const lines = [], used = [];
+    if ($('scUseRec').checked) {
+      const got = Object.keys(recs).filter(k => k.endsWith('|' + sid)).map(k => {
+        const [type, sub] = k.split('|'), t = String(recs[k] || '').trim();
+        return t ? `· ${type}${sub ? `(${sub})` : ''}: ${t}` : '';
+      }).filter(Boolean);
+      if (got.length) { lines.push('[작성해 둔 생활기록부 기록]', ...got); used.push(`기록 ${got.length}건`); }
+    }
+    if ($('scUseMemo').checked) {
+      const got = Object.keys(recMemo).filter(k => k.endsWith('|' + sid)).map(k => {
+        const v = recMemo[k] || {}, t = [v.c, v.m].filter(Boolean).join(' / ').trim();
+        return t ? `· ${k.split('|')[0]}: ${t}` : '';
+      }).filter(Boolean);
+      if (got.length) { lines.push('[관찰 메모]', ...got); used.push(`메모 ${got.length}건`); }
+    }
+    if ($('scUseCns').checked) {
+      const got = counsels.filter(c => c.sid === sid).sort((a, b) => a.date.localeCompare(b.date)).map(c => `· ${c.date} ${c.type}/${c.area}: ${String(c.detail || '').trim()}`);
+      if (got.length) { lines.push('[상담 기록]', ...got); used.push(`상담 ${got.length}건`); }
+    }
+    if ($('scUseGr').checked && typeof grades === 'object' && grades && grades.stu && grades.stu[s.name]) {
+      const r = analyze(s.name);
+      if (r.length) {
+        const good = r.filter(x => x.ach === 'A' || x.ach === 'B').map(x => x.sub);
+        lines.push('[성적 요약]', `· ${grades.term || ''} 과목 ${r.length}개 · 성취도 A·B 과목: ${good.join(', ') || '없음'}`,
+          `· 과목 평균보다 높은 과목: ${r.filter(x => x.diff > 0).map(x => x.sub).join(', ') || '없음'}`);
+        used.push('성적');
+      }
+    }
+    const more = $('scMore').value.trim();
+    if (more) { lines.push('[교사가 추가로 적은 내용]', more); used.push('추가 메모'); }
+    return { txt: lines.join('\n'), sum: used.join(' · ') };
+  }
+  const refreshMat = () => {
+    const sid = $('scStu').value;
+    if (!sid) { $('scMat').textContent = '학생을 고르면 쓸 수 있는 자료를 보여 드립니다.'; return; }
+    const m = material(sid);
+    $('scMat').textContent = m.sum ? `쓸 자료: ${m.sum}` : '이 학생에 대해 모아 둔 자료가 없습니다. 아래 "더 넣을 내용"을 적어 주세요.';
+  };
+  ['scStu', 'scUseRec', 'scUseMemo', 'scUseCns', 'scUseGr', 'scMore'].forEach(id => $(id).addEventListener('change', refreshMat));
+  window.schoFill = () => { fillStu(); refreshMat(); };
+
+  /* --- 작성 --- */
+  const cnt = t => String(t || '').length;
+  function drawOut() {
+    const box = $('scOut'); box.innerHTML = '';
+    if (!out.length) { box.appendChild(el('p', 'text-sm text-slate-500 py-8 text-center', '왼쪽에서 항목과 학생을 고르고 "작성하기"를 누르세요.')); return; }
+    out.forEach((o, i) => {
+      const card = el('div', 'border border-slate-200 rounded-lg p-3 space-y-2');
+      const head = el('div', 'flex items-center gap-2 flex-wrap');
+      head.append(el('b', 'text-sm', o.title));
+      const c = el('span', 'text-xs text-slate-500', '');
+      const ta = el('textarea', 'w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm leading-7 resize-y');
+      ta.rows = Math.min(14, Math.max(4, Math.ceil(cnt(o.text) / 45)));
+      ta.value = o.text;
+      const upd = () => { c.textContent = `${cnt(ta.value)}자${o.limit ? ` / ${o.limit}자` : ''}`; c.className = 'text-xs ' + (o.limit && cnt(ta.value) > o.limit ? 'text-rose-600 font-bold' : 'text-slate-500'); };
+      ta.addEventListener('input', () => { o.text = ta.value; upd(); });
+      upd();
+      const cp = el('button', 'text-xs border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-2 py-1', '📋 복사'); cp.type = 'button';
+      cp.onclick = async () => { try { await navigator.clipboard.writeText(ta.value); cp.textContent = '복사됨'; setTimeout(() => cp.textContent = '📋 복사', 1200); } catch (e) { ta.select(); document.execCommand('copy'); } };
+      const re = el('button', 'text-xs border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-2 py-1', '🔁 이 항목만 다시'); re.type = 'button';
+      re.onclick = () => run([i]);
+      const acts = el('div', 'ml-auto flex gap-2'); acts.append(c, cp, re);
+      head.appendChild(acts);
+      card.append(head, ta); box.appendChild(card);
+    });
+  }
+  function prompt4(list, mat) {
+    const lines = list.map((o, i) => `${i + 1}. ${o.title}${o.limit ? ` (${o.limit}자 이내, ${Math.round(o.limit * 0.9)}자 이상)` : ''}`).join('\n');
+    return `당신은 대한민국 고등학교 담임교사입니다. 아래 학생 자료를 바탕으로 장학생 추천서의 각 항목을 작성하세요.
+
+[학생 자료]
+${mat || '(모아 둔 자료 없음 — 일반적인 표현으로 쓰되 구체적 사실은 지어내지 말 것)'}
+
+[써야 할 항목]
+${lines}
+
+[문체] ${$('scTone').value}
+
+작성 규칙
+- 학생은 "본 학생"으로 지칭하고 이름은 쓰지 않습니다.
+- 글자 수 제한이 있으면 그 범위를 지킵니다. 공백 포함으로 셉니다.
+- 자료에 없는 수상·점수·사실은 절대 지어내지 말고, 꼭 필요하면 [확인 필요] 라고 적습니다.
+- 미사여구보다 행동과 사례 중심으로 구체적으로 씁니다.
+- 추천서에 어울리는 문어체로 쓰고, 마지막은 추천 의사를 담아 마무리합니다.
+- 설명 없이 JSON 배열로만 출력하세요. 형식: [{"title":"항목 제목","text":"본문"}]`;
+  }
+  async function run(idx) {
+    if (!gem.key) { $('scGemDet').open = true; $('scGemKey').focus(); gemMsg('먼저 API 키를 입력하고 "연결 테스트"를 눌러 주세요.'); alert('먼저 위 "🔑 Gemini 연결 설정"에서 API 키를 넣어 주세요.'); return; }
+    const sid = $('scStu').value;
+    if (!sid) { alert('학생을 먼저 골라 주세요.'); return; }
+    let list;
+    if (idx) list = idx.map(i => out[i]);
+    else { list = items.filter(i => i.on).map(i => ({ title: i.title, limit: i.limit, text: '' })); }
+    if (!list.length) { alert('쓸 항목을 하나 이상 골라 주세요.'); return; }
+    const mat = material(sid).txt;
+    if (!mat.trim() && !confirm('이 학생에 대해 모아 둔 자료가 없습니다.\n내용이 빈약할 수 있는데 그래도 쓸까요?')) return;
+    $('scRun').disabled = true; msg('AI가 쓰는 중… 항목이 많으면 1분 넘게 걸릴 수 있어요.', true);
+    try {
+      const got = jsonOf(await gemAsk(prompt4(list, mat)));
+      const by = {}; (Array.isArray(got) ? got : []).forEach(g => { if (g && g.title) by[String(g.title).trim()] = String(g.text || ''); });
+      if (idx) idx.forEach((i, k) => { out[i].text = by[out[i].title] || (got[k] && got[k].text) || out[i].text; });
+      else out = list.map((o, k) => ({ title: o.title, limit: o.limit, text: by[o.title] || (got[k] && got[k].text) || '' }));
+      drawOut(); msg('초안이 나왔습니다. 사실과 맞는지 꼭 확인하고 고쳐 쓰세요.', true);
+    } catch (e) { msg('실패: ' + e.message); alert('만들지 못했습니다.\n\n' + e.message); }
+    $('scRun').disabled = false;
+  }
+  $('scRun').addEventListener('click', () => run(null));
+
+  /* --- 복사·저장 --- */
+  const allText = () => out.map(o => `[${o.title}]\n${o.text}`).join('\n\n');
+  $('scCopyAll').addEventListener('click', async () => {
+    if (!out.length) { alert('복사할 내용이 없습니다.'); return; }
+    try { await navigator.clipboard.writeText(allText()); msg('전체를 복사했습니다.', true); } catch (e) { msg('복사하지 못했습니다. 항목별 복사를 써 주세요.'); }
+  });
+  $('scTxt').addEventListener('click', () => {
+    if (!out.length) { alert('저장할 내용이 없습니다.'); return; }
+    const s0 = students.find(x => x.id === $('scStu').value), a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + allText()], { type: 'text/plain;charset=utf-8' }));
+    a.download = `추천서_${s0 ? s0.name : '학생'}_${ymd(new Date())}.txt`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  });
+  function drawSaved() {
+    const box = $('scList'); box.innerHTML = '';
+    $('scCnt').textContent = saved.length ? `${saved.length}건` : '';
+    if (!saved.length) { box.appendChild(el('p', 'text-sm text-slate-500', '저장한 추천서가 없습니다.')); return; }
+    saved.forEach(r => {
+      const row = el('div', 'flex items-center gap-2 text-sm border border-slate-200 rounded-lg px-3 py-2');
+      const b = el('button', 'flex-1 text-left truncate', `${r.date} · ${r.name} · ${r.items.length}개 항목`); b.type = 'button';
+      b.onclick = () => { out = r.items.map(x => ({ title: x.title, limit: x.limit || 0, text: x.text })); drawOut(); msg('불러왔습니다.', true); };
+      const x = el('button', 'text-xs text-slate-400 hover:text-red-600', '삭제'); x.type = 'button';
+      x.onclick = () => { if (!confirm('이 추천서를 지울까요?')) return; saved = saved.filter(y => y.id !== r.id); saveList(); drawSaved(); };
+      row.append(b, x); box.appendChild(row);
+    });
+  }
+  $('scSave').addEventListener('click', () => {
+    if (!out.length) { alert('저장할 내용이 없습니다.'); return; }
+    const s0 = students.find(x => x.id === $('scStu').value);
+    saved.unshift({ id: 'sc' + Date.now().toString(36), date: ymd(new Date()), name: s0 ? `${s0.no} ${s0.name}` : '학생', items: out.map(o => ({ title: o.title, limit: o.limit, text: o.text })) });
+    saved = saved.slice(0, 40); saveList(); drawSaved(); msg('저장했습니다.', true);
+  });
+
+  drawItems(); drawOut(); drawSaved(); fillStu(); refreshMat();
+})();
 /* ===== 공문 초안 (Gemini) ===== */
 (() => {
   /* 키 설정 — "기록 작성" 탭과 같은 키를 함께 씁니다 */
@@ -5213,7 +5540,7 @@ $('syncBtn').addEventListener('click', () => syncNow(true));
 renderSyncOpts(); syncUI();
 if (syncCfg.url && syncCfg.token) setTimeout(() => syncNow(false), 1500);
 
-function renderAll() { renderSch(); renderToday(); renderCal(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); absInit(); renderMeal(); renderRsv(); renderHomeRsv(); }
+function renderAll() { if (window.schoFill) schoFill(); renderSch(); renderToday(); renderCal(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); absInit(); renderMeal(); renderRsv(); renderHomeRsv(); }
 renderAll();
 
 (() => {
