@@ -68,6 +68,16 @@
   @media print { body > *:not(#printArea) { display: none !important; } #printArea { display: block !important; width: 72mm; border: 1px solid #000; padding: 6mm; margin: 10mm auto 0; font-size: 11pt; line-height: 1.6; } }
   @media print { #printArea.seat-print { width: 180mm !important; } }
   @media print { #printArea.gr-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 0 auto !important; font-size: 10pt; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; } #printArea.gr-print .gr-page { break-after: page; page-break-after: always; } #printArea.gr-print .gr-page:last-child { break-after: auto; page-break-after: auto; } #printArea.gr-print table { width: 100%; border-collapse: collapse; } #printArea.gr-print th, #printArea.gr-print td { border: 1px solid #94a3b8; padding: 3px 6px; text-align: center; } #printArea.gr-print th { background: #e2e8f0; } #printArea.gr-print td:first-child { text-align: left; } }
+  .sc-doc { width: 190mm; min-height: 100mm; padding: 14mm 14mm 10mm; color: #000; font-size: 11pt; line-height: 1.75; }
+  .sc-doc h2 { text-align: center; font-size: 19pt; letter-spacing: 6px; margin: 0 0 10px; font-weight: 700; }
+  .sc-doc table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+  .sc-doc th, .sc-doc td { border: 1px solid #555; padding: 5px 8px; font-size: 10.5pt; }
+  .sc-doc th { background: #eef2f6; width: 18%; text-align: center; font-weight: 700; }
+  .sc-doc h3 { font-size: 12pt; font-weight: 700; margin: 14px 0 4px; }
+  .sc-doc p.body { margin: 0 0 4px; white-space: pre-wrap; text-align: justify; }
+  .sc-doc .empty { color: #94a3b8; }
+  .sc-doc .sign { margin-top: 26px; text-align: center; line-height: 2.1; }
+  @media print { #printArea.sc-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 0 auto !important; } #printArea.sc-print .sc-doc { width: auto; padding: 0; box-shadow: none; } #printArea.sc-print h3 { break-after: avoid; page-break-after: avoid; } }
   @media print { #printArea.as-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 0 auto !important; font-size: 10pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; } #printArea.as-print table { width: 100%; border-collapse: collapse; } #printArea.as-print th, #printArea.as-print td { border: 1px solid #94a3b8; padding: 3px 6px; text-align: center; } #printArea.as-print th { background: #e2e8f0; } #printArea.as-print td.l { text-align: left; } }
   @media print { #printArea.abs-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 10mm auto 0 !important; } #printArea.abs-print img { max-width: 100%; max-height: 275mm; width: auto; height: auto; display: block; margin: 0 auto; } }
   @media print { #printArea.abs-multi img { break-after: page; page-break-after: always; } #printArea.abs-multi img:last-child { break-after: auto; page-break-after: auto; } }
@@ -146,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기</p>
   </form>
 </div>
 
@@ -239,13 +249,11 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
         <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 space-y-2">
           <p class="text-sm font-bold">3️⃣ 학생과 자료</p>
           <label class="text-sm block">학생<select id="scStu" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></select></label>
-          <div class="grid grid-cols-2 gap-1 text-xs">
-            <label class="flex items-center gap-1.5"><input type="checkbox" id="scUseRec" checked class="w-4 h-4"> 작성한 기록</label>
-            <label class="flex items-center gap-1.5"><input type="checkbox" id="scUseMemo" checked class="w-4 h-4"> 관찰 메모</label>
-            <label class="flex items-center gap-1.5"><input type="checkbox" id="scUseCns" class="w-4 h-4"> 상담 기록</label>
-            <label class="flex items-center gap-1.5"><input type="checkbox" id="scUseGr" class="w-4 h-4"> 성적 요약</label>
+          <div class="flex items-center gap-2 flex-wrap text-xs">
+            <b id="scMat" class="text-slate-600">학생을 고르면 그 학생 자료가 아래에 나옵니다.</b>
+            <button id="scMatAll" type="button" class="ml-auto underline text-slate-500">전체 선택/해제</button>
           </div>
-          <p id="scMat" class="text-xs text-slate-500"></p>
+          <div id="scMatBox" class="max-h-72 overflow-y-auto space-y-1.5 bg-white border border-slate-200 rounded-lg p-2"></div>
           <label class="text-sm block">더 넣을 내용 <span class="text-xs text-slate-500">(수상, 역할, 가정 형편, 강조할 점)</span>
             <textarea id="scMore" rows="4" placeholder="예: 2학년 학급 부회장, 교내 봉사상 수상, 아르바이트와 학업을 함께함" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm resize-y"></textarea>
           </label>
@@ -262,7 +270,19 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <div class="space-y-4">
         <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
           <div class="flex items-center gap-2 flex-wrap">
-            <b class="text-sm">초안</b>
+            <b class="text-sm">📄 미리보기</b>
+            <div class="ml-auto flex gap-2">
+              <button id="scPrint" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm py-1.5">🖨️ 인쇄 (A4)</button>
+            </div>
+          </div>
+          <div class="overflow-auto bg-slate-100 rounded-lg p-3">
+            <div id="scDoc" class="sc-doc mx-auto bg-white shadow"></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
+          <div class="flex items-center gap-2 flex-wrap">
+            <b class="text-sm">✏️ 항목별 고치기</b>
             <div class="ml-auto flex gap-2">
               <button id="scCopyAll" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm py-1.5">📋 전체 복사</button>
               <button id="scSave" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm py-1.5">💾 저장</button>
@@ -939,7 +959,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기</p>
   </div>
 </dialog>
 
@@ -4850,7 +4870,7 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
     items.forEach((it, i) => {
       const row = el('div', 'flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-2 py-1.5');
       const c = el('input'); c.type = 'checkbox'; c.checked = !!it.on; c.className = 'w-4 h-4';
-      c.onchange = () => { it.on = c.checked; saveItems(); drawItems(); };
+      c.onchange = () => { it.on = c.checked; saveItems(); drawItems(); drawDoc(); };
       const t = el('input', 'flex-1 min-w-0 border-0 bg-transparent text-sm'); t.value = it.title;
       t.onchange = () => { it.title = t.value.trim(); saveItems(); };
       const lim = el('input', 'w-20 border border-slate-200 rounded px-1 py-0.5 text-xs text-right'); lim.type = 'number'; lim.min = '0'; lim.value = it.limit || 0; lim.title = '글자 수 제한 (0이면 제한 없음)';
@@ -4889,48 +4909,92 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
     (typeof students !== 'undefined' ? students : []).forEach(s => { const o = el('option', '', `${s.no} ${s.name}`); o.value = s.id; sel.appendChild(o); });
     if (keep) sel.value = keep;
   }
-  function material(sid) {
-    const s = students.find(x => x.id === sid); if (!s) return { txt: '', sum: '' };
-    const lines = [], used = [];
-    if ($('scUseRec').checked) {
-      const got = Object.keys(recs).filter(k => k.endsWith('|' + sid)).map(k => {
-        const [type, sub] = k.split('|'), t = String(recs[k] || '').trim();
-        return t ? `· ${type}${sub ? `(${sub})` : ''}: ${t}` : '';
-      }).filter(Boolean);
-      if (got.length) { lines.push('[작성해 둔 생활기록부 기록]', ...got); used.push(`기록 ${got.length}건`); }
-    }
-    if ($('scUseMemo').checked) {
-      const got = Object.keys(recMemo).filter(k => k.endsWith('|' + sid)).map(k => {
-        const v = recMemo[k] || {}, t = [v.c, v.m].filter(Boolean).join(' / ').trim();
-        return t ? `· ${k.split('|')[0]}: ${t}` : '';
-      }).filter(Boolean);
-      if (got.length) { lines.push('[관찰 메모]', ...got); used.push(`메모 ${got.length}건`); }
-    }
-    if ($('scUseCns').checked) {
-      const got = counsels.filter(c => c.sid === sid).sort((a, b) => a.date.localeCompare(b.date)).map(c => `· ${c.date} ${c.type}/${c.area}: ${String(c.detail || '').trim()}`);
-      if (got.length) { lines.push('[상담 기록]', ...got); used.push(`상담 ${got.length}건`); }
-    }
-    if ($('scUseGr').checked && typeof grades === 'object' && grades && grades.stu && grades.stu[s.name]) {
-      const r = analyze(s.name);
-      if (r.length) {
-        const good = r.filter(x => x.ach === 'A' || x.ach === 'B').map(x => x.sub);
-        lines.push('[성적 요약]', `· ${grades.term || ''} 과목 ${r.length}개 · 성취도 A·B 과목: ${good.join(', ') || '없음'}`,
-          `· 과목 평균보다 높은 과목: ${r.filter(x => x.diff > 0).map(x => x.sub).join(', ') || '없음'}`);
-        used.push('성적');
+  let mats = [];                                   // [{group, label, text, on}]
+  function collect(sid) {
+    const s = students.find(x => x.id === sid), list = [];
+    if (!s) return list;
+    Object.keys(recs).filter(k => k.endsWith('|' + sid)).forEach(k => {
+      const [type, sub] = k.split('|'), t = String(recs[k] || '').trim();
+      if (t) list.push({ group: '작성한 기록', label: `${type}${sub ? `(${sub})` : ''}`, text: t, on: true });
+    });
+    Object.keys(recMemo).filter(k => k.endsWith('|' + sid)).forEach(k => {
+      const v = recMemo[k] || {}, t = [v.c, v.m].filter(Boolean).join(' / ').trim();
+      if (t) list.push({ group: '관찰 메모', label: k.split('|')[0], text: t, on: true });
+    });
+    counsels.filter(c => c.sid === sid).sort((a, b) => a.date.localeCompare(b.date)).forEach(c => {
+      const t = String(c.detail || '').trim();
+      if (t) list.push({ group: '상담 기록', label: `${c.date} ${c.type}·${c.area}`, text: t, on: false });
+    });
+    try {
+      if (grades && grades.stu && grades.stu[s.name]) {
+        const r = analyze(s.name);
+        if (r.length) {
+          const good = r.filter(x => x.ach === 'A' || x.ach === 'B').map(x => x.sub);
+          list.push({ group: '성적 요약', label: grades.term || '성적', on: false,
+            text: `과목 ${r.length}개 · 성취도 A·B 과목: ${good.join(', ') || '없음'} · 과목 평균보다 높은 과목: ${r.filter(x => x.diff > 0).map(x => x.sub).join(', ') || '없음'}` });
+        }
       }
-    }
-    const more = $('scMore').value.trim();
-    if (more) { lines.push('[교사가 추가로 적은 내용]', more); used.push('추가 메모'); }
-    return { txt: lines.join('\n'), sum: used.join(' · ') };
+    } catch (e) {}
+    try {
+      const ab = (window.absStore ? absStore.get() : []).filter(a => String(a.no) === String(s.no));
+      if (ab.length) list.push({ group: '참고', label: '결석 기록', on: false, text: `저장된 결석신고서 ${ab.length}건` });
+    } catch (e) {}
+    return list;
   }
-  const refreshMat = () => {
+  function drawMats() {
+    const box = $('scMatBox'); box.innerHTML = '';
     const sid = $('scStu').value;
-    if (!sid) { $('scMat').textContent = '학생을 고르면 쓸 수 있는 자료를 보여 드립니다.'; return; }
-    const m = material(sid);
-    $('scMat').textContent = m.sum ? `쓸 자료: ${m.sum}` : '이 학생에 대해 모아 둔 자료가 없습니다. 아래 "더 넣을 내용"을 적어 주세요.';
-  };
-  ['scStu', 'scUseRec', 'scUseMemo', 'scUseCns', 'scUseGr', 'scMore'].forEach(id => $(id).addEventListener('change', refreshMat));
-  window.schoFill = () => { fillStu(); refreshMat(); };
+    if (!sid) { $('scMat').textContent = '학생을 고르면 그 학생 자료가 아래에 나옵니다.'; box.appendChild(el('p', 'text-xs text-slate-400 p-2', '—')); return; }
+    if (!mats.length) { $('scMat').textContent = '모아 둔 자료가 없습니다.'; box.appendChild(el('p', 'text-xs text-slate-500 p-2', '이 학생에 대한 기록·메모·상담이 없습니다. 아래 "더 넣을 내용"에 직접 적어 주세요.')); return; }
+    $('scMat').textContent = `자료 ${mats.length}건 중 ${mats.filter(m => m.on).length}건 선택`;
+    let g = '';
+    mats.forEach(m => {
+      if (m.group !== g) { g = m.group; box.appendChild(el('p', 'text-xs font-bold text-slate-500 pt-1', g)); }
+      const row = el('label', 'flex items-start gap-2 text-xs rounded px-1 py-1 hover:bg-slate-50 cursor-pointer');
+      const c = el('input'); c.type = 'checkbox'; c.checked = m.on; c.className = 'mt-0.5 w-4 h-4 shrink-0';
+      c.onchange = () => { m.on = c.checked; $('scMat').textContent = `자료 ${mats.length}건 중 ${mats.filter(x => x.on).length}건 선택`; };
+      const d = el('span', 'flex-1 min-w-0');
+      d.innerHTML = `<b>${esc(m.label)}</b> <span class="text-slate-600">${esc(m.text.length > 160 ? m.text.slice(0, 160) + '…' : m.text)}</span>`;
+      d.title = m.text;
+      row.append(c, d); box.appendChild(row);
+    });
+  }
+  $('scMatAll').addEventListener('click', () => { const on = !mats.every(m => m.on); mats.forEach(m => m.on = on); drawMats(); });
+  function material(sid) {
+    const lines = [];
+    let g = '';
+    mats.filter(m => m.on).forEach(m => { if (m.group !== g) { g = m.group; lines.push(`[${g}]`); } lines.push(`· ${m.label}: ${m.text}`); });
+    const more = $('scMore').value.trim();
+    if (more) lines.push('[교사가 추가로 적은 내용]', more);
+    return { txt: lines.join('\n') };
+  }
+  const refreshMat = () => { mats = collect($('scStu').value); drawMats(); drawDoc(); };
+  $('scStu').addEventListener('change', refreshMat);
+  window.schoFill = () => { const k = $('scStu').value; fillStu(); if ($('scStu').value !== k) refreshMat(); };
+
+  /* --- 미리보기 (완성된 추천서 모양) --- */
+  function drawDoc() {
+    const box = $('scDoc'); if (!box) return;
+    const s = students.find(x => x.id === $('scStu').value), c = (typeof cfg === 'object' && cfg) || {};
+    const d = new Date(), today = `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
+    const info = s ? (typeof stuInfo === 'function' ? stuInfo(s.no) : { cls: '', num: '' }) : { cls: '', num: '' };
+    const body = (out.length ? out : items.filter(i => i.on).map(i => ({ title: i.title, limit: i.limit, text: '' })));
+    const rows = body.map((o, i) => `<h3>${i + 1}. ${esc(o.title)}</h3><p class="body${o.text ? '' : ' empty'}">${o.text ? esc(o.text) : '(작성하기를 누르면 여기에 내용이 들어갑니다)'}</p>`).join('');
+    box.innerHTML = `<h2>추천서</h2>
+      <table><tr><th>학교</th><td>${esc(c.school || '')}</td><th>학년·반</th><td>${esc(info.cls || c.cls || '')}</td></tr>
+      <tr><th>성명</th><td>${esc(s ? s.name : '')}</td><th>학번</th><td>${esc(s ? s.no : '')}</td></tr></table>
+      ${rows || '<p class="body empty">왼쪽에서 항목을 고르면 여기에 나타납니다.</p>'}
+      <div class="sign">위 학생을 추천합니다.<br>${today}<br><b>${esc(c.school || '')} ${esc(info.cls || c.cls || '')} 담임교사 ${esc((($('pTeacher') && $('pTeacher').value) || '').trim())} (인)</b></div>`;
+  }
+  $('scPrint').addEventListener('click', () => {
+    if (!out.length && !items.some(i => i.on)) { alert('먼저 항목을 고르고 내용을 작성해 주세요.'); return; }
+    drawDoc();
+    if (typeof printReset === 'function') printReset();
+    const pa = $('printArea'); pa.innerHTML = $('scDoc').outerHTML; pa.classList.add('sc-print');
+    const pg = document.createElement('style'); pg.dataset.pg = '1'; pg.textContent = '@page{size:A4;margin:14mm}'; document.head.appendChild(pg);
+    const done = () => { pg.remove(); pa.classList.remove('sc-print'); pa.innerHTML = ''; window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done); window.print(); setTimeout(done, 60000);
+  });
 
   /* --- 작성 --- */
   const cnt = t => String(t || '').length;
@@ -4946,7 +5010,7 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
       ta.rows = Math.min(14, Math.max(4, Math.ceil(cnt(o.text) / 45)));
       ta.value = o.text;
       const upd = () => { c.textContent = `${cnt(ta.value)}자${o.limit ? ` / ${o.limit}자` : ''}`; c.className = 'text-xs ' + (o.limit && cnt(ta.value) > o.limit ? 'text-rose-600 font-bold' : 'text-slate-500'); };
-      ta.addEventListener('input', () => { o.text = ta.value; upd(); });
+      ta.addEventListener('input', () => { o.text = ta.value; upd(); drawDoc(); });
       upd();
       const cp = el('button', 'text-xs border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-2 py-1', '📋 복사'); cp.type = 'button';
       cp.onclick = async () => { try { await navigator.clipboard.writeText(ta.value); cp.textContent = '복사됨'; setTimeout(() => cp.textContent = '📋 복사', 1200); } catch (e) { ta.select(); document.execCommand('copy'); } };
@@ -4993,7 +5057,7 @@ ${lines}
       const by = {}; (Array.isArray(got) ? got : []).forEach(g => { if (g && g.title) by[String(g.title).trim()] = String(g.text || ''); });
       if (idx) idx.forEach((i, k) => { out[i].text = by[out[i].title] || (got[k] && got[k].text) || out[i].text; });
       else out = list.map((o, k) => ({ title: o.title, limit: o.limit, text: by[o.title] || (got[k] && got[k].text) || '' }));
-      drawOut(); msg('초안이 나왔습니다. 사실과 맞는지 꼭 확인하고 고쳐 쓰세요.', true);
+      drawOut(); drawDoc(); msg('초안이 나왔습니다. 사실과 맞는지 꼭 확인하고 고쳐 쓰세요.', true);
     } catch (e) { msg('실패: ' + e.message); alert('만들지 못했습니다.\n\n' + e.message); }
     $('scRun').disabled = false;
   }
@@ -5019,7 +5083,7 @@ ${lines}
     saved.forEach(r => {
       const row = el('div', 'flex items-center gap-2 text-sm border border-slate-200 rounded-lg px-3 py-2');
       const b = el('button', 'flex-1 text-left truncate', `${r.date} · ${r.name} · ${r.items.length}개 항목`); b.type = 'button';
-      b.onclick = () => { out = r.items.map(x => ({ title: x.title, limit: x.limit || 0, text: x.text })); drawOut(); msg('불러왔습니다.', true); };
+      b.onclick = () => { out = r.items.map(x => ({ title: x.title, limit: x.limit || 0, text: x.text })); drawOut(); drawDoc(); msg('불러왔습니다.', true); };
       const x = el('button', 'text-xs text-slate-400 hover:text-red-600', '삭제'); x.type = 'button';
       x.onclick = () => { if (!confirm('이 추천서를 지울까요?')) return; saved = saved.filter(y => y.id !== r.id); saveList(); drawSaved(); };
       row.append(b, x); box.appendChild(row);
@@ -5032,7 +5096,7 @@ ${lines}
     saved = saved.slice(0, 40); saveList(); drawSaved(); msg('저장했습니다.', true);
   });
 
-  drawItems(); drawOut(); drawSaved(); fillStu(); refreshMat();
+  drawItems(); drawOut(); drawSaved(); fillStu(); refreshMat(); drawDoc();
 })();
 /* ===== 공문 초안 (Gemini) ===== */
 (() => {
