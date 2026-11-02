@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항</p>
   </form>
 </div>
 
@@ -278,6 +278,28 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
             <button id="scMatAll" type="button" class="ml-auto underline text-slate-500">전체 선택/해제</button>
           </div>
           <div id="scMatBox" class="max-h-72 overflow-y-auto space-y-1.5 bg-white border border-slate-200 rounded-lg p-2"></div>
+          <details id="scInfoDet" class="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs">
+            <summary class="font-bold cursor-pointer text-sm">👤 인적사항 · 계좌 <span class="font-normal text-slate-500">(추천서 양식에 들어가는 칸)</span></summary>
+            <div class="mt-3 space-y-2">
+              <p class="text-slate-600">여기 적은 내용은 <b>AI에 보내지 않습니다.</b> 미리보기와 인쇄에만 들어갑니다. 학생마다 따로 저장됩니다.</p>
+              <div class="grid grid-cols-2 gap-2">
+                <label class="block">생년월일<input id="scBirth" placeholder="2009. 03. 15." class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+                <label class="block">학생 연락처<input id="scTel" placeholder="010-0000-0000" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+              </div>
+              <label class="block">주소<input id="scAddr" placeholder="충청남도 청양군 ..." class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+              <div class="grid grid-cols-2 gap-2">
+                <label class="block">보호자 성함<input id="scGName" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+                <label class="block">보호자 연락처<input id="scGTel" placeholder="010-0000-0000" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <label class="block">은행<input id="scBank" placeholder="예: 농협" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+                <label class="block">예금주<input id="scHolder" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+              </div>
+              <label class="block">계좌번호<input id="scAcct" placeholder="숫자와 - 만" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+              <label class="flex items-center gap-2 pt-1"><input type="checkbox" id="scShowAcct" class="w-4 h-4"> 미리보기·인쇄에 <b>계좌번호</b> 넣기</label>
+              <p class="text-slate-500">계좌번호는 민감한 정보입니다. 꼭 필요할 때만 체크하고, 출력물은 바로 제출하거나 파쇄해 주세요. 설정의 🔒 추가 잠금에서 이 탭도 잠글 수 있습니다.</p>
+            </div>
+          </details>
           <label class="text-sm block">더 넣을 내용 <span class="text-xs text-slate-500">(수상, 역할, 가정 형편, 강조할 점)</span>
             <textarea id="scMore" rows="4" placeholder="예: 2학년 학급 부회장, 교내 봉사상 수상, 아르바이트와 학업을 함께함" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm resize-y"></textarea>
           </label>
@@ -979,11 +1001,27 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     </section>
 
     <section>
+      <h3 class="font-bold text-sm mb-2">🔒 추가 잠금 <span class="text-xs font-normal text-slate-500">(민감한 탭을 열 때 한 번 더 확인)</span></h3>
+      <p id="pw2State" class="text-xs text-slate-600 mb-2"></p>
+      <div class="grid sm:grid-cols-2 gap-2">
+        <input id="pw2A" type="password" autocomplete="new-password" placeholder="추가 비밀번호 (4자 이상, 아무 글자나)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
+        <input id="pw2B" type="password" autocomplete="new-password" placeholder="한 번 더 입력" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
+      </div>
+      <div class="flex flex-wrap gap-2 mt-2">
+        <button id="pw2Set" type="button" class="bg-[#0f2747] hover:bg-[#1b3a66] text-white rounded-lg px-3 py-2 text-sm font-bold">비밀번호 저장</button>
+        <button id="pw2Off" type="button" class="border border-red-300 text-red-600 hover:bg-red-50 rounded-lg px-3 py-2 text-sm">추가 잠금 끄기</button>
+      </div>
+      <p class="text-xs text-slate-500 mt-2">잠글 탭을 고르세요. 프로그램을 연 뒤 처음 그 탭에 들어갈 때 한 번만 물어봅니다.</p>
+      <div id="pw2Tabs" class="grid sm:grid-cols-2 gap-1 mt-1 text-sm"></div>
+      <p class="text-xs text-slate-500 mt-2">이 비밀번호는 맨 처음 여는 비밀번호와 다릅니다. 잊으면 되돌릴 수 없고, 추가 잠금을 끈 뒤 다시 정해야 합니다.</p>
+    </section>
+
+    <section>
       <h3 class="font-bold text-sm mb-2">📦 자동 보관함 <span class="text-xs font-normal text-slate-500">(기록이 사라졌을 때 되돌리기)</span></h3>
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항</p>
   </div>
 </dialog>
 
@@ -1006,6 +1044,18 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     </div>
     <div class="overflow-auto"><canvas id="abEdCv" class="w-full border border-slate-300 cursor-crosshair bg-white"></canvas></div>
   </div>
+</div>
+<div id="pw2Box" class="hidden fixed inset-0 z-[80] bg-slate-900/60 flex items-center justify-center p-4">
+  <form id="pw2Form" class="bg-white rounded-2xl p-6 w-full max-w-sm space-y-3 shadow-xl">
+    <h2 class="font-bold text-lg">🔒 <span id="pw2Title">잠긴 화면</span></h2>
+    <p id="pw2Msg" class="text-sm text-slate-600">추가 비밀번호를 입력하세요.</p>
+    <input id="pw2In" type="password" autocomplete="current-password" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 bg-slate-50" placeholder="추가 비밀번호">
+    <label class="flex items-center gap-2 text-xs text-slate-600"><input type="checkbox" id="pw2Show"> 비밀번호 보기</label>
+    <div class="flex gap-2">
+      <button type="submit" class="flex-1 bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">열기</button>
+      <button type="button" id="pw2Cancel" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-4 py-2.5">취소</button>
+    </div>
+  </form>
 </div>
 <div id="printArea"></div>
 
@@ -2466,7 +2516,7 @@ $('dlgClose').addEventListener('click', () => $('dlg').close());
 
 /* 백업 · 복원 · 초기화 */
 $('bkBtn').addEventListener('click', () => {
-  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), holidays: (() => { try { return JSON.parse(localStorage.getItem('gm-holidays')) || []; } catch (e) { return []; } })(), scho: (() => { try { return JSON.parse(localStorage.getItem('gm-scho')) || []; } catch (e) { return []; } })(), staff: (window.staffGet ? staffGet() : []), teacher: $('pTeacher').value };
+  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), holidays: (() => { try { return JSON.parse(localStorage.getItem('gm-holidays')) || []; } catch (e) { return []; } })(), scho: (() => { try { return JSON.parse(localStorage.getItem('gm-scho')) || []; } catch (e) { return []; } })(), staff: (window.staffGet ? staffGet() : []), schoInfo: (() => { try { return JSON.parse(localStorage.getItem('gm-scho-info')) || {}; } catch (e) { return {}; } })(), teacher: $('pTeacher').value };
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
   a.download = `교무실_백업_${ymd(new Date())}.json`; a.click();
@@ -2496,6 +2546,7 @@ $('rsFile').addEventListener('change', async e => {
     if (Array.isArray(d.holidays)) { try { localStorage.setItem('gm-holidays', JSON.stringify(d.holidays)); } catch (err) {} }
     if (Array.isArray(d.scho)) { try { localStorage.setItem('gm-scho', JSON.stringify(d.scho)); } catch (err) {} }
     if (Array.isArray(d.staff) && window.staffSet) staffSet(d.staff);
+    if (d.schoInfo && typeof d.schoInfo === 'object') { try { localStorage.setItem('gm-scho-info', JSON.stringify(d.schoInfo)); } catch (err) {} }
     store('gm-students', students); store('gm-counsels', counsels); store('gm-pass', passes); store('gm-dday', ddays);
     renderAll(); alert('복원했습니다.');
   } catch (err) { alert('복원 실패: ' + err.message); }
@@ -4831,6 +4882,67 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
 })();
 
 
+
+/* ===== 추가 잠금 (민감한 탭) ===== */
+const PW2_KEY = 'gm-pw2';
+const LOCKABLE = [['staff', '📇 교직원 연락처'], ['records', '🎒 학생 기록 관리'], ['scho', '🎓 추천서 작성'], ['counsel', '💬 상담 관리자'], ['gicho', '🌱 기초조사서']];
+let pw2 = (() => { try { const v = JSON.parse(localStorage.getItem(PW2_KEY)); return v && v.hash ? v : null; } catch (e) { return null; } })();
+let pw2Open = false, pw2After = null, pw2Fail = 0;
+const pw2Save = () => { try { pw2 ? localStorage.setItem(PW2_KEY, JSON.stringify(pw2)) : localStorage.removeItem(PW2_KEY); } catch (e) {} };
+const pw2Locked = t => !!(pw2 && (pw2.tabs || []).includes(t)) && !pw2Open;
+function pw2UI() {
+  if (!$('pw2State')) return;
+  $('pw2State').textContent = pw2 ? `켜져 있습니다. 잠긴 탭: ${(pw2.tabs || []).map(t => (LOCKABLE.find(x => x[0] === t) || [, t])[1]).join(', ') || '없음 (아래에서 고르세요)'}` : '꺼져 있습니다. 비밀번호를 정하면 켜집니다.';
+  $('pw2State').className = 'text-xs mb-2 ' + (pw2 ? 'text-emerald-700' : 'text-slate-600');
+  const box = $('pw2Tabs'); box.innerHTML = '';
+  LOCKABLE.forEach(([k, label]) => {
+    const l = el('label', 'flex items-center gap-2'), c = el('input');
+    c.type = 'checkbox'; c.className = 'w-4 h-4'; c.checked = !!(pw2 && (pw2.tabs || []).includes(k)); c.disabled = !pw2;
+    c.onchange = () => { if (!pw2) return; const t = new Set(pw2.tabs || []); c.checked ? t.add(k) : t.delete(k); pw2.tabs = [...t]; pw2Save(); pw2UI(); };
+    l.append(c, document.createTextNode(label)); box.appendChild(l);
+  });
+}
+$('pw2Set').addEventListener('click', async () => {
+  const a = $('pw2A').value, b = $('pw2B').value;
+  if (a.length < 4) { alert('4자 이상으로 정해 주세요. 숫자·영문·특수문자 아무거나 섞어도 됩니다.'); return; }
+  if (a !== b) { alert('두 번 입력한 값이 다릅니다.'); return; }
+  const salt = hex(crypto.getRandomValues(new Uint8Array(16)));
+  pw2 = { salt, hash: await hashPw(a, salt), tabs: (pw2 && pw2.tabs && pw2.tabs.length) ? pw2.tabs : ['staff', 'records'] };
+  pw2Save(); pw2Open = true; $('pw2A').value = ''; $('pw2B').value = ''; pw2UI();
+  alert('추가 잠금을 켰습니다. 다음에 프로그램을 열면 잠긴 탭에서 한 번 물어봅니다.');
+});
+$('pw2Off').addEventListener('click', () => {
+  if (!pw2) { alert('추가 잠금이 꺼져 있습니다.'); return; }
+  if (!confirm('추가 잠금을 끄고 비밀번호를 지울까요?')) return;
+  pw2 = null; pw2Save(); pw2Open = false; pw2UI(); alert('추가 잠금을 껐습니다.');
+});
+$('pw2Show').addEventListener('change', () => { $('pw2In').type = $('pw2Show').checked ? 'text' : 'password'; });
+$('pw2Cancel').addEventListener('click', () => { $('pw2Box').classList.add('hidden'); pw2After = null; });
+$('pw2Form').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!pw2) return;
+  const v = $('pw2In').value;
+  if ((await hashPw(v, pw2.salt)) !== pw2.hash) {
+    pw2Fail++;
+    $('pw2Msg').textContent = pw2Fail >= 3 ? '비밀번호가 맞지 않습니다. 잊으셨다면 설정에서 추가 잠금을 끄고 다시 정해 주세요.' : '비밀번호가 맞지 않습니다.';
+    $('pw2Msg').className = 'text-sm text-rose-600'; $('pw2In').value = ''; $('pw2In').focus(); return;
+  }
+  pw2Fail = 0; pw2Open = true; $('pw2Box').classList.add('hidden'); $('pw2In').value = '';
+  const f = pw2After; pw2After = null; if (f) f();
+});
+function pw2Ask(label, after) {
+  pw2After = after; $('pw2Title').textContent = label;
+  $('pw2Msg').textContent = '추가 비밀번호를 입력하세요.'; $('pw2Msg').className = 'text-sm text-slate-600';
+  $('pw2In').value = ''; $('pw2Box').classList.remove('hidden');
+  setTimeout(() => $('pw2In').focus(), 50);
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('.tab-btn');
+  if (!b || !pw2Locked(b.dataset.tab)) return;
+  e.preventDefault(); e.stopPropagation();
+  pw2Ask((b.textContent || '').trim(), () => b.click());
+}, true);
+pw2UI();
 /* ===== 교직원 연락처 ===== */
 (() => {
   const ST_KEY = 'gm-staff';
@@ -5103,6 +5215,32 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
     (typeof students !== 'undefined' ? students : []).forEach(s => { const o = el('option', '', `${s.no} ${s.name}`); o.value = s.id; sel.appendChild(o); });
     if (keep) sel.value = keep;
   }
+
+  /* --- 인적사항·계좌 (AI에는 보내지 않음) --- */
+  const INFO_KEY = 'gm-scho-info';
+  const IF = ['scBirth', 'scTel', 'scAddr', 'scGName', 'scGTel', 'scBank', 'scHolder', 'scAcct'];
+  let infos = (() => { try { const v = JSON.parse(localStorage.getItem(INFO_KEY)); return v && typeof v === 'object' ? v : {}; } catch (e) { return {}; } })();
+  const infoSave = () => { try { localStorage.setItem(INFO_KEY, JSON.stringify(infos)); } catch (e) {} };
+  function infoLoad() {
+    const sid = $('scStu').value, s = students.find(x => x.id === sid), v = (sid && infos[sid]) || {};
+    IF.forEach(id => $(id).value = v[id] || '');
+    $('scShowAcct').checked = !!v.showAcct;
+    if (s && !v.scTel && s.phone) $('scTel').value = s.phone;              // 명단에 있는 연락처를 먼저 채워 둠
+    if (s && !v.scGName && s.guard) {
+      const m = /^([^(\d]+)/.exec(String(s.guard).trim()), t = /(01[016-9][-.\s]?\d{3,4}[-.\s]?\d{4})/.exec(String(s.guard));
+      if (m) $('scGName').value = m[1].trim();
+      if (t && !v.scGTel) $('scGTel').value = t[1];
+    }
+    if (s && !v.scHolder) $('scHolder').value = $('scHolder').value || s.name;
+  }
+  function infoStore() {
+    const sid = $('scStu').value; if (!sid) return;
+    const o = {}; IF.forEach(id => o[id] = $(id).value.trim());
+    o.showAcct = $('scShowAcct').checked;
+    infos[sid] = o; infoSave(); drawDoc();
+  }
+  IF.concat(['scShowAcct']).forEach(id => $(id).addEventListener('change', infoStore));
+  const infoOf = () => { const sid = $('scStu').value; return (sid && infos[sid]) || {}; };
   let mats = [];                                   // [{group, label, text, on}]
   function collect(sid) {
     const s = students.find(x => x.id === sid), list = [];
@@ -5162,7 +5300,7 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
     if (more) lines.push('[교사가 추가로 적은 내용]', more);
     return { txt: lines.join('\n') };
   }
-  const refreshMat = () => { mats = collect($('scStu').value); drawMats(); drawDoc(); };
+  const refreshMat = () => { mats = collect($('scStu').value); infoLoad(); drawMats(); drawDoc(); };
   $('scStu').addEventListener('change', refreshMat);
   window.schoFill = () => { const k = $('scStu').value; fillStu(); if ($('scStu').value !== k) refreshMat(); };
 
@@ -5174,9 +5312,15 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
     const info = s ? (typeof stuInfo === 'function' ? stuInfo(s.no) : { cls: '', num: '' }) : { cls: '', num: '' };
     const body = (out.length ? out : items.filter(i => i.on).map(i => ({ title: i.title, limit: i.limit, text: '' })));
     const rows = body.map((o, i) => `<h3>${i + 1}. ${esc(o.title)}</h3><p class="body${o.text ? '' : ' empty'}">${o.text ? esc(o.text) : '(작성하기를 누르면 여기에 내용이 들어갑니다)'}</p>`).join('');
+    const v = infoOf(), tr = (a, b2, c2, d2) => `<tr><th>${a}</th><td>${esc(b2 || '')}</td><th>${c2}</th><td>${esc(d2 || '')}</td></tr>`;
+    const wide = (a, b2) => b2 ? `<tr><th>${a}</th><td colspan="3">${esc(b2)}</td></tr>` : '';
     box.innerHTML = `<h2>추천서</h2>
-      <table><tr><th>학교</th><td>${esc(c.school || '')}</td><th>학년·반</th><td>${esc(info.cls || c.cls || '')}</td></tr>
-      <tr><th>성명</th><td>${esc(s ? s.name : '')}</td><th>학번</th><td>${esc(s ? s.no : '')}</td></tr></table>
+      <table>${tr('학교', c.school, '학년·반', info.cls || c.cls)}
+      ${tr('성명', s ? s.name : '', '학번', s ? s.no : '')}
+      ${(v.scBirth || v.scTel) ? tr('생년월일', v.scBirth, '연락처', v.scTel) : ''}
+      ${wide('주소', v.scAddr)}
+      ${(v.scGName || v.scGTel) ? tr('보호자', v.scGName, '보호자 연락처', v.scGTel) : ''}
+      ${v.showAcct && (v.scBank || v.scAcct) ? tr('은행 · 예금주', [v.scBank, v.scHolder].filter(Boolean).join(' · '), '계좌번호', v.scAcct) : ''}</table>
       ${rows || '<p class="body empty">왼쪽에서 항목을 고르면 여기에 나타납니다.</p>'}
       <div class="sign">위 학생을 추천합니다.<br>${today}<br><b>${esc(c.school || '')} ${esc(info.cls || c.cls || '')} 담임교사 ${esc((($('pTeacher') && $('pTeacher').value) || '').trim())} (인)</b></div>`;
   }
