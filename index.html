@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일</p>
   </form>
 </div>
 
@@ -680,24 +680,26 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
 
   <!-- 학생 기록 관리 -->
   <section id="tab-records" class="tab-panel hidden">
-    <form id="sForm" class="bg-white rounded-xl border border-slate-200 p-5 grid md:grid-cols-6 gap-3 items-end">
+    <form id="sForm" class="bg-white rounded-xl border border-slate-200 p-5 grid md:grid-cols-4 gap-3 items-end">
       <label class="text-sm">학번<input id="sNo" required class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
       <label class="text-sm">이름<input id="sName" required class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
       <label class="text-sm">연락처<input id="sPhone" placeholder="010-0000-0000" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
       <label class="text-sm">보호자 연락처<input id="sGuard" placeholder="010-0000-0000" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+      <label class="text-sm">생년월일<input id="sBirth" placeholder="2009-03-15" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+      <label class="text-sm md:col-span-2">주소<input id="sAddr" placeholder="충청남도 청양군 ..." class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
       <label class="text-sm">특이사항<input id="sNote" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
       <button class="bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">학생 추가</button>
     </form>
 
     <div class="bg-white rounded-xl border border-slate-200 mt-5 overflow-hidden">
       <div class="p-4 border-b border-slate-200 flex items-center gap-3">
-        <input id="sSearch" type="search" placeholder="학번, 이름, 연락처, 특이사항으로 검색" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
+        <input id="sSearch" type="search" placeholder="학번, 이름, 연락처, 주소, 특이사항으로 검색" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
         <button id="sSeed" type="button" class="text-sm border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 whitespace-nowrap">1학년 7반 명단 불러오기</button><span id="sCount" class="text-sm text-slate-500 whitespace-nowrap"></span>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-sm">
           <thead class="bg-slate-50 text-slate-500 text-left"><tr>
-            <th class="px-4 py-2 font-medium">학번</th><th class="px-4 py-2 font-medium">이름</th><th class="px-4 py-2 font-medium">연락처</th><th class="px-4 py-2 font-medium">보호자 연락처</th><th class="px-4 py-2 font-medium">특이사항</th><th class="px-4 py-2"></th>
+            <th class="px-4 py-2 font-medium">학번</th><th class="px-4 py-2 font-medium">이름</th><th class="px-4 py-2 font-medium">연락처</th><th class="px-4 py-2 font-medium">보호자 연락처</th><th class="px-4 py-2 font-medium">생년월일</th><th class="px-4 py-2 font-medium">주소</th><th class="px-4 py-2 font-medium">특이사항</th><th class="px-4 py-2"></th>
           </tr></thead>
           <tbody id="sBody" class="divide-y divide-slate-100"></tbody>
         </table>
@@ -1021,7 +1023,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일</p>
   </div>
 </dialog>
 
@@ -2562,6 +2564,15 @@ $('rstBtn').addEventListener('click', () => {
 });
 
 
+const fmtBirth = v => {
+  const t = String(v == null ? '' : v).trim(); if (!t) return '';
+  if (/^\d{5}$/.test(t)) { const d = new Date(Date.UTC(1899, 11, 30 + (+t))); return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`; }
+  const m = /(\d{4})\D+(\d{1,2})\D+(\d{1,2})/.exec(t);
+  if (m) return `${m[1]}-${String(+m[2]).padStart(2, '0')}-${String(+m[3]).padStart(2, '0')}`;
+  const m2 = /^(\d{2})(\d{2})(\d{2})$/.exec(t.replace(/\D/g, ''));
+  if (m2) return `${+m2[1] > 30 ? '19' : '20'}${m2[1]}-${m2[2]}-${m2[3]}`;
+  return t;
+};
 function parseStudentsFlex(wb) {
   const out = [], seen = new Set(), none = ['', '없음', '없습', '없어요', '튼튼함', '건강은 보통이에요'];
   const nrm = v => String(v == null ? '' : v).replace(/\s+/g, ''), cl = v => String(v == null ? '' : v).trim();
@@ -2575,7 +2586,7 @@ function parseStudentsFlex(wb) {
       const h = rows[r].map(nrm), f = re => h.findIndex(x => re.test(x));
       const ni = f(/^(이름|성명|학생이름|학생명|성함)$/); if (ni < 0) continue;
       const si = f(/^(학번|학생번호|학생학번)$/), gi = f(/^학년$/), ci = f(/^(반|학급)$/), bi = f(/^(번호|번)$/);
-      if (si >= 0 || (gi >= 0 && ci >= 0 && bi >= 0) || bi >= 0) { hi = r; c = { ni, si, gi, ci, bi, ph: f(/^(전화번호|연락처|휴대폰|핸드폰|학생연락처)$/), gn: f(/^(보호자1성함|보호자성함|보호자)$/), gr: f(/^(보호자1관계|보호자관계)$/), gp: f(/^(보호자1번호|보호자연락처|보호자번호|보호자전화)$/), nt: f(/^(특이사항|건강특이사항)$/) }; }
+      if (si >= 0 || (gi >= 0 && ci >= 0 && bi >= 0) || bi >= 0) { hi = r; c = { ni, si, gi, ci, bi, ph: f(/^(전화번호|연락처|휴대폰|핸드폰|학생연락처)$/), gn: f(/^(보호자1성함|보호자성함|보호자)$/), gr: f(/^(보호자1관계|보호자관계)$/), gp: f(/^(보호자1번호|보호자연락처|보호자번호|보호자전화)$/), nt: f(/^(특이사항|건강특이사항)$/), bd: f(/(생년월일|생일|출생|생년)/), ad: f(/^(주소|거주지|집주소|현주소)$/) }; }
     }
     if (hi >= 0) {
       for (let r = hi + 1; r < rows.length; r++) {
@@ -2586,7 +2597,7 @@ function parseStudentsFlex(wb) {
         if (!/\d/.test(no) && c.gi >= 0 && c.ci >= 0 && c.bi >= 0) { const a = +g(c.gi), b = +g(c.ci), n = +g(c.bi); if (a && b && n) no = `${a}${String(b).padStart(2, '0')}${String(n).padStart(2, '0')}`; }
         if (!/\d/.test(no) && c.bi >= 0) no = g(c.bi);
         const gn = g(c.gn), gr = g(c.gr), gp = g(c.gp), nt = g(c.nt);
-        add(no, name, { phone: g(c.ph), guard: gp ? (gn ? `${gn}${gr ? `(${gr})` : ''} ${gp}` : gp) : '', note: none.includes(nt) ? '' : nt });
+        add(no, name, { phone: g(c.ph), guard: gp ? (gn ? `${gn}${gr ? `(${gr})` : ''} ${gp}` : gp) : '', birth: fmtBirth(g(c.bd)), addr: g(c.ad), note: none.includes(nt) ? '' : nt });
       }
     } else {
       rows.forEach(row => {
@@ -2612,7 +2623,7 @@ $('xlFile').addEventListener('change', async e => {
     let added = 0, skipped = 0;
     list.forEach(x => {
       if (students.some(s => s.no === x.no)) { skipped++; return; }
-      students.push({ id: uid(), no: x.no, name: x.name, phone: x.phone || '', guard: x.guard || '', note: x.note || '' }); added++;
+      students.push({ id: uid(), no: x.no, name: x.name, phone: x.phone || '', guard: x.guard || '', birth: x.birth || '', addr: x.addr || '', note: x.note || '' }); added++;
     });
     store('gm-students', students); renderAll();
     alert(`${added}명을 추가했습니다.${skipped ? ` 학번이 겹치는 ${skipped}명은 건너뛰었습니다.` : ''}${added === 0 && !skipped ? ' 학생을 찾지 못했습니다. 학번(숫자)과 이름이 한 줄에 있는지 확인해 주세요.' : ''}`);
@@ -2673,11 +2684,11 @@ function refreshSelects() {
 /* 학생 기록 관리 */
 function renderStudents() {
   const q = $('sSearch').value.trim().toLowerCase();
-  const list = sorted().filter(s => [s.no, s.name, s.phone, s.guard, s.note].join(' ').toLowerCase().includes(q));
+  const list = sorted().filter(s => [s.no, s.name, s.phone, s.guard, s.birth, s.addr, s.note].join(' ').toLowerCase().includes(q));
   $('sBody').innerHTML = '';
   list.forEach(s => {
     const tr = el('tr', 'hover:bg-slate-50');
-    [s.no, s.name, s.phone, s.guard, s.note].forEach((v, i) => tr.appendChild(el('td', 'px-4 py-2.5' + (i === 1 ? ' font-bold' : ''), v || '-')));
+    [s.no, s.name, s.phone, s.guard, s.birth, s.addr, s.note].forEach((v, i) => tr.appendChild(el('td', 'px-4 py-2.5' + (i === 1 ? ' font-bold' : '') + (i === 5 ? ' max-w-[220px] truncate' : ''), v || '-')));
     const td = el('td', 'px-4 py-2.5 text-right'), b = el('button', 'text-xs text-slate-400 hover:text-red-600', '삭제');
     b.onclick = () => {
       if (!confirm(`${s.no} ${s.name} 학생을 삭제할까요? 이 학생의 상담 기록도 함께 삭제됩니다.`)) return;
@@ -2693,7 +2704,7 @@ $('sForm').addEventListener('submit', e => {
   e.preventDefault();
   const no = $('sNo').value.trim();
   if (students.some(s => s.no === no)) { alert('이미 등록된 학번입니다.'); return; }
-  students.push({ id: uid(), no, name: $('sName').value.trim(), phone: $('sPhone').value.trim(), guard: $('sGuard').value.trim(), note: $('sNote').value.trim() });
+  students.push({ id: uid(), no, name: $('sName').value.trim(), phone: $('sPhone').value.trim(), guard: $('sGuard').value.trim(), birth: $('sBirth').value.trim(), addr: $('sAddr').value.trim(), note: $('sNote').value.trim() });
   store('gm-students', students); e.target.reset(); renderAll(); $('sNo').focus();
 });
 $('sSearch').addEventListener('input', renderStudents);
@@ -5226,6 +5237,8 @@ pw2UI();
     IF.forEach(id => $(id).value = v[id] || '');
     $('scShowAcct').checked = !!v.showAcct;
     if (s && !v.scTel && s.phone) $('scTel').value = s.phone;              // 명단에 있는 연락처를 먼저 채워 둠
+    if (s && !v.scBirth && s.birth) $('scBirth').value = s.birth;
+    if (s && !v.scAddr && s.addr) $('scAddr').value = s.addr;
     if (s && !v.scGName && s.guard) {
       const m = /^([^(\d]+)/.exec(String(s.guard).trim()), t = /(01[016-9][-.\s]?\d{3,4}[-.\s]?\d{4})/.exec(String(s.guard));
       if (m) $('scGName').value = m[1].trim();
