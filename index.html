@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처</p>
   </form>
 </div>
 
@@ -181,6 +181,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="rec">🖍️ 기록 작성</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="gong">📑 공문 작성</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="scho">🎓 추천서 작성</button>
+    <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="staff">📇 교직원 연락처</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="counsel">💬 상담 관리자</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="records">🎒 학생 기록 관리</button>
     <button class="tab-btn px-5 py-2.5 rounded-t-lg text-sm text-slate-300 hover:text-white" data-tab="pass">🎫 조퇴/외출증 발급</button>
@@ -213,6 +214,29 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <iframe id="gichoFrame" title="기초조사서" style="flex:1;width:100%;border:0;background:#f6fbef"></iframe>
     </div>
   </div>
+
+  <!-- 교직원 연락처 -->
+  <section id="tab-staff" class="tab-panel hidden">
+    <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
+      <div class="flex flex-wrap items-end gap-3">
+        <label class="text-sm">📂 명단 올리기 (엑셀·CSV)<input id="stFile" type="file" accept=".xlsx,.xls,.csv" class="block mt-1 text-sm"></label>
+        <label class="text-sm">📄 PDF·사진에서 읽기<input id="stPdf" type="file" accept=".pdf,image/*" class="block mt-1 text-sm"></label>
+        <button id="stAdd" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">＋ 직접 추가</button>
+        <button id="stXlsx" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">📊 엑셀로 받기</button>
+        <button id="stClear" type="button" class="text-xs text-slate-500 hover:text-red-600 underline pb-2">전체 지우기</button>
+      </div>
+      <p id="stMsg" class="text-xs text-slate-600"></p>
+      <p class="text-xs text-slate-500">엑셀에 <b>이름</b>과 <b>내선번호(또는 전화번호)</b> 열이 있으면 읽습니다. 부서·직위·업무·이메일·자리 열이 있으면 함께 저장합니다. PDF나 사진은 AI(Gemini)가 읽어 줍니다.</p>
+    </div>
+    <div class="bg-white rounded-xl border border-slate-200 p-5 mt-5 space-y-3">
+      <div class="flex flex-wrap items-center gap-3">
+        <input id="stQ" placeholder="🔍 이름·부서·업무·번호 검색" class="flex-1 min-w-[200px] border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
+        <select id="stDept" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></select>
+        <span id="stCnt" class="text-xs text-slate-500"></span>
+      </div>
+      <div id="stList" class="space-y-2"></div>
+    </div>
+  </section>
 
   <!-- 추천서 작성 -->
   <section id="tab-scho" class="tab-panel hidden">
@@ -959,7 +983,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처</p>
   </div>
 </dialog>
 
@@ -2442,7 +2466,7 @@ $('dlgClose').addEventListener('click', () => $('dlg').close());
 
 /* 백업 · 복원 · 초기화 */
 $('bkBtn').addEventListener('click', () => {
-  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), holidays: (() => { try { return JSON.parse(localStorage.getItem('gm-holidays')) || []; } catch (e) { return []; } })(), scho: (() => { try { return JSON.parse(localStorage.getItem('gm-scho')) || []; } catch (e) { return []; } })(), teacher: $('pTeacher').value };
+  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), holidays: (() => { try { return JSON.parse(localStorage.getItem('gm-holidays')) || []; } catch (e) { return []; } })(), scho: (() => { try { return JSON.parse(localStorage.getItem('gm-scho')) || []; } catch (e) { return []; } })(), staff: (window.staffGet ? staffGet() : []), teacher: $('pTeacher').value };
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
   a.download = `교무실_백업_${ymd(new Date())}.json`; a.click();
@@ -2471,6 +2495,7 @@ $('rsFile').addEventListener('change', async e => {
     if (Array.isArray(d.gongmun)) { try { localStorage.setItem('gm-gongmun', JSON.stringify(d.gongmun)); } catch (err) {} }
     if (Array.isArray(d.holidays)) { try { localStorage.setItem('gm-holidays', JSON.stringify(d.holidays)); } catch (err) {} }
     if (Array.isArray(d.scho)) { try { localStorage.setItem('gm-scho', JSON.stringify(d.scho)); } catch (err) {} }
+    if (Array.isArray(d.staff) && window.staffSet) staffSet(d.staff);
     store('gm-students', students); store('gm-counsels', counsels); store('gm-pass', passes); store('gm-dday', ddays);
     renderAll(); alert('복원했습니다.');
   } catch (err) { alert('복원 실패: ' + err.message); }
@@ -4805,6 +4830,175 @@ setTimeout(() => { snapTake('열 때'); snapDraw(); }, 1500);
   });
 })();
 
+
+/* ===== 교직원 연락처 ===== */
+(() => {
+  const ST_KEY = 'gm-staff';
+  let staff = (() => { try { const v = JSON.parse(localStorage.getItem(ST_KEY)); return Array.isArray(v) ? v : []; } catch (e) { return []; } })();
+  const save = () => { try { localStorage.setItem(ST_KEY, JSON.stringify(staff)); } catch (e) { alert('저장 공간이 부족합니다.'); } };
+  const msg = (t, ok) => { $('stMsg').textContent = t || ''; $('stMsg').className = 'text-xs ' + (ok ? 'text-emerald-700' : 'text-slate-600'); };
+  const nz = v => String(v == null ? '' : v).replace(/\s+/g, '');
+  const cl = v => String(v == null ? '' : v).trim();
+  const telLink = v => String(v || '').replace(/[^\d+]/g, '');
+  window.staffGet = () => staff;
+  window.staffSet = v => { staff = Array.isArray(v) ? v : []; save(); draw(); };
+
+  /* --- 엑셀 읽기 (양식 자유) --- */
+  const COLS = [
+    ['name', /^(성명|이름|교직원명|교사명|성 명)$/],
+    ['dept', /(부서|소속|부署|팀|과$|부$|학년)/],
+    ['role', /(직위|직급|담당|업무|역할|교과|담당과목)/],
+    ['ext', /(내선|구내|교환|내선번호)/],
+    ['tel', /(휴대|핸드|전화|연락처|HP|H\.P)/i],
+    ['mail', /(메일|이메일|mail)/i],
+    ['room', /(위치|교무실|교실|자리|호실)/]
+  ];
+  function parseStaff(wb) {
+    const out = [], seen = new Set();
+    for (const sn of wb.SheetNames) {
+      const rows = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, defval: '' });
+      let hi = -1, map = {};
+      for (let i = 0; i < Math.min(rows.length, 15) && hi < 0; i++) {
+        const m = {}; let hit = 0;
+        rows[i].forEach((v, c) => { const t = nz(v); if (!t) return; COLS.forEach(([k, re]) => { if (m[k] === undefined && re.test(t)) { m[k] = c; hit++; } }); });
+        if (m.name !== undefined && (m.ext !== undefined || m.tel !== undefined || m.dept !== undefined)) { hi = i; map = m; }
+      }
+      if (hi >= 0) {
+        for (let i = hi + 1; i < rows.length; i++) {
+          const r = rows[i], name = cl(r[map.name]);
+          if (!name || /합계|계$/.test(nz(name))) continue;
+          const o = { id: 'st' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), name,
+            dept: cl(r[map.dept]), role: cl(r[map.role]), ext: cl(r[map.ext]), tel: cl(r[map.tel]), mail: cl(r[map.mail]), room: cl(r[map.room]) };
+          const key = o.name + '|' + o.ext + '|' + o.tel;
+          if (seen.has(key)) continue; seen.add(key); out.push(o);
+        }
+      } else {
+        /* 제목 줄이 없으면: 한글 이름 + 번호가 같은 줄에 있는 경우를 찾음 */
+        rows.forEach(r => {
+          const cells = r.map(cl).filter(Boolean);
+          const name = cells.find(v => /^[가-힣]{2,5}$/.test(v.replace(/\s/g, '')));
+          const tel = cells.find(v => /\d{2,4}[-.)\s]?\d{3,4}[-.\s]?\d{4}/.test(v));
+          const ext = cells.find(v => /^\d{3,5}$/.test(v.replace(/\s/g, '')));
+          if (!name || (!tel && !ext)) return;
+          const key = name + '|' + (ext || '') + '|' + (tel || '');
+          if (seen.has(key)) return; seen.add(key);
+          out.push({ id: 'st' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), name, dept: '', role: '', ext: ext || '', tel: tel || '', mail: '', room: '' });
+        });
+      }
+    }
+    return out;
+  }
+  $('stFile').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    if (typeof XLSX === 'undefined') { alert('엑셀 읽기 도구를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'); return; }
+    try {
+      const got = parseStaff(XLSX.read(await f.arrayBuffer()));
+      if (!got.length) { alert('교직원을 찾지 못했습니다.\n\n이름 열과 내선번호(또는 전화번호) 열이 있는지 확인해 주세요.'); return; }
+      const before = staff.length;
+      got.forEach(g => { if (!staff.some(x => x.name === g.name && x.ext === g.ext && x.tel === g.tel)) staff.push(g); });
+      save(); draw(); msg(`${staff.length - before}명을 추가했습니다. (파일에서 ${got.length}명 읽음)`, true);
+    } catch (err) { alert('불러오기 실패: ' + err.message); }
+  });
+  /* --- PDF·사진 읽기 (AI) --- */
+  $('stPdf').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    if (!gem.key) { alert('PDF·사진을 읽으려면 Gemini API 키가 필요합니다. "공문 작성" 탭에서 키를 넣어 주세요.'); return; }
+    if (f.size > 8 * 1024 * 1024) { alert('8MB가 넘는 파일은 올릴 수 없습니다.'); return; }
+    msg('AI가 파일을 읽는 중… 쪽수가 많으면 1분 넘게 걸릴 수 있어요.', true);
+    try {
+      const data = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(f); });
+      const parts = [
+        { text: '첨부한 교직원 명단에서 사람마다 정보를 뽑아 JSON 배열로만 답하세요.\n형식: [{"name":"홍길동","dept":"1학년부","role":"담임/국어","ext":"301","tel":"010-0000-0000","mail":"","room":"1학년 교무실"}]\n- 없는 값은 빈 문자열로 둡니다.\n- 내선번호는 ext, 휴대폰·일반전화는 tel 에 넣습니다.\n- 설명 없이 JSON 배열만 출력하세요.' },
+        { inlineData: { mimeType: /\.pdf$/i.test(f.name) ? 'application/pdf' : (f.type || 'image/png'), data } }
+      ];
+      const t = await gemAsk(parts), m = t.replace(/```json|```/g, '').trim();
+      const a = m.indexOf('['), b2 = m.lastIndexOf(']');
+      const got = JSON.parse(a >= 0 && b2 > a ? m.slice(a, b2 + 1) : m);
+      if (!Array.isArray(got) || !got.length) throw new Error('사람을 찾지 못했습니다.');
+      const before = staff.length;
+      got.forEach(g => {
+        const o = { id: 'st' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), name: cl(g.name), dept: cl(g.dept), role: cl(g.role), ext: cl(g.ext), tel: cl(g.tel), mail: cl(g.mail), room: cl(g.room) };
+        if (o.name && !staff.some(x => x.name === o.name && x.ext === o.ext && x.tel === o.tel)) staff.push(o);
+      });
+      save(); draw(); msg(`${staff.length - before}명을 추가했습니다. 내용이 맞는지 확인해 주세요.`, true);
+    } catch (err) { msg('읽지 못했습니다: ' + err.message); alert('읽지 못했습니다.\n\n' + err.message); }
+  });
+
+  /* --- 화면 --- */
+  function drawDept() {
+    const sel = $('stDept'), keep = sel.value, ds = [...new Set(staff.map(s => s.dept).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ko'));
+    sel.innerHTML = '<option value="">모든 부서</option>';
+    ds.forEach(d => { const o = el('option', '', d); o.value = d; sel.appendChild(o); });
+    if (ds.includes(keep)) sel.value = keep;
+  }
+  function row(s) {
+    const card = el('div', 'border border-slate-200 rounded-lg px-3 py-2 flex items-center gap-3 flex-wrap');
+    const left = el('div', 'flex-1 min-w-[180px]');
+    left.innerHTML = `<b class="text-sm">${esc(s.name)}</b>${s.role ? ` <span class="text-xs text-slate-500">${esc(s.role)}</span>` : ''}` +
+      `<div class="text-xs text-slate-500">${[s.dept, s.room, s.mail].filter(Boolean).map(esc).join(' · ')}</div>`;
+    const nums = el('div', 'flex items-center gap-2 flex-wrap');
+    if (s.ext) { const a = el('a', 'text-sm font-bold bg-sky-50 border border-sky-200 rounded-lg px-3 py-1', `☎ 내선 ${s.ext}`); a.href = 'tel:' + telLink(s.ext); nums.appendChild(a); }
+    if (s.tel) { const a = el('a', 'text-sm bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-1', `📱 ${s.tel}`); a.href = 'tel:' + telLink(s.tel); nums.appendChild(a); }
+    const ed = el('button', 'text-xs text-slate-400 hover:text-sky-700', '수정'); ed.type = 'button'; ed.onclick = () => edit(s);
+    const dl = el('button', 'text-xs text-slate-400 hover:text-red-600', '삭제'); dl.type = 'button';
+    dl.onclick = () => { if (!confirm(`${s.name} 님을 목록에서 지울까요?`)) return; staff = staff.filter(x => x.id !== s.id); save(); draw(); };
+    nums.append(ed, dl);
+    card.append(left, nums); return card;
+  }
+  function edit(s) {
+    const F = [['name', '이름'], ['dept', '부서'], ['role', '직위·업무'], ['ext', '내선번호'], ['tel', '전화번호'], ['mail', '이메일'], ['room', '자리·교무실']];
+    const v = prompt(`${F.map(f => f[1]).join(' / ')} 순서로, 쉼표로 나눠 적어 주세요.\n빈 칸은 그냥 비워 두세요.`,
+      F.map(f => s[f[0]] || '').join(', '));
+    if (v === null) return;
+    const parts = v.split(',').map(x => x.trim());
+    F.forEach((f, i) => s[f[0]] = parts[i] || '');
+    if (!s.name) { alert('이름은 비울 수 없습니다.'); return; }
+    save(); draw();
+  }
+  function draw() {
+    drawDept();
+    const q = nz($('stQ').value), d = $('stDept').value;
+    const list = staff.filter(s => (!d || s.dept === d) && (!q || nz([s.name, s.dept, s.role, s.ext, s.tel, s.mail, s.room].join('')).includes(q)))
+      .sort((a, b) => (a.dept || 'ㅎ').localeCompare(b.dept || 'ㅎ', 'ko') || a.name.localeCompare(b.name, 'ko'));
+    $('stCnt').textContent = staff.length ? `${list.length}명 / 전체 ${staff.length}명` : '';
+    const box = $('stList'); box.innerHTML = '';
+    if (!staff.length) { box.appendChild(el('p', 'text-sm text-slate-500 py-10 text-center', '아직 교직원 명단이 없습니다. 위에서 엑셀이나 PDF를 올리거나 직접 추가해 주세요.')); return; }
+    if (!list.length) { box.appendChild(el('p', 'text-sm text-slate-500 py-10 text-center', '검색 결과가 없습니다.')); return; }
+    let g = null;
+    list.forEach(s => {
+      if (!d && (s.dept || '') !== g) { g = s.dept || ''; box.appendChild(el('p', 'text-xs font-bold text-slate-500 pt-2', g || '부서 없음')); }
+      box.appendChild(row(s));
+    });
+  }
+  $('stQ').addEventListener('input', draw);
+  $('stDept').addEventListener('change', draw);
+  $('stAdd').addEventListener('click', () => {
+    const s = { id: 'st' + Date.now().toString(36), name: '', dept: '', role: '', ext: '', tel: '', mail: '', room: '' };
+    const F = ['이름', '부서', '직위·업무', '내선번호', '전화번호', '이메일', '자리·교무실'];
+    const v = prompt(`${F.join(' / ')} 순서로, 쉼표로 나눠 적어 주세요.\n예: 홍길동, 1학년부, 담임/국어, 301, 010-0000-0000, , 1학년 교무실`, '');
+    if (!v) return;
+    const p = v.split(',').map(x => x.trim());
+    ['name', 'dept', 'role', 'ext', 'tel', 'mail', 'room'].forEach((k, i) => s[k] = p[i] || '');
+    if (!s.name) { alert('이름을 적어 주세요.'); return; }
+    staff.push(s); save(); draw(); msg('추가했습니다.', true);
+  });
+  $('stClear').addEventListener('click', () => {
+    if (!staff.length || !confirm(`교직원 ${staff.length}명을 모두 지울까요? 되돌릴 수 없습니다.`)) return;
+    staff = []; save(); draw(); msg('모두 지웠습니다.');
+  });
+  $('stXlsx').addEventListener('click', () => {
+    if (!staff.length) { alert('저장할 내용이 없습니다.'); return; }
+    if (typeof XLSX === 'undefined') { alert('엑셀 도구를 불러오지 못했습니다.'); return; }
+    const aoa = [['이름', '부서', '직위·업무', '내선번호', '전화번호', '이메일', '자리·교무실']];
+    staff.forEach(s => aoa.push([s.name, s.dept, s.role, s.ext, s.tel, s.mail, s.room]));
+    const wb = XLSX.utils.book_new(), sh = XLSX.utils.aoa_to_sheet(aoa);
+    sh['!cols'] = [{ wch: 10 }, { wch: 14 }, { wch: 18 }, { wch: 10 }, { wch: 15 }, { wch: 22 }, { wch: 16 }];
+    XLSX.utils.book_append_sheet(wb, sh, '교직원 연락처');
+    const n = new Date(), p2 = v => String(v).padStart(2, '0');
+    XLSX.writeFile(wb, `교직원연락처_${n.getFullYear()}${p2(n.getMonth() + 1)}${p2(n.getDate())}.xlsx`);
+  });
+  draw();
+})();
 /* ===== 장학생 추천서 (Gemini) ===== */
 (() => {
   $('scGemKey').addEventListener('change', () => { gem.key = $('scGemKey').value.trim(); saveGem(); gemUI(); });
@@ -5524,9 +5718,10 @@ const SYNC_KEYS = [
   ['gm-seat', '자리 배치', () => seat, v => { seat = normSeat(v); }, 'stu'],
   ['gm-abs-list', '결석신고서 저장 목록', () => (window.absStore ? absStore.get() : []), v => { if (window.absStore) absStore.set(v); }, 'stu'],
   ['gm-seat-roster', '자리 배치 명단', () => seatRoster, v => { seatRoster = Array.isArray(v) ? v : []; }, 'stu'],
+  ['gm-staff', '교직원 연락처', () => (window.staffGet ? staffGet() : []), v => { if (window.staffSet) staffSet(v); }, 'stf'],
   ['gm-budget', '예산', () => bg, v => { bg = normBg(v); }, 'bg']
 ];
-const SYNC_GROUPS = [['stu', '👩‍🎓 학생 명단·기록, 상담, 조퇴·외출, 결석신고서 목록, 자리 배치', true], ['rec', '📝 작성한 세특·행특·동아리 기록', true], ['gr', '📊 성적 분석 자료', true], ['bg', '💰 예산', false]];
+const SYNC_GROUPS = [['stu', '👩‍🎓 학생 명단·기록, 상담, 조퇴·외출, 결석신고서 목록, 자리 배치', true], ['rec', '📝 작성한 세특·행특·동아리 기록', true], ['gr', '📊 성적 분석 자료', true], ['stf', '📇 교직원 연락처', true], ['bg', '💰 예산', false]];
 const syncOn = g => !g || !!syncCfg.opt[g];
 const hashStr = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0; return h.toString(36) + ':' + s.length; };
 const isEmptyVal = v => v == null || v === '' || (Array.isArray(v) ? v.length === 0 : typeof v === 'object' ? Object.values(v).every(isEmptyVal) : false);
