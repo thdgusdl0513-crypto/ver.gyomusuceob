@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교</p>
   </form>
 </div>
 
@@ -421,6 +421,31 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p id="gInfo" class="text-xs text-slate-500 mt-2"></p>
     </div>
     <div id="gOut" class="mt-5 space-y-5"></div>
+
+    <details class="fold bg-white rounded-xl border border-slate-200 mt-5" id="fold-exam" open>
+      <summary class="fold-sum px-5 py-3 font-bold">📈 지필평가 비교 (1·2학기 / 1·2회고사)</summary>
+      <div class="px-5 pb-5 space-y-4">
+        <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 space-y-2">
+          <div class="flex flex-wrap items-end gap-3">
+            <label class="text-sm">학년도<input id="exY" type="number" min="2000" max="2100" class="mt-1 block border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm w-28"></label>
+            <label class="text-sm">학기<select id="exT" class="mt-1 block border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><option value="1">1학기</option><option value="2">2학기</option></select></label>
+            <label class="text-sm">회차<select id="exR" class="mt-1 block border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><option value="1">1회고사</option><option value="2">2회고사</option></select></label>
+            <label class="text-sm">성적 파일<input id="exFile" type="file" accept=".xlsx,.xls,.csv" class="block mt-1 text-sm"></label>
+          </div>
+          <p class="text-xs text-slate-500">엑셀에 <b>성명(또는 이름)</b> 열과 <b>과목 이름 열</b>이 있고 칸에 점수가 있으면 읽습니다. 과목마다 열이 하나씩 있는 표면 됩니다.</p>
+          <p id="exMsg" class="text-xs text-slate-600"></p>
+          <div id="exRounds" class="flex flex-wrap gap-2"></div>
+        </div>
+        <div class="flex flex-wrap items-end gap-3">
+          <label class="text-sm">학생<select id="exStu" class="mt-1 block border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm min-w-[180px]"></select></label>
+          <div class="ml-auto flex gap-2">
+            <button id="exPrint" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">🖨️ 인쇄</button>
+            <button id="exXlsx" type="button" class="px-3 py-2 rounded-lg bg-[#0f2747] text-white text-sm">📊 엑셀로 받기</button>
+          </div>
+        </div>
+        <div id="exOut"></div>
+      </div>
+    </details>
   </section>
 
   <!-- 대시보드 -->
@@ -1024,7 +1049,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교</p>
   </div>
 </dialog>
 
@@ -2519,7 +2544,7 @@ $('dlgClose').addEventListener('click', () => $('dlg').close());
 
 /* 백업 · 복원 · 초기화 */
 $('bkBtn').addEventListener('click', () => {
-  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), holidays: (() => { try { return JSON.parse(localStorage.getItem('gm-holidays')) || []; } catch (e) { return []; } })(), scho: (() => { try { return JSON.parse(localStorage.getItem('gm-scho')) || []; } catch (e) { return []; } })(), staff: (window.staffGet ? staffGet() : []), schoInfo: (() => { try { return JSON.parse(localStorage.getItem('gm-scho-info')) || {}; } catch (e) { return {}; } })(), teacher: $('pTeacher').value };
+  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), holidays: (() => { try { return JSON.parse(localStorage.getItem('gm-holidays')) || []; } catch (e) { return []; } })(), scho: (() => { try { return JSON.parse(localStorage.getItem('gm-scho')) || []; } catch (e) { return []; } })(), staff: (window.staffGet ? staffGet() : []), schoInfo: (() => { try { return JSON.parse(localStorage.getItem('gm-scho-info')) || {}; } catch (e) { return {}; } })(), exams: (window.examGet ? examGet() : {}), teacher: $('pTeacher').value };
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
   a.download = `교무실_백업_${ymd(new Date())}.json`; a.click();
@@ -2550,6 +2575,7 @@ $('rsFile').addEventListener('change', async e => {
     if (Array.isArray(d.scho)) { try { localStorage.setItem('gm-scho', JSON.stringify(d.scho)); } catch (err) {} }
     if (Array.isArray(d.staff) && window.staffSet) staffSet(d.staff);
     if (d.schoInfo && typeof d.schoInfo === 'object') { try { localStorage.setItem('gm-scho-info', JSON.stringify(d.schoInfo)); } catch (err) {} }
+    if (d.exams && typeof d.exams === 'object' && window.examSet) examSet(d.exams);
     store('gm-students', students); store('gm-counsels', counsels); store('gm-pass', passes); store('gm-dday', ddays);
     renderAll(); alert('복원했습니다.');
   } catch (err) { alert('복원 실패: ' + err.message); }
@@ -3368,6 +3394,184 @@ $('gFile').addEventListener('change', async e => {
   } catch (err) { alert('불러오기 실패: ' + err.message); }
 });
 
+
+/* ===== 지필평가 회차별 비교 ===== */
+(() => {
+  const EX_KEY = 'gm-exams';
+  const SKIP = /^(번호|학번|성명|이름|반|학급|학년|석차|등급|총점|합계|평균|비고|구분|순위|점수|성적|과목)$/;
+  let ex = (() => { try { const v = JSON.parse(localStorage.getItem(EX_KEY)); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; } catch (e) { return {}; } })();
+  const save = () => { try { localStorage.setItem(EX_KEY, JSON.stringify(ex)); } catch (e) { alert('저장 공간이 부족합니다.'); } };
+  const msg = (t, ok) => { $('exMsg').textContent = t || ''; $('exMsg').className = 'text-xs ' + (ok ? 'text-emerald-700' : 'text-slate-600'); };
+  const nz = v => String(v == null ? '' : v).replace(/\s+/g, '');
+  const num = v => { const m = /-?\d+(\.\d+)?/.exec(String(v == null ? '' : v)); return m ? +m[0] : null; };
+  const keyOf = (y, t, r) => `${y}-${t}-${r}`;
+  const label = k => { const [y, t, r] = k.split('-'); return `${y}학년도 ${t}학기 ${r}회`; };
+  const order = () => Object.keys(ex).sort();
+  window.examGet = () => ex;
+  window.examSet = v => { ex = (v && typeof v === 'object' && !Array.isArray(v)) ? v : {}; save(); draw(); };
+
+  function parseExam(wb) {
+    for (const sn of wb.SheetNames) {
+      const rows = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, defval: '' });
+      let hi = -1, ni = -1;
+      for (let i = 0; i < Math.min(rows.length, 20) && hi < 0; i++) {
+        const j = rows[i].findIndex(c => /^(성명|이름|학생명|학생이름)$/.test(nz(c)));
+        if (j >= 0) { hi = i; ni = j; }
+      }
+      if (hi < 0) continue;
+      const subs = [];
+      rows[hi].forEach((v, c) => { const t = nz(v); if (t && c !== ni && !SKIP.test(t)) subs.push([c, String(v).trim().replace(/\s+/g, ' ')]); });
+      if (!subs.length) continue;
+      const stu = {};
+      for (let i = hi + 1; i < rows.length; i++) {
+        const nm = String(rows[i][ni] == null ? '' : rows[i][ni]).trim().replace(/\s+/g, '');
+        if (!nm || /^(합계|평균|계)$/.test(nm) || !/[가-힣]/.test(nm)) continue;
+        const o = {};
+        subs.forEach(([c, name]) => { const v = num(rows[i][c]); if (v != null) o[name] = v; });
+        if (Object.keys(o).length) stu[nm] = o;
+      }
+      if (Object.keys(stu).length) return { subjects: subs.map(x => x[1]), stu };
+    }
+    return null;
+  }
+  $('exFile').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    if (typeof XLSX === 'undefined') { alert('엑셀 읽기 도구를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'); return; }
+    try {
+      const got = parseExam(XLSX.read(await f.arrayBuffer()));
+      if (!got) { alert('성적을 찾지 못했습니다.\n\n"성명"(또는 "이름") 열과 과목별 점수 열이 있는 표인지 확인해 주세요.'); return; }
+      const k = keyOf(+$('exY').value || new Date().getFullYear(), $('exT').value, $('exR').value);
+      if (ex[k] && !confirm(`${label(k)} 성적이 이미 있습니다. 새 파일로 바꿀까요?`)) return;
+      ex[k] = { subjects: got.subjects, stu: got.stu, file: f.name };
+      save(); draw(); msg(`${label(k)} · 학생 ${Object.keys(got.stu).length}명 · 과목 ${got.subjects.length}개를 저장했습니다.`, true);
+    } catch (err) { alert('불러오기 실패: ' + err.message); }
+  });
+  function drawRounds() {
+    const box = $('exRounds'); box.innerHTML = '';
+    const ks = order();
+    if (!ks.length) { box.appendChild(el('span', 'text-xs text-slate-500', '아직 올린 회차가 없습니다.')); return; }
+    ks.forEach(k => {
+      const n = Object.keys(ex[k].stu || {}).length;
+      const t = el('span', 'inline-flex items-center gap-1 bg-white border border-slate-200 rounded-full px-3 py-1 text-xs', `${label(k)} · ${n}명`);
+      const x = el('button', 'text-slate-400 hover:text-red-600 font-bold', '×'); x.type = 'button';
+      x.onclick = () => { if (!confirm(`${label(k)} 성적을 지울까요?`)) return; delete ex[k]; save(); draw(); };
+      t.appendChild(x); box.appendChild(t);
+    });
+  }
+  function fillStu() {
+    const sel = $('exStu'), keep = sel.value, names = [...new Set(order().flatMap(k => Object.keys(ex[k].stu || {})))].sort((a, b) => a.localeCompare(b, 'ko'));
+    sel.innerHTML = '<option value="">-- 전체(반 평균) --</option>';
+    names.forEach(n => { const o = el('option', '', n); o.value = n; sel.appendChild(o); });
+    if (names.includes(keep)) sel.value = keep;
+  }
+  const avgOf = (k, sub) => { const v = Object.values(ex[k].stu || {}).map(o => o[sub]).filter(x => typeof x === 'number'); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
+  const f1 = v => v == null ? '-' : (Math.round(v * 10) / 10).toFixed(1);
+  const diff = (a, b) => (a == null || b == null) ? '' : (a - b > 0 ? `▲${f1(a - b)}` : a - b < 0 ? `▼${f1(b - a)}` : '—');
+  const dcls = (a, b) => (a == null || b == null) ? 'text-slate-400' : a > b ? 'text-rose-600 font-bold' : a < b ? 'text-sky-700 font-bold' : 'text-slate-400';
+
+  function chart(labels, series) {                 // 간단한 꺾은선 그래프 (SVG)
+    const W = 640, H = 220, L = 44, R = 40, T = 14, B = 34;
+    const all = series.flatMap(s => s.v).filter(v => v != null);
+    if (!all.length) return '';
+    const lo = Math.max(0, Math.floor((Math.min(...all) - 5) / 10) * 10), hi = Math.min(100, Math.ceil((Math.max(...all) + 5) / 10) * 10);
+    const x = i => L + (labels.length < 2 ? (W - L - R) / 2 : i * (W - L - R) / (labels.length - 1));
+    const y = v => T + (hi - v) * (H - T - B) / (hi - lo || 1);
+    const CL = ['#0ea5e9', '#f43f5e', '#10b981', '#f59e0b', '#8b5cf6', '#14b8a6', '#ec4899', '#64748b'];
+    let g = `<svg viewBox="0 0 ${W} ${H}" class="w-full" style="max-width:720px">`;
+    for (let v = lo; v <= hi; v += Math.max(10, Math.round((hi - lo) / 5 / 10) * 10)) {
+      g += `<line x1="${L}" y1="${y(v)}" x2="${W - R}" y2="${y(v)}" stroke="#e2e8f0"/><text x="${L - 6}" y="${y(v) + 4}" font-size="11" fill="#94a3b8" text-anchor="end">${v}</text>`;
+    }
+    labels.forEach((t, i) => { g += `<text x="${x(i)}" y="${H - 12}" font-size="11" fill="#64748b" text-anchor="middle">${esc(t)}</text>`; });
+    series.forEach((s, si) => {
+      const c = CL[si % CL.length];
+      let d = '', pts = '';
+      s.v.forEach((v, i) => { if (v == null) return; d += (d ? ' L' : 'M') + x(i) + ' ' + y(v); pts += `<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="${c}"><title>${esc(s.name)} ${esc(labels[i])}: ${v}</title></circle>`; });
+      g += `<path d="${d}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round"/>${pts}`;
+    });
+    g += '</svg>';
+    const legend = series.map((s, i) => `<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;margin-right:14px"><span style="width:10px;height:10px;border-radius:50%;background:${CL[i % CL.length]};display:inline-block"></span>${esc(s.name)}</span>`).join('');
+    return `<div class="overflow-x-auto">${g}</div><div class="mt-1">${legend}</div>`;
+  }
+  function draw() {
+    drawRounds(); fillStu();
+    const box = $('exOut'), ks = order();
+    if (!ks.length) { box.innerHTML = '<p class="text-sm text-slate-500 py-8 text-center">회차별 성적 파일을 올리면 여기에서 비교해 드립니다.</p>'; return; }
+    const labels = ks.map(k => { const [, t, r] = k.split('-'); return `${t}학기 ${r}회`; });
+    const name = $('exStu').value;
+    const subs = [...new Set(ks.flatMap(k => ex[k].subjects || []))];
+    const val = name ? (k, sub) => { const o = (ex[k].stu || {})[name]; return o && typeof o[sub] === 'number' ? o[sub] : null; } : avgOf;
+    const rows = subs.map(sub => ({ sub, v: ks.map(k => val(k, sub)) })).filter(r => r.v.some(v => v != null));
+    if (!rows.length) { box.innerHTML = `<p class="text-sm text-slate-500 py-8 text-center">${name ? esc(name) + ' 학생의 점수가 없습니다.' : '점수가 없습니다.'}</p>`; return; }
+    const mean = v => { const a = v.filter(x => x != null); return a.length ? a.reduce((x, y) => x + y, 0) / a.length : null; };
+    const totals = ks.map((k, i) => mean(rows.map(r => r.v[i])));
+    const head = ['과목', ...labels, '처음 대비', '직전 대비'].map(h => `<th class="px-2 py-1.5 font-medium whitespace-nowrap">${h}</th>`).join('');
+    const body = rows.map(r => {
+      const last = r.v[r.v.length - 1], first = r.v.find(v => v != null);
+      const prev = [...r.v].slice(0, -1).reverse().find(v => v != null);
+      return `<tr class="border-t border-slate-100"><td class="px-2 py-1.5">${esc(r.sub)}</td>` +
+        r.v.map(v => `<td class="px-2 py-1.5 text-center">${v == null ? '-' : f1(v)}</td>`).join('') +
+        `<td class="px-2 py-1.5 text-center ${dcls(last, first)}">${diff(last, first)}</td>` +
+        `<td class="px-2 py-1.5 text-center ${dcls(last, prev)}">${diff(last, prev)}</td></tr>`;
+    }).join('');
+    const foot = `<tr class="border-t-2 border-slate-300 font-bold"><td class="px-2 py-1.5">${name ? '전 과목 평균' : '반 전체 평균'}</td>` +
+      totals.map(v => `<td class="px-2 py-1.5 text-center">${f1(v)}</td>`).join('') +
+      `<td class="px-2 py-1.5 text-center ${dcls(totals[totals.length - 1], totals.find(v => v != null))}">${diff(totals[totals.length - 1], totals.find(v => v != null))}</td>` +
+      (() => { const last = totals[totals.length - 1], prev = [...totals].slice(0, -1).reverse().find(v => v != null); return `<td class="px-2 py-1.5 text-center ${dcls(last, prev)}">${diff(last, prev)}</td>`; })() + `</tr>`;
+    const who = name ? `${esc(name)} 학생` : '반 전체 평균';
+    const cls = name ? ks.map((k, i) => mean(rows.map(r => avgOf(k, r.sub)))) : null;
+    const series = rows.slice(0, 8).map(r => ({ name: r.sub, v: r.v }));
+    box.innerHTML = `<div class="space-y-4">
+      <div class="bg-white rounded-xl border border-slate-200 p-4">
+        <h3 class="font-bold mb-2">${who} · 회차별 점수</h3>
+        <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-slate-500 bg-slate-50"><tr>${head}</tr></thead><tbody>${body}${foot}</tbody></table></div>
+        ${name && cls ? `<p class="text-xs text-slate-500 mt-2">반 평균: ${cls.map((v, i) => `${labels[i]} ${f1(v)}`).join(' · ')}</p>` : ''}
+      </div>
+      <div class="bg-white rounded-xl border border-slate-200 p-4">
+        <h3 class="font-bold mb-2">📉 과목별 변화 ${rows.length > 8 ? '<span class="text-xs font-normal text-slate-500">(앞 8과목만)</span>' : ''}</h3>
+        ${chart(labels, series)}
+      </div>
+      ${name ? `<div class="bg-white rounded-xl border border-slate-200 p-4"><h3 class="font-bold mb-2">📊 ${esc(name)} 학생과 반 평균</h3>${chart(labels, [{ name: '본인 평균', v: totals }, { name: '반 평균', v: cls }])}</div>` : ''}
+    </div>`;
+  }
+  $('exStu').addEventListener('change', draw);
+  $('exPrint').addEventListener('click', () => {
+    if (!order().length) { alert('인쇄할 내용이 없습니다.'); return; }
+    if (typeof printReset === 'function') printReset();
+    const c = (typeof cfg === 'object' && cfg) || {}, d = new Date();
+    const pa = $('printArea');
+    pa.innerHTML = `<h2 style="text-align:center;font-size:15pt;font-weight:700;margin:0 0 2px">지필평가 비교</h2>
+      <p style="text-align:center;font-size:9.5pt;color:#475569;margin:0 0 10px">${esc([c.school || '', c.cls || ''].filter(Boolean).join(' '))} · ${esc($('exStu').value || '반 전체 평균')} · 출력 ${d.getFullYear()}.${d.getMonth() + 1}.${d.getDate()}</p>
+      ${$('exOut').innerHTML}
+      <p style="font-size:8.5pt;color:#64748b;margin-top:8px">※ 개인정보가 담겨 있으니 보관과 폐기에 유의하세요.</p>`;
+    pa.classList.add('as-print');
+    const pg = document.createElement('style'); pg.dataset.pg = '1'; pg.textContent = '@page{size:A4 landscape;margin:12mm}'; document.head.appendChild(pg);
+    const done = () => { pg.remove(); pa.classList.remove('as-print'); pa.innerHTML = ''; window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done); window.print(); setTimeout(done, 60000);
+  });
+  $('exXlsx').addEventListener('click', () => {
+    const ks = order(); if (!ks.length) { alert('저장할 내용이 없습니다.'); return; }
+    if (typeof XLSX === 'undefined') { alert('엑셀 도구를 불러오지 못했습니다.'); return; }
+    const labels = ks.map(k => { const [, t, r] = k.split('-'); return `${t}학기 ${r}회`; });
+    const subs = [...new Set(ks.flatMap(k => ex[k].subjects || []))];
+    const names = [...new Set(ks.flatMap(k => Object.keys(ex[k].stu || {})))].sort((a, b) => a.localeCompare(b, 'ko'));
+    const aoa = [['이름', '과목', ...labels, '처음 대비', '직전 대비']];
+    names.forEach(nm => subs.forEach(sub => {
+      const v = ks.map(k => { const o = (ex[k].stu || {})[nm]; return o && typeof o[sub] === 'number' ? o[sub] : null; });
+      if (!v.some(x => x != null)) return;
+      const last = v[v.length - 1], first = v.find(x => x != null), prev = [...v].slice(0, -1).reverse().find(x => x != null);
+      aoa.push([nm, sub, ...v.map(x => x == null ? '' : x), (last != null && first != null) ? +(last - first).toFixed(1) : '', (last != null && prev != null) ? +(last - prev).toFixed(1) : '']);
+    }));
+    const av = [['과목', ...labels]];
+    subs.forEach(sub => av.push([sub, ...ks.map(k => { const v = avgOf(k, sub); return v == null ? '' : +v.toFixed(1); })]));
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), '학생별');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(av), '과목 평균');
+    const n = new Date(), p2 = v => String(v).padStart(2, '0');
+    XLSX.writeFile(wb, `지필평가비교_${n.getFullYear()}${p2(n.getMonth() + 1)}${p2(n.getDate())}.xlsx`);
+  });
+  $('exY').value = new Date().getFullYear();
+  draw();
+})();
 /* ===== 할 일 · 스티커 메모 ===== */
 const MEMO_KEY = 'gm-memos', MC = { y: 'bg-yellow-200', p: 'bg-orange-200', g: 'bg-green-200', b: 'bg-sky-200' }, CATS = ['담임', '수업', '업무'], CEMO = { 담임: '🧑‍🏫', 수업: '📚', 업무: '💼' };
 let memos = load(MEMO_KEY), mmColor = 'y', mmView = 'all', mmCat = 'all', mmRange = 'all', mmEdit = '';
@@ -5882,6 +6086,7 @@ const SYNC_KEYS = [
   ['gm-subj', '과목 목록', () => subjList, v => { subjList = Array.isArray(v) ? v : []; }, 'rec'],
   ['gm-clubs', '동아리 목록', () => clubList, v => { clubList = Array.isArray(v) ? v : []; }, 'rec'],
   ['gm-grades-all', '성적 분석 자료', () => gAll, v => { gAll = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; curTerm = Object.keys(gAll).sort().pop() || ''; grades = gAll[curTerm] || null; }, 'gr'],
+  ['gm-exams', '지필평가 회차별 성적', () => (window.examGet ? examGet() : {}), v => { if (window.examSet) examSet(v); }, 'gr'],
   ['gm-gex', '성적 제외 학생', () => gex, v => { gex = Array.isArray(v) ? v : []; $('gEx').value = gex.join(', '); }, 'gr'],
   ['gm-seat', '자리 배치', () => seat, v => { seat = normSeat(v); }, 'stu'],
   ['gm-abs-list', '결석신고서 저장 목록', () => (window.absStore ? absStore.get() : []), v => { if (window.absStore) absStore.set(v); }, 'stu'],
