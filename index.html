@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지</p>
   </form>
 </div>
 
@@ -476,7 +476,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <label class="text-sm flex-1 min-w-[240px]">새 업무 메모<textarea id="mmText" required maxlength="1000" rows="3" placeholder="예: 금요일까지 상담일지 제출 (Enter로 줄바꿈, Ctrl+Enter로 추가)" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm resize-y"></textarea></label>
       <select id="mmCat" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><option value="">분류 없음</option><option value="담임">🧑‍🏫 담임</option><option value="수업">📚 수업</option><option value="업무">💼 업무</option></select>
       <input id="mmDue" type="date" title="마감일" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
-      <div id="mmColors" class="flex gap-2 pb-2.5" role="group" aria-label="메모 색상"></div>
+      <div id="mmColors" class="flex gap-1.5 flex-wrap pb-2.5 max-w-[220px]" role="group" aria-label="메모 색상"></div>
       <button class="bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg px-5 py-2.5">추가</button>
     </form>
     <div id="mmFilter" class="mt-4 flex items-center gap-2 text-sm flex-wrap"></div>
@@ -1049,7 +1049,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지</p>
   </div>
 </dialog>
 
@@ -3573,7 +3573,17 @@ $('gFile').addEventListener('change', async e => {
   draw();
 })();
 /* ===== 할 일 · 스티커 메모 ===== */
-const MEMO_KEY = 'gm-memos', MC = { y: 'bg-yellow-200', p: 'bg-orange-200', g: 'bg-green-200', b: 'bg-sky-200' }, CATS = ['담임', '수업', '업무'], CEMO = { 담임: '🧑‍🏫', 수업: '📚', 업무: '💼' };
+const MEMO_KEY = 'gm-memos';
+const MC = {
+  y: 'bg-yellow-200', p: 'bg-orange-200', pk: 'bg-pink-200', rd: 'bg-rose-300',
+  g: 'bg-green-200', mn: 'bg-teal-200', b: 'bg-sky-200', la: 'bg-violet-200',
+  gy: 'bg-slate-200', cr: 'bg-[#f6ead8]',
+  nv: 'bg-[#1f3a63] text-white', dg: 'bg-[#2f4f43] text-white', pl: 'bg-[#4b3869] text-white'
+};
+const MNAME = { y: '노랑', p: '주황', pk: '연핑크', rd: '분홍', g: '연두', mn: '민트', b: '하늘', la: '라벤더', gy: '연회색', cr: '크림', nv: '남색', dg: '진초록', pl: '보라' };
+const MDARK = { nv: 1, dg: 1, pl: 1 };        /* 글씨가 하얀 색 */
+const mSub = c => MDARK[c] ? 'text-slate-200' : 'text-slate-600';
+const CATS = ['담임', '수업', '업무'], CEMO = { 담임: '🧑‍🏫', 수업: '📚', 업무: '💼' };
 let memos = load(MEMO_KEY), mmColor = 'y', mmView = 'all', mmCat = 'all', mmRange = 'all', mmEdit = '';
 const weekEnd = () => { const d = new Date(base); d.setDate(d.getDate() + (7 - d.getDay()) % 7); return ymd(d); };
 function chips(box, items, cur, set) {
@@ -3591,11 +3601,11 @@ function memoEditCard(m) {
   [['', '분류 없음'], ...CATS.map(c => [c, `${CEMO[c]} ${c}`])].forEach(([v, t]) => { const o = el('option', '', t); o.value = v; cat.appendChild(o); });
   cat.value = m.cat || '';
   const due = el('input', 'border border-slate-300 rounded-lg px-2 py-1.5 text-xs bg-white'); due.type = 'date'; due.title = '마감일'; due.value = m.due || '';
-  const noDue = el('button', 'text-xs underline text-slate-600', '마감 지우기'); noDue.type = 'button'; noDue.onclick = () => { due.value = ''; };
+  const noDue = el('button', `text-xs underline ${mSub(m.color)}`, '마감 지우기'); noDue.type = 'button'; noDue.onclick = () => { due.value = ''; };
   row.append(cat, due, noDue);
-  const cols = el('div', 'flex gap-2'); let color = m.color || 'y';
-  const paint = () => [...cols.children].forEach(b => { b.className = `w-6 h-6 rounded-full ${MC[b.dataset.c]} ${b.dataset.c === color ? 'ring-2 ring-offset-1 ring-slate-700' : ''}`; });
-  Object.keys(MC).forEach(k => { const b = el('button'); b.type = 'button'; b.dataset.c = k; b.setAttribute('aria-label', '색상 선택'); b.onclick = () => { color = k; paint(); }; cols.appendChild(b); });
+  const cols = el('div', 'flex gap-1.5 flex-wrap'); let color = m.color || 'y';
+  const paint = () => [...cols.children].forEach(b => { b.className = `w-6 h-6 rounded-full border border-black/10 ${MC[b.dataset.c]} ${b.dataset.c === color ? 'ring-2 ring-offset-1 ring-slate-700' : ''}`; });
+  Object.keys(MC).forEach(k => { const b = el('button'); b.type = 'button'; b.dataset.c = k; b.title = MNAME[k] || ''; b.setAttribute('aria-label', MNAME[k] || '색상 선택'); b.onclick = () => { color = k; paint(); }; cols.appendChild(b); });
   paint();
   const btns = el('div', 'flex gap-2 justify-end items-center');
   const cancel = el('button', 'text-xs border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5', '취소');
@@ -3613,14 +3623,14 @@ function memoEditCard(m) {
     else if (e.key === 'Escape') { e.preventDefault(); cancel.click(); }
   });
   setTimeout(() => { try { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); } catch (e) {} }, 0);
-  card.append(ta, row, cols, el('p', 'text-xs text-slate-600', 'Ctrl+Enter로 저장, Esc로 취소'), btns);
+  card.append(ta, row, cols, el('p', `text-xs ${mSub(m.color)}`, 'Ctrl+Enter로 저장, Esc로 취소'), btns);
   return card;
 }
 function renderMemos() {
   const cbox = $('mmColors'); cbox.innerHTML = '';
   Object.entries(MC).forEach(([k, c]) => {
-    const b = el('button', `w-7 h-7 rounded-full ${c} ${k === mmColor ? 'ring-2 ring-offset-2 ring-slate-700' : ''}`);
-    b.type = 'button'; b.setAttribute('aria-label', '색상 선택'); b.onclick = () => { mmColor = k; renderMemos(); }; cbox.appendChild(b);
+    const b = el('button', `w-7 h-7 rounded-full border border-black/10 ${c} ${k === mmColor ? 'ring-2 ring-offset-2 ring-slate-700' : ''}`);
+    b.type = 'button'; b.title = MNAME[k] || ''; b.setAttribute('aria-label', MNAME[k] || '색상 선택'); b.onclick = () => { mmColor = k; renderMemos(); }; cbox.appendChild(b);
   });
   const fb = $('mmFilter'); fb.innerHTML = '';
   const cnt = k => memos.filter(m => k === 'all' || (k === 'done') === m.done).length;
@@ -3640,18 +3650,19 @@ function renderMemos() {
   list.forEach(m => {
     if (mmEdit === m.id) { board.appendChild(memoEditCard(m)); return; }
     const card = el('div', `rounded-lg p-4 shadow-sm flex flex-col gap-3 ${MC[m.color] || MC.y} ${m.done ? 'opacity-60' : ''}`);
+    const dk = !!MDARK[m.color];
     const lab = el('label', 'flex items-start gap-2 cursor-pointer');
     const cb = el('input'); cb.type = 'checkbox'; cb.checked = m.done; cb.className = 'mt-1 w-4 h-4';
     cb.onchange = () => { m.done = cb.checked; store(MEMO_KEY, memos); renderMemos(); renderDash(); };
     lab.append(cb, el('span', `text-sm whitespace-pre-wrap break-words ${m.done ? 'line-through' : ''}`, m.text));
-    const foot = el('div', 'flex items-center justify-between text-xs text-slate-600');
+    const foot = el('div', `flex items-center justify-between text-xs ${mSub(m.color)}`);
     const late = m.due && m.due < t && !m.done, meta = [m.cat ? `${CEMO[m.cat] || ''} ${m.cat}` : '', m.due ? '마감 ' + m.due.slice(5).replace('-', '/') : ''].filter(Boolean).join(' · ');
-    const edit = el('button', 'hover:text-sky-700', '수정'); edit.type = 'button';
+    const edit = el('button', dk ? 'hover:text-sky-200' : 'hover:text-sky-700', '수정'); edit.type = 'button';
     edit.onclick = () => { mmEdit = m.id; renderMemos(); };
-    const del = el('button', 'hover:text-red-600', '삭제'); del.type = 'button';
+    const del = el('button', dk ? 'hover:text-rose-300' : 'hover:text-red-600', '삭제'); del.type = 'button';
     del.onclick = () => { if (!confirm('이 메모를 지울까요?')) return; memos = memos.filter(x => x !== m); store(MEMO_KEY, memos); renderMemos(); renderDash(); };
     const acts = el('div', 'flex gap-2 shrink-0'); acts.append(edit, del);
-    foot.append(el('span', late ? 'text-red-600 font-bold' : '', meta || m.date), acts); card.append(lab, foot); board.appendChild(card);
+    foot.append(el('span', late ? (dk ? 'text-rose-300 font-bold' : 'text-red-600 font-bold') : '', meta || m.date), acts); card.append(lab, foot); board.appendChild(card);
   });
   $('mmEmpty').classList.toggle('hidden', list.length > 0);
 }
@@ -4318,14 +4329,36 @@ function renderRsv() {
   const box = $('rsvReqList'); box.innerHTML = '';
   const decide = async (r, status) => {
     const note = status === '거절' ? (prompt('학생에게 보여줄 메모(선택)', '') || '') : '';
-    try { await rsvReq('POST', { action: 'decide', id: r.id, status, note }); r.status = status; r.note = note; store(RSVC_KEY, rsvCache); renderRsv(); renderHomeRsv(); } catch (e) { alert('처리 실패: ' + e.message); }
+    try {
+      await rsvReq('POST', { action: 'decide', id: r.id, status, note }); r.status = status; r.note = note;
+      store(RSVC_KEY, rsvCache); renderRsv(); renderHomeRsv();
+      if (status === '승인') rsvNotify([r]);
+    } catch (e) { alert('처리 실패: ' + e.message); }
   };
+  /* 승인 결과를 단톡방에 붙여넣을 문구로 만들어 복사 */
+  async function rsvNotify(list) {
+    if (!list.length) return;
+    const one = list.length === 1;
+    const txt = (one ? '' : '[상담 확정 안내]\n') + list.map(r => {
+      const d = new Date(r.date + 'T00:00:00');
+      return `${one ? '[상담 확정] ' : '· '}${r.name}(${r.no}) ${d.getMonth() + 1}월 ${d.getDate()}일(${'일월화수목금토'[d.getDay()]}) ${r.start}~${r.end}${r.slot ? ` ${r.slot}` : ''}`;
+    }).join('\n') + '\n시간에 맞춰 와 주세요. 못 오게 되면 미리 알려 주세요.';
+    try { await navigator.clipboard.writeText(txt); rsvMsg(`승인 안내 문구를 복사했습니다. 학급 단톡방에 붙여넣으세요. (${list.length}건)`, true); }
+    catch (e) { prompt('아래 문구를 복사해 학급 단톡방에 붙여넣으세요.', txt); }
+  }
   const row = (r, btns) => { const d = el('div', 'rounded-lg border border-slate-200 p-2.5 bg-slate-50'); d.append(el('div', 'font-bold', `${rsvTime(r)} · ${r.name}(${r.no})`)); if (r.topic) d.append(el('div', 'text-xs text-slate-600 mt-0.5', r.topic)); const b = el('div', 'flex gap-2 mt-2'); btns.forEach(([x, cls, fn]) => { const bt = el('button', `px-3 py-1 rounded-lg text-xs font-bold ${cls}`, x); bt.type = 'button'; bt.onclick = fn; b.appendChild(bt); }); d.appendChild(b); return d; };
   if (!rsvOn()) { box.appendChild(el('p', 'text-xs text-slate-500', '웹 앱 주소와 관리 암호를 넣으면 신청이 여기에 표시됩니다.')); }
   else if (!pend.length && !appr.length) box.appendChild(el('p', 'text-xs text-slate-500', '아직 대기 중이거나 예정된 상담이 없습니다.'));
   if (pend.length) box.appendChild(el('div', 'text-xs font-bold text-rose-600', '승인 대기'));
   pend.forEach(r => box.appendChild(row(r, [['승인', 'bg-emerald-600 text-white', () => decide(r, '승인')], ['거절', 'border border-slate-300 bg-white', () => decide(r, '거절')]])));
-  if (appr.length) box.appendChild(el('div', 'text-xs font-bold text-emerald-700 mt-2', '승인된 상담'));
+  if (appr.length) {
+    const h = el('div', 'flex items-center gap-2 mt-2');
+    h.append(el('span', 'text-xs font-bold text-emerald-700 mr-auto', '승인된 상담'));
+    const cp = el('button', 'text-xs border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-2 py-1', '📋 안내 문구 복사');
+    cp.type = 'button'; cp.title = '승인된 상담을 학급 단톡방에 붙여넣을 문구로 복사합니다.';
+    cp.onclick = () => rsvNotify(appr);
+    h.appendChild(cp); box.appendChild(h);
+  }
   appr.forEach(r => box.appendChild(row(r, [['승인 취소(거절)', 'border border-slate-300 bg-white', () => { if (confirm('이 상담을 취소할까요? 학생 화면에 거절로 표시됩니다.')) decide(r, '거절'); }]])));
   const sl = $('rsvSlotList'); sl.innerHTML = '';
   const up = rsvSlots.filter(s => s.date >= t).sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start)).slice(0, 80);
