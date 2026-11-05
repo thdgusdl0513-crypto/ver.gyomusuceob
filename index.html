@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성</p>
   </form>
 </div>
 
@@ -363,9 +363,28 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
         </details>
         <label class="text-sm block">공문 종류
           <select id="goType" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm">
-            <option>알림</option><option>협조 요청</option><option>자료 제출(보고)</option><option>계획 알림(시행)</option><option>회신</option><option>안내</option><option>기타</option>
+            <option>알림</option><option>협조 요청</option><option>자료 제출(보고)</option><option>계획 알림(시행)</option><option>회신</option><option>안내</option><option>품의(내부결재)</option><option>기타</option>
           </select>
         </label>
+        <div id="goPum" class="hidden rounded-lg border border-amber-200 bg-amber-50 p-3 space-y-2 text-sm">
+          <p class="font-bold">💰 품의 내용</p>
+          <label class="block text-xs">목적 <span class="text-slate-500">(왜 사는지·왜 하는지)</span><input id="puPurpose" placeholder="예: 1학년 진로체험 운영에 필요한 재료 구입" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="block text-xs">일시<input id="puWhen" placeholder="2026. 11. 12.(수) 14:00" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+            <label class="block text-xs">장소<input id="puWhere" placeholder="본교 시청각실" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+          </div>
+          <label class="block text-xs">대상<input id="puWho" placeholder="1학년 7반 학생 18명" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+          <div>
+            <div class="flex items-center gap-2"><span class="text-xs font-bold">산출 내역</span><button id="puAdd" type="button" class="ml-auto text-xs border border-slate-300 bg-white rounded-lg px-2 py-1">＋ 줄 추가</button></div>
+            <div id="puRows" class="space-y-1 mt-1"></div>
+            <p id="puSum" class="text-xs font-bold text-right mt-1"></p>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="block text-xs">예산 과목<input id="puBudget" list="puBudgetList" placeholder="예: 학생자치활동비" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><datalist id="puBudgetList"></datalist></label>
+            <label class="block text-xs">지출 방법<select id="puPay" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><option>학교 법인카드</option><option>계좌 이체</option><option>현금(소액)</option><option>기타</option></select></label>
+          </div>
+          <label class="block text-xs">업체·비고 <span class="text-slate-500">(선택)</span><input id="puVendor" placeholder="예: ○○문구 / 견적서 2곳 비교" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
+        </div>
         <label class="text-sm block">수신 (받는 곳)<input id="goTo" placeholder="예: 충청남도청양교육지원청교육장" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
         <label class="text-sm block">제목 <span class="text-xs text-slate-500">(비워 두면 AI가 지어 줍니다)</span><input id="goTitle" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></label>
         <label class="text-sm block">핵심 내용 <span class="text-xs text-slate-500">(무엇을·언제·어디서·누가·왜)</span>
@@ -1059,7 +1078,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성</p>
   </div>
 </dialog>
 
@@ -2554,7 +2573,7 @@ $('dlgClose').addEventListener('click', () => $('dlg').close());
 
 /* 백업 · 복원 · 초기화 */
 $('bkBtn').addEventListener('click', () => {
-  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), holidays: (() => { try { return JSON.parse(localStorage.getItem('gm-holidays')) || []; } catch (e) { return []; } })(), scho: (() => { try { return JSON.parse(localStorage.getItem('gm-scho')) || []; } catch (e) { return []; } })(), staff: (window.staffGet ? staffGet() : []), schoInfo: (() => { try { return JSON.parse(localStorage.getItem('gm-scho-info')) || {}; } catch (e) { return {}; } })(), exams: (window.examGet ? examGet() : {}), subjMap: (() => { try { return JSON.parse(localStorage.getItem('gm-subj-map')) || {}; } catch (e) { return {}; } })(), teacher: $('pTeacher').value };
+  const data = { v: 1, students, counsels, passes, ddays, memos, events: evs, timetable: myTT, budget: bg, ch, sch, schEdit: schE, recs, recMemo, recRost, subjects: subjList, clubs: clubList, absList: (window.absStore ? absStore.get() : []), gongmun: (() => { try { return JSON.parse(localStorage.getItem('gm-gongmun')) || []; } catch (e) { return []; } })(), pumui: (() => { try { return JSON.parse(localStorage.getItem('gm-pumui')) || null; } catch (e) { return null; } })(), holidays: (() => { try { return JSON.parse(localStorage.getItem('gm-holidays')) || []; } catch (e) { return []; } })(), scho: (() => { try { return JSON.parse(localStorage.getItem('gm-scho')) || []; } catch (e) { return []; } })(), staff: (window.staffGet ? staffGet() : []), schoInfo: (() => { try { return JSON.parse(localStorage.getItem('gm-scho-info')) || {}; } catch (e) { return {}; } })(), exams: (window.examGet ? examGet() : {}), subjMap: (() => { try { return JSON.parse(localStorage.getItem('gm-subj-map')) || {}; } catch (e) { return {}; } })(), teacher: $('pTeacher').value };
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
   a.download = `교무실_백업_${ymd(new Date())}.json`; a.click();
@@ -5923,6 +5942,74 @@ ${lines}
     rej(new Error(`${f.name} 형식은 바로 읽을 수 없습니다. 한글(hwp)·워드 파일은 PDF로 저장하거나, 내용을 복사해 "핵심 내용" 칸에 붙여 주세요.`));
   });
 
+
+  /* --- 품의 --- */
+  const PU_KEY = 'gm-pumui';
+  let puRows = [{ item: '', price: '', qty: 1 }];
+  const won = n => Number(n || 0).toLocaleString('ko-KR');
+  const HAN = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
+  const HAN4 = ['', '십', '백', '천'];
+  const HANB = ['', '만', '억', '조', '경'];
+  function hanWon(n) {                              /* 금액을 한글로: 100000 → 십만 */
+    n = Math.floor(Number(n) || 0); if (!n) return '영';
+    let out = '', b = 0;
+    while (n > 0) {
+      const part = n % 10000; n = Math.floor(n / 10000);
+      if (part) {
+        let t = '', p = part;
+        for (let i = 0; p > 0; i++, p = Math.floor(p / 10)) {
+          const d = p % 10;
+          if (d) t = (d === 1 && i > 0 ? '' : HAN[d]) + HAN4[i] + t;
+        }
+        out = t + HANB[b] + out;
+      }
+      b++;
+    }
+    return out;
+  }
+  const puTotal = () => puRows.reduce((a, r) => a + (Number(r.price) || 0) * (Number(r.qty) || 0), 0);
+  function drawPu() {
+    const box = $('puRows'); if (!box) return;
+    box.innerHTML = '';
+    puRows.forEach((r, i) => {
+      const row = el('div', 'flex gap-1 items-center');
+      const mk = (ph, key, w, type) => {
+        const x = el('input', `${w} min-w-0 border border-slate-300 rounded px-2 py-1 text-xs bg-white`);
+        if (type) { x.type = type; x.min = '0'; }
+        x.placeholder = ph; x.value = r[key] == null ? '' : r[key];
+        x.addEventListener('input', () => { r[key] = x.value; sumPu(); });
+        return x;
+      };
+      row.append(mk('품목', 'item', 'flex-1'), mk('단가', 'price', 'w-24', 'number'), el('span', 'text-xs text-slate-400', '×'), mk('수량', 'qty', 'w-16', 'number'));
+      const amt = el('span', 'text-xs w-24 text-right', won((Number(r.price) || 0) * (Number(r.qty) || 0)));
+      amt.dataset.i = i;
+      const x = el('button', 'text-xs text-slate-400 hover:text-red-600', '✕'); x.type = 'button';
+      x.onclick = () => { puRows.splice(i, 1); if (!puRows.length) puRows = [{ item: '', price: '', qty: 1 }]; drawPu(); };
+      row.append(amt, x); box.appendChild(row);
+    });
+    sumPu();
+  }
+  function sumPu() {
+    [...$('puRows').children].forEach((row, i) => { const sp = row.querySelector('span[data-i]'); if (sp) sp.textContent = won((Number(puRows[i].price) || 0) * (Number(puRows[i].qty) || 0)); });
+    const t = puTotal();
+    $('puSum').textContent = t ? `합계  금${won(t)}원(금${hanWon(t)}원정)` : '합계  —';
+    savePu();
+  }
+  const savePu = () => { try { localStorage.setItem(PU_KEY, JSON.stringify({ rows: puRows, budget: $('puBudget').value, pay: $('puPay').value })); } catch (e) {} };
+  $('puAdd').addEventListener('click', () => { puRows.push({ item: '', price: '', qty: 1 }); drawPu(); });
+  ['puBudget', 'puPay'].forEach(id => $(id).addEventListener('change', savePu));
+  function puUI() {
+    const on = $('goType').value === '품의(내부결재)';
+    $('goPum').classList.toggle('hidden', !on);
+    if (!on) return;
+    try {                                            /* 예산 탭에 적어 둔 항목을 골라 쓸 수 있게 */
+      const dl = $('puBudgetList'); dl.innerHTML = '';
+      (bg.items || []).forEach(b => { (b.cats || []).forEach(c => { const o = document.createElement('option'); o.value = `${b.name} - ${c.name}`; dl.appendChild(o); }); if (!(b.cats || []).length) { const o = document.createElement('option'); o.value = b.name; dl.appendChild(o); } });
+    } catch (e) {}
+  }
+  $('goType').addEventListener('change', puUI);
+  try { const v = JSON.parse(localStorage.getItem(PU_KEY)); if (v) { if (Array.isArray(v.rows) && v.rows.length) puRows = v.rows; if (v.budget) $('puBudget').value = v.budget; if (v.pay) $('puPay').value = v.pay; } } catch (e) {}
+  drawPu(); puUI();
   const RULES = `작성 규칙
 - 대한민국 행정기관 공문서 형식을 지킵니다.
 - 맨 윗줄은 "수신 OOO", 필요하면 다음 줄에 "(경유)", 그다음 줄에 "제목 OOO" 을 씁니다.
@@ -5937,6 +6024,39 @@ ${lines}
 
   function buildPrompt(sum) {
     const v = id => $(id).value.trim();
+    if (!sum && $('goType').value === '품의(내부결재)') {
+      const t = puTotal();
+      const calc = puRows.filter(r => r.item || r.price).map(r => `  - ${r.item || '(품목)'} : 금${won(r.price || 0)}원 × ${r.qty || 0}개 = 금${won((Number(r.price) || 0) * (Number(r.qty) || 0))}원`).join('\n') || '  - (산출 내역 없음)';
+      return `당신은 대한민국 고등학교 교사의 행정 업무를 돕는 전문가입니다. 아래 내용으로 학교 내부결재용 **품의서** 초안을 작성하세요.
+
+[제목] ${v('goTitle') || '(비어 있음 — 내용에 맞게 "○○ 구입(실시)에 따른 품의" 형태로 지을 것)'}
+[목적] ${v('puPurpose') || '(비어 있음)'}
+[일시] ${v('puWhen') || '해당 없음'}
+[장소] ${v('puWhere') || '해당 없음'}
+[대상] ${v('puWho') || '해당 없음'}
+[산출 내역]
+${calc}
+[총액] 금${won(t)}원(금${hanWon(t)}원정)
+[예산 과목] ${v('puBudget') || '(비어 있음 — [예산 과목]으로 남길 것)'}
+[지출 방법] ${$('puPay').value}
+[업체·비고] ${v('puVendor') || '없음'}
+[관련 근거] ${v('goRef') || '없음'}
+[붙임] ${v('goAtt') || '없음'}
+[추가 내용] ${v('goBody') || '없음'}
+[오늘 날짜] ${today()}
+[더 바라는 점] ${v('goMore') || '없음'}
+
+작성 규칙
+- 맨 윗줄에 "제목 ○○에 따른 품의"를 씁니다. 수신란은 쓰지 않습니다(내부결재).
+- 본문 1.은 근거가 있으면 "1. 관련: ○○"으로 시작하고, 없으면 바로 2.의 내용부터 1.로 씁니다.
+- 다음 항목은 "위 ○○과 관련하여 아래와 같이 ○○하고자 합니다." 로 쓰고, 그 아래에 가. 목적 / 나. 일시 / 다. 장소 / 라. 대상 / 마. 소요 예산 / 바. 예산 과목 / 사. 지출 방법 순서로 적습니다. 값이 "해당 없음"인 항목은 빼세요.
+- "마. 소요 예산"에는 총액을 금100,000원(금십만원정) 형식으로 쓰고, 그 아래 1) 2) 3)으로 산출 내역을 "품목 : 금○원 × ○개 = 금○원" 형태로 적습니다. 위에 준 금액과 총액을 그대로 쓰고 절대 다시 계산하거나 바꾸지 마세요.
+- 날짜는 2026. 11. 5.(목) 형식으로 씁니다.
+- 문장은 "~하고자 합니다", "~붙임과 같습니다" 같은 공문체로 씁니다.
+- 모르는 값은 지어내지 말고 [ ] 안에 무엇을 채워야 하는지 적습니다.
+- 붙임이 있으면 마지막에 "붙임  1. ○○ 1부.  끝." 으로, 없으면 본문 끝에 두 칸 띄우고 "끝."을 씁니다.
+- 인사말·설명·마크다운 기호 없이 품의서 본문만 출력하세요.`;
+    }
     if (sum) {
       return `당신은 대한민국 고등학교 교사의 행정 업무를 돕는 전문가입니다. 올린 공문(사진·PDF·글)을 읽고 아래 형식으로 한국어로 정리해 주세요.
 
@@ -5977,7 +6097,8 @@ ${lines}
   async function run(sum) {
     if (!gem.key) { $('goGemDet').open = true; gemMsg('먼저 API 키를 입력하고 "연결 테스트"를 눌러 주세요.'); $('goGemKey').focus(); alert('먼저 위 "🔑 Gemini 연결 설정"에서 API 키를 넣어 주세요.'); return; }
     if (sum && !files.length && !$('goBody').value.trim()) { alert('요약할 공문 파일을 올리거나 내용을 적어 주세요.'); return; }
-    if (!sum && !files.length && !$('goBody').value.trim() && !$('goTitle').value.trim()) { alert('핵심 내용을 적거나 받은 공문 파일을 올려 주세요.'); return; }
+    if (!sum && $('goType').value === '품의(내부결재)' && !$('puPurpose').value.trim() && !puTotal() && !$('goBody').value.trim()) { alert('품의 목적을 적거나 산출 내역을 넣어 주세요.'); return; }
+    if (!sum && $('goType').value !== '품의(내부결재)' && !files.length && !$('goBody').value.trim() && !$('goTitle').value.trim()) { alert('핵심 내용을 적거나 받은 공문 파일을 올려 주세요.'); return; }
     const btns = [$('goRun'), $('goSum')]; btns.forEach(b => b.disabled = true);
     msg(files.length ? '파일을 읽고 AI에 보내는 중… (파일이 크면 1분 넘게 걸릴 수 있어요)' : 'AI가 쓰는 중… 잠시만요', true);
     try {
@@ -5993,7 +6114,8 @@ ${lines}
   $('goRun').addEventListener('click', () => run(false));
   $('goSum').addEventListener('click', () => run(true));
   $('goClear').addEventListener('click', () => {
-    ['goTo', 'goTitle', 'goBody', 'goRef', 'goAtt', 'goMore'].forEach(id => $(id).value = '');
+    ['goTo', 'goTitle', 'goBody', 'goRef', 'goAtt', 'goMore', 'puPurpose', 'puWhen', 'puWhere', 'puWho', 'puVendor'].forEach(id => $(id).value = '');
+    puRows = [{ item: '', price: '', qty: 1 }]; drawPu();
     files = []; drawFiles(); msg('');
   });
   $('goCopy').addEventListener('click', async () => {
