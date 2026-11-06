@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구</p>
   </form>
 </div>
 
@@ -744,6 +744,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           <h2 class="font-bold text-lg">🌈 상담 타임라인</h2>
           <select id="cFilter" class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 bg-slate-50"></select>
         </div>
+        <p id="cOrphan" class="hidden mt-3 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2"></p>
         <ol id="timeline" class="mt-4 border-l-2 border-slate-200 ml-2 space-y-5"></ol>
         <p id="tlEmpty" class="text-sm text-slate-500 py-8 text-center">저장된 상담 기록이 없습니다. 학생을 선택해 첫 기록을 남겨 보세요.</p>
       </div>
@@ -1102,7 +1103,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구</p>
   </div>
 </dialog>
 
@@ -2563,7 +2564,26 @@ let students = load('gm-students'), counsels = load('gm-counsels'), passes = loa
 const SEED = [{"no": "1701", "name": "황하이안", "phone": "010-3495-1268", "guard": "이희경(엄마) 010-8033-0785", "note": ""}, {"no": "1702", "name": "김민선", "phone": "010-2757-0021", "guard": "김형태(아빠) 010-5892-0021", "note": "배가 자주 아픕니다."}, {"no": "1703", "name": "김송민", "phone": "010-9218-3747", "guard": "김승현(부) 010-3407-3737", "note": ""}, {"no": "1704", "name": "김지민", "phone": "010-8310-4663", "guard": "김명섭(부) 010-8320-4663", "note": ""}, {"no": "1705", "name": "김현우", "phone": "010-4510-7704", "guard": "김승천(부) 010-4477-5875", "note": ""}, {"no": "1706", "name": "류지환", "phone": "010-4220-2239", "guard": "김영희(엄마) 010-3331-2239", "note": ""}, {"no": "1707", "name": "박지훈", "phone": "010-8669-9846", "guard": "박기영(부) 010-4857-9846", "note": ""}, {"no": "1708", "name": "박한결", "phone": "010-8201-7833", "guard": "김민혜(모) 010-8837-7833", "note": ""}, {"no": "1709", "name": "배에스더", "phone": "010-4046-7509", "guard": "이종미(엄마) 010-9727-7509", "note": ""}, {"no": "1710", "name": "양현민", "phone": "010-5425-0749", "guard": "양권규(부) 010-9574-0806", "note": ""}, {"no": "1711", "name": "오지성", "phone": "010-2718-5623", "guard": "장희선(모) 010-6250-8050", "note": ""}, {"no": "1712", "name": "오영준", "phone": "010-9025-0047", "guard": "이새롬(모) 010-4187-0047", "note": ""}, {"no": "1713", "name": "이재현", "phone": "010-4446-7797", "guard": "최현영(모) 010-9236-7772", "note": ""}, {"no": "1714", "name": "이제이", "phone": "010-4491-2900", "guard": "김선미(엄마) 010-4414-2900", "note": ""}, {"no": "1715", "name": "이준희", "phone": "010-4482-2439", "guard": "김보나(어머니) 010-3316-2439", "note": "장이 좋지 않다"}, {"no": "1716", "name": "정여원", "phone": "010-9529-3984", "guard": "박정선(모) 010-7676-3984", "note": ""}, {"no": "1717", "name": "편민창", "phone": "010-3686-1503", "guard": "편도철(부) 010-8826-1503", "note": ""}, {"no": "1718", "name": "허예빈", "phone": "010-5341-6846", "guard": "허진영(아빠) 010-5345-6846", "note": "배아픔 머리아픔 예민"}]; // 청양고 1학년 7반 기초조사서 기준
 try { if (localStorage.getItem('gm-students') === null) { students = SEED.map(s => ({ id: uid(), ...s })); store('gm-students', students); } } catch (e) { students = SEED.map(s => ({ id: uid(), ...s })); }
 const sorted = () => [...students].sort((a, b) => a.no.localeCompare(b.no, 'ko', { numeric: true }));
-const stuName = id => { const s = students.find(x => x.id === id); return s ? `${s.no} ${s.name}` : '(삭제된 학생)'; };
+const stuName = (id, c) => {
+  const s = students.find(x => x.id === id);
+  if (s) return `${s.no} ${s.name}`;
+  if (c && (c.sno || c.sname)) return `${[c.sno, c.sname].filter(Boolean).join(' ')} (명단에 없음)`;
+  return '(삭제된 학생)';
+};
+/* 학생 명단이 바뀌거나 다른 기기에서 동기화되면 상담 기록의 학생 연결이 끊길 수 있어,
+   기록에 함께 저장해 둔 학번·이름으로 다시 이어 붙입니다. */
+function relinkCounsels() {
+  let ch = 0;
+  counsels.forEach(c => {
+    const s = students.find(x => x.id === c.sid);
+    if (s) { if (c.sno !== s.no || c.sname !== s.name) { c.sno = s.no; c.sname = s.name; ch++; } return; }
+    let t = c.sno ? students.find(x => String(x.no) === String(c.sno)) : null;
+    if (!t && c.sname) { const m = students.filter(x => x.name === c.sname); if (m.length === 1) t = m[0]; }
+    if (t) { c.sid = t.id; c.sno = t.no; c.sname = t.name; ch++; }
+  });
+  if (ch) store('gm-counsels', counsels);
+  return counsels.filter(c => !students.some(x => x.id === c.sid)).length;
+}
 
 /* 날짜 · 고사 D-day */
 const now = new Date(), base = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -2831,6 +2851,12 @@ function cLoad(c) {
 }
 function cReset() { cEdit = ''; $('cDetail').value = ''; $('cDate').value = ymd(new Date()); cSyncForm(); renderTimeline(); }
 function renderTimeline() {
+  const orphan = relinkCounsels();
+  if ($('cOrphan')) {
+    const miss = [...new Set(counsels.filter(c => !students.some(x => x.id === c.sid)).map(c => [c.sno, c.sname].filter(Boolean).join(' ') || '학생'))];
+    $('cOrphan').textContent = orphan ? `⚠️ ${orphan}건의 상담 기록이 명단에 없는 학생(${miss.join(', ')})을 가리킵니다. "학생 기록 관리"에서 그 학번으로 학생을 등록하면 자동으로 다시 연결됩니다.` : '';
+    $('cOrphan').classList.toggle('hidden', !orphan);
+  }
   const f = $('cFilter').value;
   if (cEdit && !counsels.some(x => x.id === cEdit)) { cEdit = ''; cSyncForm(); }
   const list = counsels.filter(c => !f || c.sid === f).sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
@@ -2839,7 +2865,7 @@ function renderTimeline() {
     const li = el('li', 'relative pl-6' + (cEdit === c.id ? ' bg-sky-50 rounded-lg py-1' : ''));
     li.appendChild(el('span', 'absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-[#0f2747] ring-4 ring-white'));
     const head = el('div', 'flex items-center gap-2 flex-wrap');
-    head.append(el('span', 'font-bold', c.date), el('span', 'text-sm', stuName(c.sid)),
+    head.append(el('span', 'font-bold', c.date), el('span', 'text-sm', stuName(c.sid, c)),
       el('span', `text-xs px-2 py-0.5 rounded ${TYPE_CLR[c.type]}`, c.type), el('span', 'text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-600', c.area));
     const edit = el('button', 'ml-auto text-xs text-slate-400 hover:text-sky-700', '수정');
     edit.type = 'button'; edit.onclick = () => cLoad(c);
@@ -2855,7 +2881,8 @@ $('cFilter').addEventListener('change', renderTimeline);
 $('cForm').addEventListener('submit', e => {
   e.preventDefault();
   if (!$('cStu').value) { alert('학생을 먼저 선택하세요. 학생이 없다면 "학생 기록 관리"에서 등록하세요.'); return; }
-  const v = { sid: $('cStu').value, date: $('cDate').value, type: $('cType').value, area: $('cArea').value, detail: $('cDetail').value.trim() };
+  const st = students.find(x => x.id === $('cStu').value);
+  const v = { sid: $('cStu').value, sno: st ? st.no : '', sname: st ? st.name : '', date: $('cDate').value, type: $('cType').value, area: $('cArea').value, detail: $('cDetail').value.trim() };
   if (cEdit) { const i = counsels.findIndex(x => x.id === cEdit); if (i >= 0) counsels[i] = Object.assign({}, counsels[i], v); cEdit = ''; }
   else counsels.push(Object.assign({ id: uid() }, v));
   store('gm-counsels', counsels); $('cDetail').value = ''; $('cFilter').value = v.sid; cSyncForm(); renderAll();
@@ -2870,13 +2897,13 @@ const copyText = async t => {
 };
 function showGuard() {
   const c = counsels.find(x => x.id === $('mSel').value), s = c && students.find(x => x.id === c.sid);
-  $('mGuard').textContent = s ? `보호자 연락처: ${s.guard || '등록된 번호 없음'}` : '';
+  $('mGuard').textContent = s ? `보호자 연락처: ${s.guard || '등록된 번호 없음'}` : c ? '이 학생은 명단에 없습니다. 학생 기록 관리에 등록하면 보호자 연락처가 함께 나옵니다.' : '';
 }
 function refreshMsgSel() {
   const sel = $('mSel'), keep = sel.value; sel.innerHTML = '';
   const o0 = el('option', '', counsels.length ? '-- 상담 기록을 선택하세요 --' : '저장된 상담 기록이 없습니다'); o0.value = ''; sel.appendChild(o0);
   [...counsels].sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id)).forEach(c => {
-    const o = el('option', '', `${c.date} ${stuName(c.sid)} · ${c.area}/${c.type}`); o.value = c.id; sel.appendChild(o);
+    const o = el('option', '', `${c.date} ${stuName(c.sid, c)} · ${c.area}/${c.type}`); o.value = c.id; sel.appendChild(o);
   });
   if (counsels.some(c => c.id === keep)) sel.value = keep;
   showGuard();
@@ -6567,7 +6594,7 @@ $('syncBtn').addEventListener('click', () => syncNow(true));
 renderSyncOpts(); syncUI();
 if (syncCfg.url && syncCfg.token) setTimeout(() => syncNow(false), 1500);
 
-function renderAll() { if (window.schoFill) schoFill(); renderSch(); renderToday(); renderCal(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); absInit(); renderMeal(); renderRsv(); renderHomeRsv(); }
+function renderAll() { try { relinkCounsels(); } catch (e) {} if (window.schoFill) schoFill(); renderSch(); renderToday(); renderCal(); renderHome(); renderCh(); renderBudget(); renderRec(); renderDash(); renderMemos(); renderGrades(); renderDdays(); refreshMsgSel(); refreshSelects(); renderStudents(); renderTimeline(); renderPasses(); renderSeat(); absInit(); renderMeal(); renderRsv(); renderHomeRsv(); }
 renderAll();
 
 (() => {
