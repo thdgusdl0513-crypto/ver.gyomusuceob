@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI</p>
   </form>
 </div>
 
@@ -640,6 +640,10 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           <label class="block">웹 앱 주소 (상담 신청용 Apps Script)<input id="rsvUrl" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50" placeholder="https://script.google.com/macros/s/.../exec"></label>
           <label class="block">관리 암호<input id="rsvTok" type="password" autocomplete="off" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
           <label class="block">학생 신청 페이지 주소 (GitHub 등에 올린 reservation 페이지)<input id="rsvPage" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50" placeholder="https://아이디.github.io/reservation/"></label>
+          <label class="block">학생용 링크 언어 <select id="rsvLang" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50">
+            <option value="">자동 (학생 휴대폰 언어대로)</option><option value="ko">한국어</option><option value="en">English</option><option value="zh">中文</option><option value="vi">Tiếng Việt</option><option value="ru">Русский</option><option value="uz">O‘zbekcha</option><option value="th">ไทย</option><option value="fil">Filipino</option><option value="mn">Монгол</option>
+          </select></label>
+          <p class="text-xs text-slate-500">이주배경 학생에게는 그 학생 언어로 링크를 따로 만들어 보내면 됩니다. 학생이 신청 페이지에서 직접 언어 버튼을 눌러 바꿀 수도 있습니다.</p>
           <div class="flex flex-wrap gap-2">
             <button id="rsvLink" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs font-bold">🔗 학생용 링크 복사</button>
             <button id="rsvRefresh" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs font-bold">🔄 신청 새로고침</button>
@@ -656,13 +660,16 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           <div class="grid grid-cols-3 gap-3">
             <label>시작<input id="rsvStart" type="time" value="12:40" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
             <label>끝<input id="rsvEnd" type="time" value="13:00" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
-            <label>이름<input id="rsvName" value="점심 상담" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
+            <label>이름<input id="rsvName" value="점심 상담" list="rsvNameList" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
+            <datalist id="rsvNameList"><option value="점심 상담"><option value="방과후 상담"><option value="아침 상담"><option value="저녁 상담"><option value="야자 상담"><option value="쉬는 시간 상담"><option value="진로 상담"><option value="학습 상담"><option value="교우관계 상담"><option value="개인 상담"><option value="학부모 상담"><option value="전화 상담"><option value="면담"></datalist>
           </div>
+          <div class="text-xs text-slate-500">이름은 위 목록(점심 상담 · 방과후 상담 · 진로 상담 …)에서 고르면 학생 신청 페이지에서 그 학생 언어로 자동 번역됩니다. 직접 쓴 이름은 한국어 그대로 나옵니다.</div>
           <button id="rsvAdd" type="button" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2">＋ 상담 시간 추가</button>
           <div class="text-xs text-slate-500">같은 날짜·시작 시간은 한 번만 추가됩니다. 변경하면 자동으로 신청 페이지에 반영됩니다.</div>
         </div>
         <div class="space-y-3">
           <h3 class="font-bold">3. 신청 승인</h3>
+          <div class="text-xs text-slate-500">학생이 신청할 때 📬 이메일을 적어 두면, 승인·거절 버튼을 누를 때 그 주소로 안내 메일이 자동 발송됩니다. (Apps Script 새 버전 배포 필요)</div>
           <div id="rsvReqList" class="space-y-2"></div>
           <h3 class="font-bold pt-2">열어 둔 상담 시간</h3>
           <div id="rsvSlotList" class="space-y-1 max-h-72 overflow-auto"></div>
@@ -704,9 +711,26 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           <label class="text-sm">어조<select id="mTone" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><option>정중하고 격식 있게</option><option>따뜻하고 부드럽게</option><option>간결하고 사무적으로</option></select></label>
           <label class="text-sm flex items-center gap-2 pb-2"><input id="mHide" type="checkbox" checked>이름 대신 "자녀분"</label>
         </div>
-        <button id="mPrompt" type="button" class="w-full border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">1. AI 요청문 복사</button>
-        <textarea id="mPromptBox" readonly rows="3" placeholder="복사한 요청문이 여기에 표시됩니다. 사용하시는 AI 채팅창에 붙여넣으세요." class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></textarea>
-        <label class="text-sm block">2. AI가 써 준 문자를 붙여넣고 다듬기<textarea id="mOut" rows="6" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></textarea></label>
+        <label class="text-sm block">분량<select id="mLen" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><option value="200">짧게 (200자 내외)</option><option value="350" selected>보통 (350자 내외)</option><option value="500">자세히 (500자 내외)</option></select></label>
+        <details id="msGemDet" class="rounded-lg border border-sky-200 bg-sky-50 p-3 text-xs">
+          <summary class="font-bold cursor-pointer text-sm">🔑 Gemini 연결 설정 <span id="msGemState" class="font-normal text-slate-500"></span></summary>
+          <div class="mt-3 space-y-3">
+            <p class="text-slate-700"><b>Google AI Studio</b>(aistudio.google.com)에서 <b>"API 키 받기"</b>로 키를 만들어 붙여넣고 <b>연결 테스트</b>를 누르세요. 추천서·공문 탭과 같은 키를 씁니다. 키는 이 컴퓨터(브라우저)에만 저장됩니다.</p>
+            <label class="block">API 키<input id="msGemKey" type="password" autocomplete="off" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm" placeholder="AIza..."></label>
+            <label class="block">모델 이름<input id="msGemModel" list="msGemList" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm" placeholder="gemini-2.5-flash"></label>
+            <div class="flex items-center gap-2 flex-wrap"><button id="msGemTest" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold">연결 테스트</button><button id="msGemModels" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold">모델 목록 불러오기</button><button id="msGemClear" type="button" class="text-slate-500 underline">키 지우기</button><datalist id="msGemList"></datalist><span id="msGemMsg" class="text-slate-600"></span></div>
+            <p class="text-slate-600"><b>개인정보:</b> 상담 내용이 구글 서버로 전송됩니다. 학생 이름은 "자녀분"으로 바꿔 보낼 수 있지만, 메모에 적힌 다른 개인정보는 그대로 가니 필요한 내용만 적어 주세요.</p>
+          </div>
+        </details>
+        <button id="mGen" type="button" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5 text-sm">✨ Gemini로 문자 초안 쓰기</button>
+        <details class="text-xs">
+          <summary class="cursor-pointer text-slate-500">다른 AI(챗GPT 등)에 붙여넣어 쓰기</summary>
+          <div class="mt-2 space-y-2">
+            <button id="mPrompt" type="button" class="w-full border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm">AI 요청문 복사</button>
+            <textarea id="mPromptBox" readonly rows="3" placeholder="복사한 요청문이 여기에 표시됩니다. 사용하시는 AI 채팅창에 붙여넣으세요." class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></textarea>
+          </div>
+        </details>
+        <label class="text-sm block">문자 초안 (고쳐서 쓰세요)<textarea id="mOut" rows="7" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></textarea></label>
         <div class="flex items-center justify-between gap-3">
           <span id="mCount" class="text-xs text-slate-500">0자</span>
           <button id="mCopy" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-4 py-2 text-sm">문자 복사</button>
@@ -1078,7 +1102,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI</p>
   </div>
 </dialog>
 
@@ -2858,22 +2882,60 @@ function refreshMsgSel() {
   showGuard();
 }
 $('mSel').addEventListener('change', showGuard);
-$('mPrompt').addEventListener('click', async () => {
+function msgPrompt() {
   const c = counsels.find(x => x.id === $('mSel').value);
-  if (!c) { alert('상담 기록을 먼저 선택하세요.'); return; }
+  if (!c) { alert('상담 기록을 먼저 선택하세요.'); return ''; }
   const s = students.find(x => x.id === c.sid);
   const who = $('mHide').checked ? '학생 이름은 쓰지 말고 "자녀분"으로 표현' : `학생 이름은 "${s ? s.name : '학생'}"으로 표기`;
-  const txt = [
+  const len = ($('mLen') && $('mLen').value) || '350';
+  return [
     '당신은 고등학교 담임교사입니다. 아래 상담 내용을 바탕으로 학부모님께 보낼 문자 메시지 초안을 작성해 주세요.', '',
-    `- 어조: ${$('mTone').value}`, '- 분량: 공백 포함 350자 이내, 인사말과 끝인사 포함', `- ${who}`,
+    `- 어조: ${$('mTone').value}`, `- 분량: 공백 포함 ${len}자 이내, 인사말과 끝인사 포함`, `- ${who}`,
     '- 서명(학교·학급·담임 이름)은 쓰지 않기',
-    '- 결과는 문자에 바로 붙여넣을 본문만 출력(설명·제목 없이)',
+    '- 결과는 문자에 바로 붙여넣을 본문만 출력(설명·제목·따옴표 없이)',
     '- 상담에 없는 내용은 지어내지 말고, 걱정을 키우는 표현은 피하며, 필요한 협조는 정중히 요청', '',
     '[상담 정보]', `- 일자: ${c.date}`, `- 유형: ${c.type} 상담`, `- 영역: ${c.area}`, `- 내용: ${c.detail}`
   ].join('\n');
+}
+$('mPrompt').addEventListener('click', async () => {
+  const txt = msgPrompt(); if (!txt) return;
   $('mPromptBox').value = txt;
   $('mHint').textContent = (await copyText(txt)) ? '요청문을 복사했습니다. 사용하시는 AI 채팅창에 붙여넣으세요.' : '자동 복사에 실패했습니다. 아래 요청문을 직접 선택해 복사해 주세요.';
 });
+/* Gemini로 바로 작성 */
+(() => {
+  const K = ['msGemKey', 'msGemModel', 'msGemTest', 'msGemModels', 'msGemClear', 'mGen'];
+  if (K.some(id => !$(id))) return;
+  $('msGemKey').addEventListener('change', () => { gem.key = $('msGemKey').value.trim(); saveGem(); gemUI(); });
+  $('msGemModel').addEventListener('change', () => { gem.model = $('msGemModel').value.trim(); gem.manual = !!gem.model; saveGem(); gemUI(); });
+  $('msGemClear').addEventListener('click', () => { gem.key = ''; saveGem(); gemUI(); gemMsg('키를 지웠습니다.'); });
+  $('msGemModels').addEventListener('click', async () => {
+    gem.key = $('msGemKey').value.trim(); saveGem(); gemUI();
+    if (!gem.key) { gemMsg('먼저 API 키를 입력하세요.'); return; }
+    gemMsg('모델 목록을 불러오는 중…');
+    try { const l = await gemFill(), p = gemPick(l); gemMsg(`사용 가능한 모델 ${l.length}개를 불러왔습니다.${p ? ` (추천: ${p})` : ''}`, true); if (p && !gem.model) { gem.model = p; gem.manual = false; saveGem(); gemUI(); } }
+    catch (e) { gemMsg(e.message); }
+  });
+  $('msGemTest').addEventListener('click', async () => {
+    gem.key = $('msGemKey').value.trim(); gem.model = $('msGemModel').value.trim(); gem.manual = !!gem.model; saveGem(); gemUI(); gemMsg('연결 확인 중…');
+    try { await gemAsk('"연결됨"이라고만 답하세요.'); gemMsg('연결됨! 이제 문자 초안을 바로 쓸 수 있어요.', true); } catch (e) { gemMsg(e.message); }
+  });
+  const hint = (t, ok) => { $('mHint').textContent = t || ''; $('mHint').className = 'text-xs ' + (ok ? 'text-emerald-600' : 'text-slate-600'); };
+  $('mGen').addEventListener('click', async () => {
+    if (!$('mSel').value) { alert('상담 기록을 먼저 선택하세요.'); return; }
+    if (!gem.key) { $('msGemDet').open = true; $('msGemKey').focus(); gemMsg('먼저 API 키를 입력하고 "연결 테스트"를 눌러 주세요.'); alert('먼저 위 "🔑 Gemini 연결 설정"에서 API 키를 넣어 주세요.'); return; }
+    const txt = msgPrompt(); if (!txt) return;
+    $('mPromptBox').value = txt;
+    const btn = $('mGen'), old = btn.textContent;
+    btn.disabled = true; btn.textContent = '✍️ 쓰는 중…'; hint('Gemini가 문자 초안을 쓰고 있습니다… (10~20초)', true);
+    try {
+      const out = (await gemAsk(txt)).replace(/^["'\s]+|["'\s]+$/g, '');
+      $('mOut').value = out; $('mCount').textContent = `${out.length}자`;
+      hint('초안을 썼습니다. 내용을 확인·수정한 뒤 "문자 복사"를 누르세요.', true);
+    } catch (e) { hint('실패: ' + e.message); }
+    btn.disabled = false; btn.textContent = old;
+  });
+})();
 $('mOut').addEventListener('input', () => { $('mCount').textContent = `${$('mOut').value.length}자`; });
 $('mCopy').addEventListener('click', async () => {
   if (!$('mOut').value.trim()) { $('mHint').textContent = '복사할 문자가 없습니다.'; return; }
@@ -4143,11 +4205,11 @@ $('recAiBtn').addEventListener('click', async () => {
 /* ===== Gemini 연동 (API 키) ===== */
 let gem = (() => { const v = jl('gm-gemini'); return { key: v.key || '', model: v.model || '', manual: !!v.manual }; })();
 const GEM_DEF = 'gemini-2.5-flash', saveGem = () => store('gm-gemini', gem);
-const gemMsg = (t, ok) => { ['recGemMsg', 'goGemMsg', 'scGemMsg'].forEach(id => { const e = $(id); if (e) { e.textContent = t; e.className = ok ? 'text-emerald-700' : 'text-slate-600'; } }); };
+const gemMsg = (t, ok) => { ['recGemMsg', 'goGemMsg', 'scGemMsg', 'msGemMsg'].forEach(id => { const e = $(id); if (e) { e.textContent = t; e.className = ok ? 'text-emerald-700' : 'text-slate-600'; } }); };
 function gemUI() {
   $('recGemKey').value = gem.key; $('recGemModel').value = gem.model;
   $('recGemState').textContent = gem.key ? '· 키 입력됨' : '· 키를 입력하면 바로 작성할 수 있어요';
-  ['go', 'sc'].forEach(p => { if ($(p + 'GemKey')) { $(p + 'GemKey').value = gem.key; $(p + 'GemModel').value = gem.model; $(p + 'GemState').textContent = gem.key ? '· 키 입력됨' : '· 키를 입력해야 초안을 쓸 수 있어요'; } });
+  ['go', 'sc', 'ms'].forEach(p => { if ($(p + 'GemKey')) { $(p + 'GemKey').value = gem.key; $(p + 'GemModel').value = gem.model; $(p + 'GemState').textContent = gem.key ? '· 키 입력됨' : '· 키를 입력해야 초안을 쓸 수 있어요'; } });
 }
 async function gemList() {
   let r; try { r = await fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=200', { headers: { 'x-goog-api-key': gem.key } }); } catch (e) { throw new Error('모델 목록을 불러오지 못했습니다. 인터넷 연결을 확인하세요.'); }
@@ -4163,7 +4225,7 @@ function gemPick(list) {
 }
 async function gemFill() {
   const l = await gemList();
-  ['recGemList', 'goGemList', 'scGemList'].forEach(id => { const box = $(id); if (!box) return; box.innerHTML = ''; l.forEach(n => { const o = document.createElement('option'); o.value = n; box.appendChild(o); }); });
+  ['recGemList', 'goGemList', 'scGemList', 'msGemList'].forEach(id => { const box = $(id); if (!box) return; box.innerHTML = ''; l.forEach(n => { const o = document.createElement('option'); o.value = n; box.appendChild(o); }); });
   return l;
 }
 async function gemAsk(prompt, retried, tries, skip) {
@@ -4440,9 +4502,12 @@ function renderRsv() {
   const decide = async (r, status) => {
     const note = status === '거절' ? (prompt('학생에게 보여줄 메모(선택)', '') || '') : '';
     try {
-      await rsvReq('POST', { action: 'decide', id: r.id, status, note }); r.status = status; r.note = note;
+      const j = await rsvReq('POST', { action: 'decide', id: r.id, status, note }); r.status = status; r.note = note;
       store(RSVC_KEY, rsvCache); renderRsv(); renderHomeRsv();
-      if (status === '승인') rsvNotify([r]);
+      const m = j && j.mailed;
+      if (m === 'ok') rsvMsg(`📧 ${r.name} 학생에게 ${status} 안내 메일을 보냈습니다. (${r.email})`, true);
+      else if (m) rsvMsg('메일을 보내지 못했습니다: ' + m);
+      else if (status === '승인') rsvNotify([r]);
     } catch (e) { alert('처리 실패: ' + e.message); }
   };
   /* 승인 결과를 단톡방에 붙여넣을 문구로 만들어 복사 */
@@ -4456,7 +4521,7 @@ function renderRsv() {
     try { await navigator.clipboard.writeText(txt); rsvMsg(`승인 안내 문구를 복사했습니다. 학급 단톡방에 붙여넣으세요. (${list.length}건)`, true); }
     catch (e) { prompt('아래 문구를 복사해 학급 단톡방에 붙여넣으세요.', txt); }
   }
-  const row = (r, btns) => { const d = el('div', 'rounded-lg border border-slate-200 p-2.5 bg-slate-50'); d.append(el('div', 'font-bold', `${rsvTime(r)} · ${r.name}(${r.no})`)); if (r.topic) d.append(el('div', 'text-xs text-slate-600 mt-0.5', r.topic)); const b = el('div', 'flex gap-2 mt-2'); btns.forEach(([x, cls, fn]) => { const bt = el('button', `px-3 py-1 rounded-lg text-xs font-bold ${cls}`, x); bt.type = 'button'; bt.onclick = fn; b.appendChild(bt); }); d.appendChild(b); return d; };
+  const row = (r, btns) => { const d = el('div', 'rounded-lg border border-slate-200 p-2.5 bg-slate-50'); d.append(el('div', 'font-bold', `${rsvTime(r)} · ${r.name}(${r.no})`)); if (r.topic) d.append(el('div', 'text-xs text-slate-600 mt-0.5', r.topic)); if (r.email) { const em = el('div', 'text-xs text-sky-700 mt-0.5', `📧 ${r.email}`); em.title = '승인·거절하면 이 주소로 안내 메일이 자동 발송됩니다.'; d.append(em); } const b = el('div', 'flex gap-2 mt-2'); btns.forEach(([x, cls, fn]) => { const bt = el('button', `px-3 py-1 rounded-lg text-xs font-bold ${cls}`, x); bt.type = 'button'; bt.onclick = fn; b.appendChild(bt); }); d.appendChild(b); return d; };
   if (!rsvOn()) { box.appendChild(el('p', 'text-xs text-slate-500', '웹 앱 주소와 관리 암호를 넣으면 신청이 여기에 표시됩니다.')); }
   else if (!pend.length && !appr.length) box.appendChild(el('p', 'text-xs text-slate-500', '아직 대기 중이거나 예정된 상담이 없습니다.'));
   if (pend.length) box.appendChild(el('div', 'text-xs font-bold text-rose-600', '승인 대기'));
@@ -4510,8 +4575,10 @@ function renderHomeRsv() {
   $('rsvRefresh').addEventListener('click', () => rsvRefresh());
   $('rsvLink').addEventListener('click', async () => {
     sv(); if (!rsv.url || !rsv.page) { alert('웹 앱 주소와 학생 신청 페이지 주소를 먼저 입력하세요.'); return; }
-    const link = `${rsv.page}${rsv.page.includes('?') ? '&' : '?'}a=${encodeURIComponent(rsv.url)}`;
-    try { await navigator.clipboard.writeText(link); rsvMsg('학생용 링크를 복사했습니다. 학생들에게 이 링크를 보내세요.', true); } catch (e) { prompt('이 링크를 복사해 학생들에게 보내세요', link); }
+    const lg = $('rsvLang') ? $('rsvLang').value : '';
+    const link = `${rsv.page}${rsv.page.includes('?') ? '&' : '?'}a=${encodeURIComponent(rsv.url)}${lg ? '&lang=' + lg : ''}`;
+    const nm = lg ? ` (${$('rsvLang').selectedOptions[0].textContent})` : '';
+    try { await navigator.clipboard.writeText(link); rsvMsg(`학생용 링크${nm}를 복사했습니다. 학생들에게 이 링크를 보내세요.`, true); } catch (e) { prompt('이 링크를 복사해 학생들에게 보내세요', link); }
   });
   $('rsvRoster').addEventListener('click', async () => {
     if (!rsvOn()) { alert('먼저 웹 앱 주소와 관리 암호를 입력하세요.'); return; }
