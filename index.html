@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림</p>
   </form>
 </div>
 
@@ -669,7 +669,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
         </div>
         <div class="space-y-3">
           <h3 class="font-bold">3. 신청 승인</h3>
-          <div class="text-xs text-slate-500">학생이 신청할 때 📬 이메일을 적어 두면, 승인·거절 버튼을 누를 때 그 주소로 안내 메일이 자동 발송됩니다. (Apps Script 새 버전 배포 필요)</div>
+          <div class="text-xs text-slate-500">학생이 신청할 때 📬 이메일을 적어 두면, 승인·거절 버튼을 누를 때 안내 메일이 자동 발송됩니다. 화면에는 주소를 띄우지 않고 <b>📧 메일 알림</b>으로만 표시합니다. 처음 켤 때는 Apps Script 편집기에서 <b>setupMail</b> 함수를 한 번 실행해 메일 권한을 허용한 뒤 <b>새 버전으로 배포</b>해야 합니다.</div>
           <div id="rsvReqList" class="space-y-2"></div>
           <h3 class="font-bold pt-2">열어 둔 상담 시간</h3>
           <div id="rsvSlotList" class="space-y-1 max-h-72 overflow-auto"></div>
@@ -1103,7 +1103,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림</p>
   </div>
 </dialog>
 
@@ -4532,7 +4532,7 @@ function renderRsv() {
       const j = await rsvReq('POST', { action: 'decide', id: r.id, status, note }); r.status = status; r.note = note;
       store(RSVC_KEY, rsvCache); renderRsv(); renderHomeRsv();
       const m = j && j.mailed;
-      if (m === 'ok') rsvMsg(`📧 ${r.name} 학생에게 ${status} 안내 메일을 보냈습니다. (${r.email})`, true);
+      if (m === 'ok') rsvMsg(`📧 ${r.name} 학생에게 ${status} 안내 메일을 보냈습니다.`, true);
       else if (m) rsvMsg('메일을 보내지 못했습니다: ' + m);
       else if (status === '승인') rsvNotify([r]);
     } catch (e) { alert('처리 실패: ' + e.message); }
@@ -4548,7 +4548,7 @@ function renderRsv() {
     try { await navigator.clipboard.writeText(txt); rsvMsg(`승인 안내 문구를 복사했습니다. 학급 단톡방에 붙여넣으세요. (${list.length}건)`, true); }
     catch (e) { prompt('아래 문구를 복사해 학급 단톡방에 붙여넣으세요.', txt); }
   }
-  const row = (r, btns) => { const d = el('div', 'rounded-lg border border-slate-200 p-2.5 bg-slate-50'); d.append(el('div', 'font-bold', `${rsvTime(r)} · ${r.name}(${r.no})`)); if (r.topic) d.append(el('div', 'text-xs text-slate-600 mt-0.5', r.topic)); if (r.email) { const em = el('div', 'text-xs text-sky-700 mt-0.5', `📧 ${r.email}`); em.title = '승인·거절하면 이 주소로 안내 메일이 자동 발송됩니다.'; d.append(em); } const b = el('div', 'flex gap-2 mt-2'); btns.forEach(([x, cls, fn]) => { const bt = el('button', `px-3 py-1 rounded-lg text-xs font-bold ${cls}`, x); bt.type = 'button'; bt.onclick = fn; b.appendChild(bt); }); d.appendChild(b); return d; };
+  const row = (r, btns) => { const d = el('div', 'rounded-lg border border-slate-200 p-2.5 bg-slate-50'); d.append(el('div', 'font-bold', `${rsvTime(r)} · ${r.name}(${r.no})`)); if (r.topic) d.append(el('div', 'text-xs text-slate-600 mt-0.5', r.topic)); if (r.email) { const em = el('div', 'text-xs text-sky-700 mt-0.5', '📧 메일 알림'); em.title = '이 학생은 이메일을 적어 두었습니다. 승인·거절하면 안내 메일이 자동 발송됩니다. (주소는 구글 시트의 "신청" 탭에서 볼 수 있습니다)'; d.append(em); } const b = el('div', 'flex gap-2 mt-2'); btns.forEach(([x, cls, fn]) => { const bt = el('button', `px-3 py-1 rounded-lg text-xs font-bold ${cls}`, x); bt.type = 'button'; bt.onclick = fn; b.appendChild(bt); }); d.appendChild(b); return d; };
   if (!rsvOn()) { box.appendChild(el('p', 'text-xs text-slate-500', '웹 앱 주소와 관리 암호를 넣으면 신청이 여기에 표시됩니다.')); }
   else if (!pend.length && !appr.length) box.appendChild(el('p', 'text-xs text-slate-500', '아직 대기 중이거나 예정된 상담이 없습니다.'));
   if (pend.length) box.appendChild(el('div', 'text-xs font-bold text-rose-600', '승인 대기'));
