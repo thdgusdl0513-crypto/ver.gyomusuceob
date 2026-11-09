@@ -661,11 +661,12 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           </div>
           <div class="flex gap-3 flex-wrap" id="rsvDays"></div>
           <div class="grid grid-cols-3 gap-3">
-            <label>시작<input id="rsvStart" type="time" value="12:40" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
-            <label>끝<input id="rsvEnd" type="time" value="13:00" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
+            <label>시작<input id="rsvStart" type="text" inputmode="numeric" maxlength="5" value="12:40" placeholder="13:00" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
+            <label>끝<input id="rsvEnd" type="text" inputmode="numeric" maxlength="5" value="13:00" placeholder="13:20" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
             <label>이름<input id="rsvName" value="점심 상담" list="rsvNameList" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
             <datalist id="rsvNameList"><option value="점심 상담"><option value="방과후 상담"><option value="아침 상담"><option value="저녁 상담"><option value="야자 상담"><option value="쉬는 시간 상담"><option value="진로 상담"><option value="학습 상담"><option value="교우관계 상담"><option value="개인 상담"><option value="학부모 상담"><option value="전화 상담"><option value="면담"></datalist>
           </div>
+          <div class="text-xs text-slate-500">시간은 24시간제로 직접 칠 수 있습니다. <b>1300</b>처럼 숫자만 쳐도 <b>13:00</b>으로 바뀝니다.</div>
           <div class="text-xs text-slate-500">이름은 위 목록(점심 상담 · 방과후 상담 · 진로 상담 …)에서 고르면 학생 신청 페이지에서 그 학생 언어로 자동 번역됩니다. 직접 쓴 이름은 한국어 그대로 나옵니다.</div>
           <button id="rsvAdd" type="button" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2">＋ 상담 시간 추가</button>
           <div class="text-xs text-slate-500">같은 날짜·시작 시간은 한 번만 추가됩니다. 변경하면 자동으로 신청 페이지에 반영됩니다.</div>
@@ -4902,9 +4903,25 @@ function renderHomeRsv() {
   ['rsvUrl', 'rsvTok', 'rsvPage'].forEach(id => $(id).addEventListener('change', () => { sv(); renderHomeRsv(); rsvRefresh(); }));
   const days = $('rsvDays'); '월화수목금'.split('').forEach((d, i) => { const l = el('label', 'flex items-center gap-1'); const c = el('input'); c.type = 'checkbox'; c.checked = true; c.dataset.d = i + 1; l.append(c, d); days.appendChild(l); });
   $('rsvFrom').value = ymd(now); $('rsvTo').value = ymd(now);
+  /* 13:00 / 1300 / 130 / 9 처럼 쳐도 24시간제 HH:MM 으로 고쳐 줍니다. */
+  function tFix(v) {
+    const t = String(v == null ? '' : v).trim(); if (!t) return '';
+    let h, m;
+    const c = /^(\d{1,2})\s*[:.시]\s*(\d{1,2})?/.exec(t);
+    if (c) { h = +c[1]; m = +(c[2] || 0); }
+    else { const d = t.replace(/\D/g, ''); if (!d) return ''; if (d.length <= 2) { h = +d; m = 0; } else { h = +d.slice(0, d.length - 2); m = +d.slice(-2); } }
+    if (!(h >= 0 && h <= 23 && m >= 0 && m <= 59)) return '';
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  }
+  ['rsvStart', 'rsvEnd'].forEach(id => {
+    const t2 = $(id); if (!t2) return;
+    const fix = () => { const v = tFix(t2.value); if (v) t2.value = v; t2.classList.toggle('border-red-400', !!t2.value.trim() && !v); };
+    t2.addEventListener('blur', fix); t2.addEventListener('change', fix);
+  });
   $('rsvAdd').addEventListener('click', () => {
-    const f = $('rsvFrom').value, t = $('rsvTo').value || f, s = $('rsvStart').value, e = $('rsvEnd').value, nm = $('rsvName').value.trim();
-    if (!f || !s || !e) { alert('날짜와 시간을 입력해 주세요.'); return; } if (e <= s) { alert('끝 시간은 시작 시간 이후여야 합니다.'); return; } if (t < f) { alert('끝 날짜는 시작 날짜 이후여야 합니다.'); return; }
+    const f = $('rsvFrom').value, t = $('rsvTo').value || f, s = tFix($('rsvStart').value), e = tFix($('rsvEnd').value), nm = $('rsvName').value.trim();
+    if (s) $('rsvStart').value = s; if (e) $('rsvEnd').value = e;
+    if (!f || !s || !e) { alert('날짜와 시간을 확인해 주세요. 시간은 13:00 또는 1300처럼 적습니다.'); return; } if (e <= s) { alert('끝 시간은 시작 시간 이후여야 합니다.'); return; } if (t < f) { alert('끝 날짜는 시작 날짜 이후여야 합니다.'); return; }
     const ok = new Set([...days.querySelectorAll('input:checked')].map(c => +c.dataset.d)); let n = 0;
     for (let d = new Date(f + 'T00:00:00'); ymd(d) <= t; d.setDate(d.getDate() + 1)) { const ds = ymd(d); if (!ok.has(d.getDay())) continue; if (rsvSlots.some(x => x.date === ds && x.start === s)) continue; rsvSlots.push({ id: uid(), date: ds, start: s, end: e, name: nm, open: true }); n++; }
     store(RSVS_KEY, rsvSlots); renderRsv(); rsvPush(); rsvMsg(n ? `${n}개 상담 시간을 추가했습니다.` : '추가할 날짜가 없거나 이미 있는 시간입니다. (요일 체크 확인)', !!n);
