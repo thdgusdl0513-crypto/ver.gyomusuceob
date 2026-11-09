@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기 · 올린 자료 관리 · 메모 하나 고정</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기 · 올린 자료 관리 · 메모 하나 고정 · 자리배치 가로 인쇄</p>
   </form>
 </div>
 
@@ -797,7 +797,12 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           <button id="seShuffle" type="button" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">🎲 랜덤 돌리기</button>
           <button id="seLoad" type="button" class="w-full border border-slate-300 bg-white hover:bg-slate-50 font-bold rounded-lg py-2 text-sm">📥 학생 명단 순서대로 채우기</button>
           <button id="seClear" type="button" class="w-full border border-slate-300 bg-white hover:bg-slate-50 rounded-lg py-2 text-sm">🧹 자리 비우기 (고정 제외)</button>
+          <div class="flex gap-2">
+            <select id="seDir" class="flex-1 border border-slate-300 rounded-lg px-2 py-2 bg-white text-sm" title="인쇄·저장 방향"><option value="land" selected>가로로 크게</option><option value="port">세로</option></select>
+            <label class="flex items-center gap-1 text-xs text-slate-600 whitespace-nowrap"><input type="checkbox" id="seNo" class="w-4 h-4"> 번호도</label>
+          </div>
           <button id="sePrint" type="button" class="w-full border border-slate-300 bg-white hover:bg-slate-50 rounded-lg py-2 text-sm">🖨️ 인쇄</button>
+          <button id="seSaveImg" type="button" class="w-full border border-slate-300 bg-white hover:bg-slate-50 rounded-lg py-2 text-sm">🖼️ 그림으로 저장 (가로)</button>
         </div>
         <p class="text-xs text-slate-500">학생 명단(학생 기록 관리)의 학생을 자리에 섞어 배치합니다. 명단이 비어 있으면 칸에 직접 적은 이름을 섞습니다. 🔒를 눌러 고정한 자리는 돌려도 바뀌지 않습니다.</p>
         <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 space-y-2">
@@ -1118,7 +1123,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기 · 올린 자료 관리 · 메모 하나 고정</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기 · 올린 자료 관리 · 메모 하나 고정 · 자리배치 가로 인쇄</p>
   </div>
 </dialog>
 
@@ -5310,12 +5315,84 @@ $('seExAdd2').addEventListener('click', () => {
   const t = $('seExTxt').value.trim(); if (!t) return;
   const s = students.find(x => x.no === t || x.name === t); seat.excl.push(s ? { no: s.no, name: s.name } : (/^\d+$/.test(t) ? { no: t, name: '' } : { no: '', name: t })); $('seExTxt').value = ''; saveSeat(); renderSeat();
 });
+/* 자리 배치표: 가로(기본)로 종이에 꽉 차게 인쇄 / 그림으로 저장 */
+const seatTitle = () => `${cfg.cls || ''} 자리 배치표`.trim();
+const seatRows = () => Math.max(1, Math.ceil(seat.cells.length / Math.max(1, seat.cols)));
+const seatText = c => { const nm = c.name || ''; if (!nm) return ''; return ($('seNo') && $('seNo').checked && c.no) ? `${c.no} ${nm}` : nm; };
 $('sePrint').addEventListener('click', () => {
   printReset();
+  const land = !$('seDir') || $('seDir').value === 'land';
   const pa = $('printArea'); pa.innerHTML = ''; pa.classList.add('seat-print');
-  const t = el('div', 'text-center font-bold', '자리 배치표'), b = el('div', 'text-center', '[ 칠판 · 교탁 ]'), g = el('div'); g.style.cssText = `display:grid;grid-template-columns:repeat(${seat.cols},1fr);gap:4px;margin-top:6px`;
-  seat.cells.forEach(c => { const d = el('div'); d.style.cssText = 'border:1px solid #000;padding:6px 2px;text-align:center;font-size:11pt;min-height:34px'; d.textContent = c.name ? `${c.name}` : ''; g.appendChild(d); });
-  pa.append(t, b, g); window.print(); setTimeout(() => pa.classList.remove('seat-print'), 500);
+  /* 종이 크기에 맞춰 칸 높이·글씨를 키웁니다 (가로 A4 = 297×210, 여백 10mm) */
+  const W = land ? 277 : 190, H = land ? 190 : 277, rows = seatRows();
+  const cellH = Math.max(12, (H - 26) / rows - 1.6);                 /* mm */
+  const colW = (W - (seat.cols - 1) * 1.6) / seat.cols;              /* mm */
+  const fs = Math.max(9, Math.min(26, Math.min(cellH * 1.5, colW * 1.1)));  /* pt */
+  const pg = document.createElement('style'); pg.dataset.pg = '1';
+  pg.textContent = `@page{size:A4 ${land ? 'landscape' : 'portrait'};margin:10mm}#printArea.seat-print{width:${W}mm !important}`;
+  document.head.appendChild(pg);
+  const t = el('div'); t.style.cssText = `text-align:center;font-weight:700;font-size:${Math.max(14, fs)}pt;margin-bottom:3mm`; t.textContent = seatTitle();
+  const b = el('div'); b.style.cssText = `text-align:center;border:1px solid #000;background:#eee;padding:1.5mm 0;font-size:${Math.max(10, fs * .7)}pt;-webkit-print-color-adjust:exact;print-color-adjust:exact`; b.textContent = '칠판 · 교탁';
+  const g = el('div'); g.style.cssText = `display:grid;grid-template-columns:repeat(${seat.cols},1fr);gap:1.6mm;margin-top:3mm`;
+  const withNo = $('seNo') && $('seNo').checked;
+  seat.cells.forEach(c => {
+    const d = el('div');
+    d.style.cssText = `border:1.2px solid #000;border-radius:2mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:${cellH}mm;word-break:keep-all;line-height:1.15;padding:0 1mm;overflow:hidden`;
+    if (c.name) {
+      if (withNo && c.no) { const n = el('div'); n.style.cssText = `font-size:${Math.max(7, fs * .5)}pt;color:#444`; n.textContent = c.no; d.appendChild(n); }
+      const nm = el('div'); nm.style.cssText = `font-size:${fs}pt;font-weight:600`; nm.textContent = c.name; d.appendChild(nm);
+    }
+    g.appendChild(d);
+  });
+  pa.append(t, b, g); window.print();
+  setTimeout(() => { pa.classList.remove('seat-print'); pg.remove(); }, 800);
+});
+$('seSaveImg').addEventListener('click', () => {
+  const land = !$('seDir') || $('seDir').value === 'land';
+  const rows = seatRows(), cols = Math.max(1, seat.cols);
+  const W = land ? 2480 : 1754, H = land ? 1754 : 2480;              /* A4 300dpi */
+  const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const x = cv.getContext('2d'); const pad = 80;
+  x.fillStyle = '#fff'; x.fillRect(0, 0, W, H);
+  const inW = W - pad * 2;
+  const titleH = 120, boardH = 90, gap = 16;
+  x.fillStyle = '#000'; x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.font = 'bold 64px "Malgun Gothic","Apple SD Gothic Neo",sans-serif';
+  x.fillText(seatTitle(), W / 2, pad + titleH / 2);
+  const by = pad + titleH;
+  x.fillStyle = '#eee'; x.fillRect(pad, by, inW, boardH);
+  x.strokeStyle = '#000'; x.lineWidth = 3; x.strokeRect(pad, by, inW, boardH);
+  x.fillStyle = '#000'; x.font = '40px "Malgun Gothic","Apple SD Gothic Neo",sans-serif';
+  x.fillText('칠판 · 교탁', W / 2, by + boardH / 2);
+  const top = by + boardH + 40, inH = H - top - pad;
+  const cw = (inW - gap * (cols - 1)) / cols, chh = (inH - gap * (rows - 1)) / rows;
+  const withNo = $('seNo') && $('seNo').checked;
+  const base = Math.max(20, Math.min(90, Math.min(chh * (withNo ? .38 : .46), cw * .42)));
+  const face = '"Malgun Gothic","Apple SD Gothic Neo",sans-serif';
+  seat.cells.forEach((c, i) => {
+    const cx = pad + (i % cols) * (cw + gap), cy = top + Math.floor(i / cols) * (chh + gap);
+    x.lineWidth = 3; x.strokeStyle = '#111'; x.strokeRect(cx, cy, cw, chh);
+    if (!c.name) return;
+    x.fillStyle = '#000';
+    let fs = base;                                   /* 칸을 넘치면 글씨를 줄입니다 */
+    x.font = `600 ${Math.round(fs)}px ${face}`;
+    while (fs > 16 && x.measureText(c.name).width > cw - 24) { fs -= 2; x.font = `600 ${Math.round(fs)}px ${face}`; }
+    const showNo = withNo && c.no;
+    if (showNo) {
+      x.font = `${Math.round(fs * .55)}px ${face}`; x.fillStyle = '#444';
+      x.fillText(c.no, cx + cw / 2, cy + chh / 2 - fs * .5);
+      x.fillStyle = '#000';
+    }
+    x.font = `600 ${Math.round(fs)}px ${face}`;
+    x.fillText(c.name, cx + cw / 2, cy + chh / 2 + (showNo ? fs * .35 : 0));
+  });
+  cv.toBlob(bl => {
+    if (!bl) { seMsg('그림으로 저장하지 못했습니다.', false); return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(bl);
+    a.download = `자리배치표_${ymd(now)}.png`; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+    seMsg('그림으로 저장했습니다. (다운로드 폴더)', true);
+  }, 'image/png');
 });
 
 /* ===== 결석신고서 (양식 그대로 그려서 인쇄·이미지 저장) ===== */
