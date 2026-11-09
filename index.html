@@ -5323,17 +5323,21 @@ $('sePrint').addEventListener('click', () => {
   printReset();
   const land = !$('seDir') || $('seDir').value === 'land';
   const pa = $('printArea'); pa.innerHTML = ''; pa.classList.add('seat-print');
-  /* 종이 크기에 맞춰 칸 높이·글씨를 키웁니다 (가로 A4 = 297×210, 여백 10mm) */
-  const W = land ? 277 : 190, H = land ? 190 : 277, rows = seatRows();
-  const cellH = Math.max(12, (H - 26) / rows - 1.6);                 /* mm */
-  const colW = (W - (seat.cols - 1) * 1.6) / seat.cols;              /* mm */
-  const fs = Math.max(9, Math.min(26, Math.min(cellH * 1.5, colW * 1.1)));  /* pt */
+  /* 종이 한 장에 들어가도록 칸 높이·글씨를 계산합니다 (A4 가로 297×210 / 세로 210×297, 여백 10mm) */
+  const W = land ? 275 : 188, H = land ? 184 : 270, rows = seatRows();
+  const HEAD = 23;                                                   /* 제목 + 칠판 줄이 쓰는 높이(mm) */
+  const GAP = 1.6;
+  const cellH = Math.max(8, (H - HEAD - GAP * (rows - 1)) / rows);   /* mm */
+  const colW = (W - GAP * (seat.cols - 1)) / seat.cols;              /* mm */
+  const fs = Math.max(8, Math.min(30, Math.min(cellH * 1.4, colW * 1.0)));  /* pt */
   const pg = document.createElement('style'); pg.dataset.pg = '1';
-  pg.textContent = `@page{size:A4 ${land ? 'landscape' : 'portrait'};margin:10mm}#printArea.seat-print{width:${W}mm !important}`;
+  pg.textContent = `@page{size:A4 ${land ? 'landscape' : 'portrait'};margin:10mm}`
+    + `#printArea.seat-print{width:${W}mm !important;border:none !important;padding:0 !important;margin:0 auto !important;font-size:10pt;line-height:1.2}`
+    + `#printArea.seat-print .seat-grid{break-inside:avoid;page-break-inside:avoid}`;
   document.head.appendChild(pg);
-  const t = el('div'); t.style.cssText = `text-align:center;font-weight:700;font-size:${Math.max(14, fs)}pt;margin-bottom:3mm`; t.textContent = seatTitle();
-  const b = el('div'); b.style.cssText = `text-align:center;border:1px solid #000;background:#eee;padding:1.5mm 0;font-size:${Math.max(10, fs * .7)}pt;-webkit-print-color-adjust:exact;print-color-adjust:exact`; b.textContent = '칠판 · 교탁';
-  const g = el('div'); g.style.cssText = `display:grid;grid-template-columns:repeat(${seat.cols},1fr);gap:1.6mm;margin-top:3mm`;
+  const t = el('div'); t.style.cssText = `text-align:center;font-weight:700;font-size:16pt;line-height:1.2;margin:0 0 2.5mm`; t.textContent = seatTitle();
+  const b = el('div'); b.style.cssText = `text-align:center;border:1px solid #000;background:#eee;padding:1.2mm 0;font-size:10.5pt;line-height:1.2;-webkit-print-color-adjust:exact;print-color-adjust:exact`; b.textContent = '칠판 · 교탁';
+  const g = el('div'); g.className = 'seat-grid'; g.style.cssText = `display:grid;grid-template-columns:repeat(${seat.cols},1fr);gap:${GAP}mm;margin-top:3mm`;
   const withNo = $('seNo') && $('seNo').checked;
   seat.cells.forEach(c => {
     const d = el('div');
