@@ -641,8 +641,10 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           <div class="font-bold text-sm">📑 요청문 모음 <span class="font-normal text-xs text-slate-500">(메모를 적어 둔 학생들의 요청문을 한 번에 — AI 채팅창에 한 번만 붙여넣기)</span></div>
           <div class="flex items-center gap-2 flex-wrap text-xs">
             <button id="recBatchMake" type="button" class="bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg px-3 py-2">🧺 요청문 모으기</button>
-            <button id="recBatchCopy" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 font-bold">📋 전체 복사</button>
+            <button id="recBatchCopy" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 font-bold">📋 선택한 것 복사</button>
             <button id="recBatchTxt" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2">📄 txt로 받기</button>
+            <button id="recBatchAll" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-2 py-2">모두 선택</button>
+            <button id="recBatchNone" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-2 py-2">모두 해제</button>
             <span id="recBatchMsg" class="text-slate-600"></span>
           </div>
           <div id="recBatchList" class="space-y-1 max-h-56 overflow-y-auto"></div>
@@ -4634,12 +4636,26 @@ if ($('recRostAdd')) {
 }
 
 /* ===== 📑 요청문 모음: 학생별 요청문을 모아 한 번에 AI에 올리기 ===== */
-function recBatchItems() {
+/* 체크 해제한 학생 목록·AI 설정을 저장해 두고 다른 기기와도 맞춥니다 */
+const RBO_KEY = 'gm-rec-batch-off', RAO_KEY = 'gm-rec-ai-opt';
+let recBatchOff = new Set((() => { try { const v = JSON.parse(localStorage.getItem(RBO_KEY)); return Array.isArray(v) ? v : []; } catch (e) { return []; } })());
+const recBatchSave = () => store(RBO_KEY, [...recBatchOff]);
+let recAiOpt = (() => { try { const v = JSON.parse(localStorage.getItem(RAO_KEY)) || {}; return { len: +v.len || 500, hide: v.hide !== false }; } catch (e) { return { len: 500, hide: true }; } })();
+const recAiOptSave = () => store(RAO_KEY, recAiOpt);
+function recAiOptUI() { if ($('recAiLen')) { $('recAiLen').value = recAiOpt.len; $('recAiHide').checked = !!recAiOpt.hide; } }
+if ($('recAiLen')) {
+  recAiOptUI();
+  $('recAiLen').addEventListener('change', () => { recAiOpt.len = Math.max(100, +$('recAiLen').value || 500); recAiOptSave(); recBatchDraw(); });
+  $('recAiHide').addEventListener('change', () => { recAiOpt.hide = $('recAiHide').checked; recAiOptSave(); recBatchDraw(); });
+}
+const recBatchId = s => `${recType}|${hasSubT() ? recSub : ''}|${s.id}`;
+function recBatchItems(all) {
   const n = Math.max(100, +$('recAiLen').value || 500), hide = $('recAiHide').checked, hs = hasSubT();
   const out = [];
   recPeople().forEach(s => {
     const v = recMemo[recKey(s.id)] || {};
     const m0 = String(v.m || '').trim(); if (!m0) return;              /* 메모가 있는 학생만 */
+    if (!all && recBatchOff.has(recBatchId(s))) return;                /* 체크 해제한 학생은 빼기 */
     const c0 = String(v.c || '').trim();
     const m = hide ? recHideIn(m0, s) : m0, c = hide ? recHideIn(c0, s) : c0;
     out.push({ s: s, who: `${s.no} ${s.name}`.trim(), tag: hide ? `학생${out.length + 1}` : `${s.no} ${s.name}`.trim(), m: m, c: c, n: n, hide: hide, hs: hs });
@@ -4669,42 +4685,52 @@ function recBatchPrompt(items) {
 }
 function recBatchDraw() {
   const box = $('recBatchList'); if (!box) return;
-  const items = recBatchItems(); box.innerHTML = '';
+  const all = recBatchItems(true), items = recBatchItems(); box.innerHTML = '';
   const hs = hasSubT();
-  if (!items.length) {
+  if (!all.length) {
     box.innerHTML = `<p class="text-xs text-slate-500 py-2">관찰 메모를 적어 둔 학생이 없습니다. 학생을 고르고 메모를 적으면 여기에 모입니다.${hs && recSub ? ` (지금: ${recType}·${recSub})` : ''}</p>`;
-    $('recBatchBox').classList.add('hidden'); $('recBatchBox').value = ''; return;
+    $('recBatchBox').classList.add('hidden'); $('recBatchBox').value = ''; $('recBatchMsg').textContent = ''; return;
   }
-  items.forEach(it => {
-    const row = el('div', 'flex items-center gap-2 text-xs rounded-lg border border-slate-200 px-2 py-1.5');
-    row.append(el('span', 'font-bold w-28 shrink-0', it.who || it.tag),
-      el('span', 'flex-1 text-slate-600 truncate', it.m.slice(0, 60)),
-      el('span', 'text-slate-400 shrink-0', it.hide ? it.tag : ''));
-    const cp = el('button', 'border border-slate-300 bg-white hover:bg-slate-50 rounded px-2 py-1 shrink-0', '복사'); cp.type = 'button';
+  all.forEach(it => {
+    const id = recBatchId(it.s), on = !recBatchOff.has(id);
+    const row = el('div', `flex items-center gap-2 text-xs rounded-lg border px-2 py-1.5 ${on ? 'border-slate-200' : 'border-slate-200 bg-slate-50 opacity-60'}`);
+    const cb = el('input'); cb.type = 'checkbox'; cb.checked = on; cb.className = 'w-4 h-4 shrink-0'; cb.title = '요청문에 넣기';
+    cb.onchange = () => { if (cb.checked) recBatchOff.delete(id); else recBatchOff.add(id); recBatchSave(); recBatchDraw(); };
+    row.append(cb, el('span', 'font-bold w-28 shrink-0', it.who || it.tag),
+      el('span', 'flex-1 text-slate-600 truncate', it.m.slice(0, 60)));
+    const cp = el('button', 'border border-slate-300 bg-white hover:bg-slate-50 rounded px-2 py-1 shrink-0', '복사'); cp.type = 'button'; cp.title = '이 학생 요청문만 복사';
     cp.onclick = async () => { const t = recOnePrompt(it); $('recBatchBox').classList.remove('hidden'); $('recBatchBox').value = t; $('recBatchMsg').textContent = (await copyText(t)) ? `${it.who || it.tag} 요청문을 복사했습니다.` : '복사 실패 — 아래 칸에서 직접 복사하세요.'; };
-    row.appendChild(cp); box.appendChild(row);
+    const rm = el('button', 'text-slate-400 hover:text-red-600 shrink-0 px-1', '✕'); rm.type = 'button'; rm.title = '목록에서 빼기 (메모는 그대로 남습니다)';
+    rm.onclick = () => { recBatchOff.add(id); recBatchSave(); recBatchDraw(); };
+    row.append(cp, rm); box.appendChild(row);
   });
+  if (!items.length) {
+    $('recBatchBox').classList.add('hidden'); $('recBatchBox').value = '';
+    $('recBatchMsg').textContent = `${all.length}명 중 선택 0명 — 넣을 학생을 체크하세요.`; return;
+  }
   const t = recBatchPrompt(items);
   $('recBatchBox').classList.remove('hidden'); $('recBatchBox').value = t;
-  $('recBatchMsg').textContent = `${items.length}명 · 약 ${t.length.toLocaleString()}자. 긴 요청문은 AI가 끊길 수 있으니 10명쯤씩 나눠 올리는 것이 안전합니다.`;
+  $('recBatchMsg').textContent = `${all.length}명 중 ${items.length}명 선택 · 약 ${t.length.toLocaleString()}자. 긴 요청문은 AI가 끊길 수 있으니 10명쯤씩 나눠 올리는 것이 안전합니다.`;
   return t;
 }
 if ($('recBatchMake')) {
   $('recBatchMake').addEventListener('click', () => recBatchDraw());
+  $('recBatchAll').addEventListener('click', () => { recBatchItems(true).forEach(it => recBatchOff.delete(recBatchId(it.s))); recBatchSave(); recBatchDraw(); });
+  $('recBatchNone').addEventListener('click', () => { recBatchItems(true).forEach(it => recBatchOff.add(recBatchId(it.s))); recBatchSave(); recBatchDraw(); });
   $('recBatchCopy').addEventListener('click', async () => {
     const items = recBatchItems();
-    if (!items.length) { $('recBatchMsg').textContent = '메모를 적어 둔 학생이 없습니다.'; return; }
+    if (!items.length) { $('recBatchMsg').textContent = '선택한 학생이 없습니다. 왼쪽 체크를 켜 주세요.'; return; }
     const t = recBatchPrompt(items); recBatchDraw();
-    $('recBatchMsg').textContent = (await copyText(t)) ? `${items.length}명분 요청문(${t.length.toLocaleString()}자)을 복사했습니다. AI 채팅창에 붙여넣으세요.` : '복사 실패 — 아래 칸에서 직접 복사하세요.';
+    $('recBatchMsg').textContent = (await copyText(t)) ? `선택한 ${items.length}명분 요청문(${t.length.toLocaleString()}자)을 복사했습니다. AI 채팅창에 붙여넣으세요.` : '복사 실패 — 아래 칸에서 직접 복사하세요.';
   });
   $('recBatchTxt').addEventListener('click', () => {
     const items = recBatchItems();
-    if (!items.length) { $('recBatchMsg').textContent = '메모를 적어 둔 학생이 없습니다.'; return; }
+    if (!items.length) { $('recBatchMsg').textContent = '선택한 학생이 없습니다. 왼쪽 체크를 켜 주세요.'; return; }
     const t = recBatchPrompt(items), hs = hasSubT();
     const bl = new Blob(['\ufeff' + t], { type: 'text/plain;charset=utf-8' }), a = document.createElement('a');
     a.href = URL.createObjectURL(bl); a.download = `요청문_${recType.replace('·', '')}${hs && recSub ? '_' + recSub : ''}_${ymd(now)}.txt`;
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
-    $('recBatchMsg').textContent = `txt로 저장했습니다. (${items.length}명분)`;
+    $('recBatchMsg').textContent = `txt로 저장했습니다. (선택한 ${items.length}명분)`;
   });
 }
 
@@ -7110,7 +7136,9 @@ const SYNC_KEYS = [
   ['gm-counsels', '상담 기록', () => counsels, v => { counsels = Array.isArray(v) ? v : []; }, 'stu'],
   ['gm-pass', '조퇴·외출 발급 기록', () => passes, v => { passes = Array.isArray(v) ? v : []; }, 'stu'],
   ['gm-rec-rost', '과목·동아리 명단(기록 작성)', () => recRost, v => { recRost = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }, 'stu'],
-  ['gm-rec-memo', '생기부 관찰 메모', () => recMemo, v => { recMemo = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }, 'rec'],
+  ['gm-rec-memo', '생기부 관찰 메모·요청문 내용', () => recMemo, v => { recMemo = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }, 'rec'],
+  ['gm-rec-batch-off', '요청문 선택 상태', () => [...recBatchOff], v => { recBatchOff = new Set(Array.isArray(v) ? v : []); }, 'rec'],
+  ['gm-rec-ai-opt', '요청문 설정(분량·이름 빼기)', () => recAiOpt, v => { if (v && typeof v === 'object') { recAiOpt = { len: +v.len || 500, hide: v.hide !== false }; if (window.recAiOptUI) recAiOptUI(); } }, 'rec'],
   ['gm-recs', '작성한 기록(세특·행특 등)', () => recs, v => { recs = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }, 'rec'],
   ['gm-subj', '과목 목록', () => subjList, v => { subjList = Array.isArray(v) ? v : []; }, 'rec'],
   ['gm-clubs', '동아리 목록', () => clubList, v => { clubList = Array.isArray(v) ? v : []; }, 'rec'],
