@@ -3574,15 +3574,15 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 const numOf = v => { const m = /^\s*(-?\d+(?:\.\d+)?)/.exec(String(v == null ? '' : v)); return m ? +m[1] : null; };
 const nz = v => String(v == null ? '' : v).replace(/\s+/g, '');
 function parseGrades(rows) {
-  let hi = -1, cName = 1, cLab = 3;
+  let hi = -1, cName = 1, cLab = 3, cNo = 0;
   for (let i = 0; i < rows.length && hi < 0; i++) {
     const r = rows[i].map(nz), a = r.indexOf('번호'), b = r.indexOf('교과목');
-    if (a >= 0 && b > a) { hi = i; cLab = b; cName = r.indexOf('성명') >= 0 ? r.indexOf('성명') : a + 1; }
+    if (a >= 0 && b > a) { hi = i; cLab = b; cName = r.indexOf('성명') >= 0 ? r.indexOf('성명') : a + 1; cNo = a; }
   }
   if (hi < 0) return null;
   const cols = []; rows[hi].forEach((v, i) => { if (i > cLab && nz(v)) cols.push([i, String(v).trim().replace(/\s+/g, ' ')]); });
   const tm = /(\d{4})\s*학년도\s*(\d)\s*학기/.exec(rows.slice(0, hi).map(r => r.join(' ')).join(' '));
-  const avg = rows.find(r => r.some(c => nz(c) === '과목평균')) || [], stu = {};
+  const avg = rows.find(r => r.some(c => nz(c) === '과목평균')) || [], stu = {}, sno = {};
   /* 단위수(학점) 줄 찾기 — '단위', '단위수', '이수단위', '학점', '이수학점' 중 아무거나 */
   const unitRow = rows.find(r => r.some(c => /^(단위|단위수|이수단위|학점|이수학점)$/.test(nz(c)))) || [];
   for (let i = hi + 1; i < rows.length; i++) {
@@ -3593,9 +3593,10 @@ function parseGrades(rows) {
       const sc = numOf((by['합계(원점수)'] || [])[c]); if (sc == null) return;
       s[name] = { sc, ach: nz((by['성취도'] || [])[c]), gr: numOf((by['석차등급'] || [])[c]), rk: numOf((by['석차'] || [])[c]), n: numOf((by['수강자수'] || [])[c]) };
     });
-    stu[String(rows[i][cName]).trim()] = s;
+    const nm = String(rows[i][cName]).trim();
+    stu[nm] = s; sno[nm] = nz(rows[i][cNo]).replace(/\D/g, '');   /* 일람표의 번호 */
   }
-  return { term: tm ? `${tm[1]}학년도 ${tm[2]}학기` : '', subjects: cols.map(c => c[1]), avg: Object.fromEntries(cols.map(([c, n]) => [n, numOf(avg[c])])), units: Object.fromEntries(cols.map(([c, n]) => [n, numOf(unitRow[c])])), stu };
+  return { term: tm ? `${tm[1]}학년도 ${tm[2]}학기` : '', subjects: cols.map(c => c[1]), avg: Object.fromEntries(cols.map(([c, n]) => [n, numOf(avg[c])])), units: Object.fromEntries(cols.map(([c, n]) => [n, numOf(unitRow[c])])), stu, sno };
 }
 const ACH = { A: 5, B: 4, C: 3, D: 2, E: 1 };
 function analyze(name) {
@@ -3855,7 +3856,7 @@ function gradeMerge(term, g, cls) {
   const t = gAll[term] || (gAll[term] = { term: term, subjects: [], avg: {}, units: {}, stu: {}, cls: {} });
   /* 예전에 저장한 자료에는 units·cls 칸이 없어서 먼저 채워 둡니다 */
   if (!Array.isArray(t.subjects)) t.subjects = [];
-  t.avg = t.avg || {}; t.units = t.units || {}; t.stu = t.stu || {}; t.cls = t.cls || {};
+  t.avg = t.avg || {}; t.units = t.units || {}; t.stu = t.stu || {}; t.cls = t.cls || {}; t.sno = t.sno || {};
   g.subjects.forEach(s => { if (!t.subjects.includes(s)) t.subjects.push(s); });
   Object.keys(g.avg).forEach(s => { if (t.avg[s] == null) t.avg[s] = g.avg[s]; });
   Object.keys(g.units || {}).forEach(s => { if (t.units[s] == null) t.units[s] = g.units[s]; });
@@ -3866,6 +3867,7 @@ function gradeMerge(term, g, cls) {
     if (t.stu[key] && cls && t.cls[key] !== cls) { key = `${n}(${cls})`; dup++; }
     if (!t.stu[key]) add++;
     t.stu[key] = g.stu[n]; if (cls) t.cls[key] = cls;
+    if (g.sno && g.sno[n]) t.sno[key] = g.sno[n];
   });
   return { add, dup, cls };
 }
@@ -4433,7 +4435,7 @@ const plSex = v => { const t = nz(v); return /^(남|M|m|남자|1)$/.test(t) ? '�
 const plRank = s => place.dir === 'asc' ? s.score : -s.score;
 function plPairs(list) { return list.map(p => p.map(String)); }
 function plRun() {
-  const st = place.stu.filter(s => s.score != null);
+  const st = place.stu.filter(s => !s.out && s.score != null);
   if (st.length < 2) { $('plMsg').textContent = '명단을 먼저 가져오세요. (점수가 있는 학생이 2명 이상 필요)'; return; }
   const N = Math.max(2, Math.min(15, +place.n || 4));
   const ap = plPairs(place.apart), tg = plPairs(place.tog);
@@ -4501,7 +4503,7 @@ function plDraw() {
   plRoster();
   if (!place.res) { out.innerHTML = '<p class="text-sm text-slate-500 col-span-full">명단을 가져오고 "반 나누기"를 누르면 결과가 여기에 나옵니다.</p>'; stat.classList.add('hidden'); return; }
   const cls = Array.from({ length: place.n }, () => []);
-  place.stu.forEach(s => { const k = place.res[s.no]; if (k != null && cls[k]) cls[k].push(s); });
+  place.stu.forEach(s => { if (s.out) return; const k = place.res[s.no]; if (k != null && cls[k]) cls[k].push(s); });
   const avg = c => c.length ? c.reduce((a, s) => a + s.score, 0) / c.length : 0;
   stat.classList.remove('hidden');
   stat.innerHTML = `<h3 class="font-bold mb-2">반별 요약</h3><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-slate-500 text-left"><tr>${['반', '인원', '평균 점수', '남', '여'].map(t => `<th class="px-2 py-1 font-medium">${t}</th>`).join('')}</tr></thead><tbody class="divide-y divide-slate-100">`
@@ -4547,9 +4549,13 @@ if ($('plRun')) {
         const base = String(n).replace(/\(\d+-\d+\)$/, '').trim();
         let cl = ''; terms.forEach(t => { if (!cl) cl = clsOf(t, n); });
         const same = students.filter(x => x.name === base);
-        const st = (cl && same.find(x => clsKey(x.no) === cl)) || (same.length === 1 ? same[0] : null);
+        /* 학급이 맞는 학생만 연결합니다. 학급을 모를 때만 같은 이름 한 명과 연결 */
+        const st = cl ? same.find(x => clsKey(x.no) === cl) : (same.length === 1 ? same[0] : null);
+        /* 학생 명단에 없으면 일람표의 '반 + 번호'로 학번을 만듭니다 (예: 1-7반 5번 → 1705) */
+        let num = ''; terms.forEach(t => { if (!num) num = ((gAll[t] || {}).sno || {})[n] || ''; });
+        const made = (cl && num) ? `${cl.split('-')[0]}${cl.split('-')[1]}${String(num).padStart(2, '0')}` : '';
         const g = gpaOf(n);
-        return { no: st ? st.no : (cl ? `${base}(${cl})` : base), name: base, sex: st ? plSex(st.sex) : '',
+        return { no: st ? st.no : (made || (cl ? `${base}(${cl})` : base)), name: base, sex: st ? plSex(st.sex) : '',
           score: g.avg == null ? null : +g.avg.toFixed(2), cls: cl };
       }).sort((a, b) => String(a.cls).localeCompare(String(b.cls)) || String(a.no).localeCompare(String(b.no), 'ko', { numeric: true }));
     } finally { gCls = keepCls; gex = keepEx; }
@@ -4607,8 +4613,8 @@ if ($('plRun')) {
     if (typeof XLSX === 'undefined') { $('plMsg').textContent = '엑셀 도구를 불러오지 못했습니다.'; return; }
     const wb = XLSX.utils.book_new();
     const aoa = [['배정 반', '학번', '이름', '성별', '점수', '이전 학급']];
-    place.stu.filter(s => place.res[s.no] != null).sort((a, b) => place.res[a.no] - place.res[b.no] || String(a.no).localeCompare(String(b.no), 'ko', { numeric: true }))
-      .forEach(s => aoa.push([place.res[s.no] + 1, s.no, s.name, s.sex || '', s.score == null ? '' : s.score, s.cls || '']));
+    place.stu.filter(s => s.out || place.res[s.no] != null).sort((a, b) => (a.out ? 99 : place.res[a.no]) - (b.out ? 99 : place.res[b.no]) || String(a.no).localeCompare(String(b.no), 'ko', { numeric: true }))
+      .forEach(s => aoa.push([s.out ? '제외' : place.res[s.no] + 1, s.no, s.name, s.sex || '', s.score == null ? '' : s.score, s.cls || '']));
     const ws = XLSX.utils.aoa_to_sheet(aoa); ws['!cols'] = [{ wch: 8 }, { wch: 10 }, { wch: 10 }, { wch: 6 }, { wch: 8 }, { wch: 10 }];
     XLSX.utils.book_append_sheet(wb, ws, '반배치');
     const cls = Array.from({ length: place.n }, () => []);
@@ -4624,13 +4630,14 @@ if ($('plRun')) {
     if (!place.res) { alert('먼저 반을 나눠 주세요.'); return; }
     printReset();
     const cls = Array.from({ length: place.n }, () => []);
-    place.stu.forEach(s => { const k = place.res[s.no]; if (k != null && cls[k]) cls[k].push(s); });
+    place.stu.forEach(s => { if (s.out) return; const k = place.res[s.no]; if (k != null && cls[k]) cls[k].push(s); });
+    const outs = place.stu.filter(s => s.out);
     const pa = $('printArea');
     pa.innerHTML = `<h2 style="text-align:center;font-size:14pt;font-weight:700;margin:0 0 3mm">반배치 결과 (${place.stu.filter(s => place.res[s.no] != null).length}명 · ${place.n}개 반)</h2>`
       + `<div style="display:grid;grid-template-columns:repeat(${Math.min(place.n, 5)},1fr);gap:3mm">`
       + cls.map((c, k) => `<div style="border:0.6pt solid #000;padding:2mm"><div style="font-weight:700;border-bottom:0.6pt solid #000;margin-bottom:1mm">${k + 1}반 (${c.length}명)</div>`
         + c.map(s => `<div style="font-size:9pt">${esc(String(s.no))} ${esc(s.name)}${s.sex ? ' ' + s.sex : ''}</div>`).join('') + `</div>`).join('')
-      + `</div><p style="font-size:8.5pt;color:#64748b;margin-top:4mm">※ 개인정보가 담긴 자료입니다. 보관·폐기에 유의하세요.</p>`;
+      + `</div>${outs.length ? `<p style="font-size:9pt;margin-top:3mm"><b>배치 제외</b> ${outs.map(s => esc(`${s.no} ${s.name}`)).join(' · ')}</p>` : ''}<p style="font-size:8.5pt;color:#64748b;margin-top:4mm">※ 개인정보가 담긴 자료입니다. 보관·폐기에 유의하세요.</p>`;
     pa.classList.add('ex-print');
     const pg = document.createElement('style'); pg.dataset.pg = '1'; pg.textContent = '@page{size:A4 landscape;margin:10mm}'; document.head.appendChild(pg);
     const done = () => { pg.remove(); pa.classList.remove('ex-print'); pa.innerHTML = ''; window.removeEventListener('afterprint', done); };
@@ -4642,14 +4649,19 @@ if ($('plRun')) {
 /* 불러온 명단을 표로 보여 주고 바로 고치기 */
 function plRoster() {
   const box = $('plRoster'); if (!box) return;
-  const n = place.stu.length, ns = place.stu.filter(s => s.score == null).length;
-  $('plCount').textContent = n ? `${n}명${ns ? ` · 점수 없음 ${ns}명` : ''}` : '';
+  const n = place.stu.length, ns = place.stu.filter(s => !s.out && s.score == null).length, no = place.stu.filter(s => s.out).length;
+  $('plCount').textContent = n ? `${n}명${no ? ` · 배치 제외 ${no}명` : ''}${ns ? ` · 점수 없음 ${ns}명` : ''}` : '';
   if (!n) { box.innerHTML = '<p class="text-sm text-slate-500 py-3">위에서 명단을 가져오거나, 오른쪽 위에서 직접 추가하세요.</p>'; return; }
-  box.innerHTML = `<table class="w-full text-sm"><thead class="text-slate-500 text-left sticky top-0 bg-white"><tr>${['이전 반', '학번', '이름', '성별', '점수', ''].map(t => `<th class="px-2 py-1 font-medium">${t}</th>`).join('')}</tr></thead><tbody id="plRows" class="divide-y divide-slate-100"></tbody></table>`;
+  box.innerHTML = `<table class="w-full text-sm"><thead class="text-slate-500 text-left sticky top-0 bg-white"><tr>${['배치', '이전 반', '학번', '이름', '성별', '점수', ''].map(t => `<th class="px-2 py-1 font-medium">${t}</th>`).join('')}</tr></thead><tbody id="plRows" class="divide-y divide-slate-100"></tbody></table>`;
   const tb = $('plRows');
   place.stu.forEach((s, i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td class="px-2 py-1 text-slate-500 text-xs">${esc(s.cls || '-')}</td><td class="px-2 text-xs">${esc(String(s.no))}</td><td class="px-2 font-medium">${esc(s.name)}</td>`;
+    if (s.out) tr.className = 'opacity-50 bg-slate-50';
+    const td0 = document.createElement('td'); td0.className = 'px-2 py-1';
+    const ck = el('input'); ck.type = 'checkbox'; ck.className = 'w-4 h-4'; ck.checked = !s.out; ck.title = '체크를 끄면 반배치에서 빠집니다 (명단에는 남습니다)';
+    ck.onchange = () => { s.out = !ck.checked; if (s.out && place.res) delete place.res[s.no]; plSave(); plDraw(); };
+    td0.appendChild(ck); tr.appendChild(td0);
+    tr.insertAdjacentHTML('beforeend', `<td class="px-2 py-1 text-slate-500 text-xs">${esc(s.cls || '-')}</td><td class="px-2 text-xs">${esc(String(s.no))}</td><td class="px-2 font-medium">${esc(s.name)}</td>`);
     const td1 = document.createElement('td'); td1.className = 'px-2';
     const sx = el('select', 'border border-slate-300 rounded px-1 py-0.5 text-xs bg-white');
     ['', '남', '여'].forEach(v => { const o = el('option', '', v || '-'); o.value = v; sx.appendChild(o); });
@@ -4672,7 +4684,7 @@ if ($('plAdd')) {
     const no = $('plAddNo').value.trim(), nm = nameNorm($('plAddNm').value), sc = $('plAddSc').value.trim();
     if (!no || !nm) { $('plMsg').textContent = '학번과 이름을 적어 주세요.'; return; }
     if (place.stu.some(s => String(s.no) === no)) { $('plMsg').textContent = `${no}번은 이미 명단에 있습니다.`; return; }
-    place.stu.push({ no: no, name: nm, sex: '', score: sc === '' ? null : +sc, cls: '' });
+    place.stu.push({ no: no, name: nm, sex: '', score: sc === '' ? null : +sc, cls: '', out: false });
     place.res = null; plSave(); plDraw();
     $('plAddNo').value = ''; $('plAddNm').value = ''; $('plAddSc').value = ''; $('plAddNo').focus();
     $('plMsg').textContent = `${nm} 추가 (${place.stu.length}명)`;
