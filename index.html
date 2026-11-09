@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기 · 올린 자료 관리 · 메모 하나 고정</p>
   </form>
 </div>
 
@@ -547,6 +547,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       </div>
       <div id="chFilter" class="flex gap-2 flex-wrap text-sm"></div>
       <p id="chInfo" class="text-xs text-slate-500"></p>
+      <button id="chClean" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs">🗑️ 올린 일정 골라 지우기 (지난 학년도 등)</button>
     </div>
     <div id="chList" class="mt-5 bg-white rounded-xl border border-slate-200 p-5"></div>
   </section>
@@ -1101,11 +1102,23 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     </section>
 
     <section>
+      <h3 class="font-bold text-sm mb-2">📂 올린 자료 관리 <span class="text-xs font-normal text-slate-500">(엑셀·PDF로 올린 자료 골라 지우기)</span></h3>
+      <p class="text-xs text-slate-500 mb-2">파일로 올린 자료를 항목별로 지울 수 있습니다. 지난 학년도 창체 일정처럼 필요 없어진 것만 체크해서 지우세요. <b>직접 입력한 학생 명단·상담·기록은 여기서 지워지지 않습니다.</b></p>
+      <div id="upList" class="space-y-3 text-sm"></div>
+      <div class="flex items-center gap-2 mt-3 flex-wrap">
+        <button id="upAll" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs">전체 선택</button>
+        <button id="upNone" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs">선택 해제</button>
+        <button id="upDel" type="button" class="bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg px-3 py-1.5 text-xs">선택한 자료 지우기</button>
+        <span id="upMsg" class="text-xs text-slate-600"></span>
+      </div>
+    </section>
+
+    <section>
       <h3 class="font-bold text-sm mb-2">📦 자동 보관함 <span class="text-xs font-normal text-slate-500">(기록이 사라졌을 때 되돌리기)</span></h3>
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기 · 올린 자료 관리 · 메모 하나 고정</p>
   </div>
 </dialog>
 
@@ -2567,9 +2580,13 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <button class="bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg px-3 text-sm">+</button>
     </form>
     <div id="mmFloatList" class="p-2 space-y-1.5 overflow-y-auto" style="height:260px"></div>
-    <div class="flex items-center gap-2 px-2 py-1.5 border-t border-slate-200 text-xs text-slate-500">
+    <div id="mmFloatFoot" class="flex items-center gap-2 px-2 py-1.5 border-t border-slate-200 text-xs text-slate-500">
       <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" id="mmFloatDone" class="w-3.5 h-3.5"> 완료도 보기</label>
       <button id="mmFloatGo" type="button" class="ml-auto underline hover:text-slate-800">할 일 탭 열기</button>
+    </div>
+    <div id="mmFloatPinFoot" class="hidden flex items-center gap-2 px-2 py-1.5 border-t border-slate-200 text-xs text-slate-500">
+      <button id="mmFloatUnpin" type="button" class="underline hover:text-slate-800">← 전체 목록 보기</button>
+      <button id="mmFloatPinGo" type="button" class="ml-auto underline hover:text-slate-800">할 일 탭 열기</button>
     </div>
   </div>
   <div id="mmFloatGrip" class="absolute right-0 bottom-0 w-4 h-4 cursor-se-resize touch-none" title="크기 조절"><svg viewBox="0 0 16 16" class="w-4 h-4 text-slate-400"><path d="M15 6 6 15M15 11l-4 4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></div>
@@ -2636,7 +2653,7 @@ $('ddForm').addEventListener('submit', e => {
   ddays.push({ name: $('ddName').value.trim(), date: $('ddDate').value });
   store('gm-dday', ddays); e.target.reset(); renderAll();
 });
-$('setBtn').addEventListener('click', () => $('dlg').showModal());
+$('setBtn').addEventListener('click', () => { $('dlg').showModal(); if (window.upDraw) upDraw(); });
 $('dlgClose').addEventListener('click', () => $('dlg').close());
 
 /* 백업 · 복원 · 초기화 */
@@ -3880,11 +3897,15 @@ function renderMemos() {
     lab.append(cb, el('span', `text-sm whitespace-pre-wrap break-words ${m.done ? 'line-through' : ''}`, m.text));
     const foot = el('div', `flex items-center justify-between text-xs ${mSub(m.color)}`);
     const late = m.due && m.due < t && !m.done, meta = [m.cat ? `${CEMO[m.cat] || ''} ${m.cat}` : '', m.due ? '마감 ' + m.due.slice(5).replace('-', '/') : ''].filter(Boolean).join(' · ');
+    const pinned = mwPinId() === m.id;
+    const pin = el('button', pinned ? 'font-bold' : (dk ? 'hover:text-amber-200' : 'hover:text-amber-600'), pinned ? '📌 고정됨' : '📌 고정'); pin.type = 'button';
+    pin.title = '화면에 띄워 놓는 창에 이 메모 하나만 크게 보여 줍니다.';
+    pin.onclick = () => mwPin(m.id);
     const edit = el('button', dk ? 'hover:text-sky-200' : 'hover:text-sky-700', '수정'); edit.type = 'button';
     edit.onclick = () => { mmEdit = m.id; renderMemos(); };
     const del = el('button', dk ? 'hover:text-rose-300' : 'hover:text-red-600', '삭제'); del.type = 'button';
     del.onclick = () => { if (!confirm('이 메모를 지울까요?')) return; memos = memos.filter(x => x !== m); store(MEMO_KEY, memos); renderMemos(); renderDash(); };
-    const acts = el('div', 'flex gap-2 shrink-0'); acts.append(edit, del);
+    const acts = el('div', 'flex gap-2 shrink-0'); acts.append(pin, edit, del);
     foot.append(el('span', late ? (dk ? 'text-rose-300 font-bold' : 'text-red-600 font-bold') : '', meta || m.date), acts); card.append(lab, foot); board.appendChild(card);
   });
   $('mmEmpty').classList.toggle('hidden', list.length > 0);
@@ -3897,9 +3918,98 @@ $('mmForm').addEventListener('submit', e => {
   store(MEMO_KEY, memos); $('mmText').value = ''; $('mmDue').value = ''; renderMemos();
 });
 
+/* ===== 📂 올린 자료 관리 (파일로 올린 것 골라 지우기) ===== */
+(() => {
+  const RD = k => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
+  const WR = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+  const RM = k => { try { localStorage.removeItem(k); } catch (e) {} };
+  const cnt = n => `${n.toLocaleString()}건`;
+  /* 화면에 보여 줄 목록을 만듭니다. del()은 지우기만 하고, 끝나면 새로 고칩니다. */
+  function sources() {
+    const g = [];
+    /* 창의적체험활동 일정: 시트 + 학년도(연도)별 */
+    const c = RD('gm-ch');
+    if (c && c.sheets && Object.keys(c.sheets).length) {
+      const items = [];
+      Object.keys(c.sheets).forEach(name => {
+        const rows = c.sheets[name] || [], years = [...new Set(rows.map(e => (e.date || '').slice(0, 4)).filter(Boolean))].sort();
+        years.forEach(y => items.push({
+          id: `ch|${name}|${y}`, text: `${name} · ${y}년 (${cnt(rows.filter(e => (e.date || '').startsWith(y)).length)})`,
+          del: () => { const o = RD('gm-ch'); o.sheets[name] = (o.sheets[name] || []).filter(e => !(e.date || '').startsWith(y)); if (!o.sheets[name].length) delete o.sheets[name]; if (!Object.keys(o.sheets).length) { o.files = []; o.sel = ''; } WR('gm-ch', o); }
+        }));
+      });
+      g.push({ t: '🎈 창의적체험활동 일정', note: (c.files || []).join(', '), items });
+    }
+    /* 성적 분석 자료 (학기별) */
+    const ga = RD('gm-grades-all');
+    if (ga && Object.keys(ga).length) g.push({ t: '🍎 성적 분석 자료', items: Object.keys(ga).map(k => ({
+      id: 'gr|' + k, text: `${k} (${cnt((ga[k] && ga[k].rows ? ga[k].rows.length : (ga[k] && ga[k].students ? ga[k].students.length : 0)))})`,
+      del: () => { const o = RD('gm-grades-all') || {}; delete o[k]; WR('gm-grades-all', o); } })) });
+    /* 지필평가 (회차별) */
+    const ex = RD('gm-exams');
+    if (ex && Object.keys(ex).length) g.push({ t: '📈 지필평가 성적', items: Object.keys(ex).map(k => ({
+      id: 'ex|' + k, text: `${k.replace('-', '학기 ')}회고사 ${ex[k] && ex[k].file ? '· ' + ex[k].file : ''} (${cnt(Object.keys((ex[k] || {}).stu || {}).length)} 학생)`,
+      del: () => { const o = RD('gm-exams') || {}; delete o[k]; WR('gm-exams', o); } })) });
+    /* 교직원 연락처 */
+    const st = RD('gm-staff');
+    if (Array.isArray(st) && st.length) g.push({ t: '📇 교직원 연락처', items: [{ id: 'staff', text: `올린 교직원 명단 (${cnt(st.length)})`, del: () => RM('gm-staff') }] });
+    /* 시간표 */
+    const sc = RD('gm-sch'); const items = [];
+    if (sc && sc.teachers && Object.keys(sc.teachers).length) items.push({ id: 'sch|t', text: `교사별 시간표 ${sc.tFile ? '· ' + sc.tFile : ''} (${cnt(Object.keys(sc.teachers).length)} 명)`, del: () => { const o = RD('gm-sch') || {}; o.teachers = {}; o.me = ''; o.tFile = ''; WR('gm-sch', o); } });
+    if (sc && sc.classes && Object.keys(sc.classes).length) items.push({ id: 'sch|c', text: `학급 시간표 ${sc.cFile ? '· ' + sc.cFile : ''} (${cnt(Object.keys(sc.classes).length)} 반)`, del: () => { const o = RD('gm-sch') || {}; o.classes = {}; o.myClass = ''; o.cFile = ''; WR('gm-sch', o); } });
+    if (items.length) g.push({ t: '⏰ 시간표', items });
+    /* 과목·동아리 명단 */
+    const rr = RD('gm-rec-rost');
+    if (rr && Object.keys(rr).length) g.push({ t: '📝 기록 작성용 명단', items: Object.keys(rr).map(k => ({
+      id: 'rr|' + k, text: `${k.replace('|', ' · ')} (${cnt((rr[k] || []).length)})`,
+      del: () => { const o = RD('gm-rec-rost') || {}; delete o[k]; WR('gm-rec-rost', o); } })) });
+    /* 자리 배치 명단 */
+    const sr = RD('gm-seat-roster');
+    if (Array.isArray(sr) && sr.length) g.push({ t: '🪑 자리 배치용 명단', items: [{ id: 'seatros', text: `올린 명단 (${cnt(sr.length)})`, del: () => RM('gm-seat-roster') }] });
+    /* 추천서 참고자료 */
+    const si = RD('gm-scho-items');
+    if (Array.isArray(si) && si.length) g.push({ t: '🎓 추천서 참고자료', items: [{ id: 'schoitem', text: `올린 추천서 양식·자료 (${cnt(si.length)} 항목)`, del: () => RM('gm-scho-items') }] });
+    /* 결석신고서 학교 양식 */
+    if (localStorage.getItem('gm-abs-tpl')) g.push({ t: '📄 결석신고서 학교 양식', items: [{ id: 'abstpl', text: '올린 양식 그림과 칸 위치', del: () => { RM('gm-abs-tpl'); try { localStorage.setItem('gm-abs-use', 'def'); } catch (e) {} } }] });
+    return g;
+  }
+  function draw() {
+    const box = $('upList'); if (!box) return;
+    const g = sources(); box.innerHTML = '';
+    if (!g.length) { box.innerHTML = '<p class="text-xs text-slate-500 py-3">파일로 올린 자료가 없습니다.</p>'; return; }
+    g.forEach(grp => {
+      const d = el('div', 'rounded-lg border border-slate-200 p-2.5');
+      d.append(el('div', 'font-bold text-xs mb-1', grp.t + (grp.note ? ` · ${grp.note}` : '')));
+      grp.items.forEach(it => {
+        const lb = el('label', 'flex items-center gap-2 py-0.5 cursor-pointer');
+        const cb = el('input'); cb.type = 'checkbox'; cb.className = 'w-4 h-4 up-cb'; cb.dataset.id = it.id;
+        cb._del = it.del; lb.append(cb, el('span', 'text-xs', it.text)); d.appendChild(lb);
+      });
+      box.appendChild(d);
+    });
+  }
+  const cbs = () => [...document.querySelectorAll('#upList .up-cb')];
+  if ($('upList')) {
+    $('upAll').onclick = () => cbs().forEach(c => c.checked = true);
+    $('upNone').onclick = () => cbs().forEach(c => c.checked = false);
+    $('upDel').onclick = () => {
+      const sel = cbs().filter(c => c.checked);
+      if (!sel.length) { $('upMsg').textContent = '지울 자료를 먼저 체크하세요.'; return; }
+      if (!confirm(`체크한 ${sel.length}개 자료를 지울까요?\n되돌릴 수 없습니다. (직접 입력한 학생·상담·기록은 그대로 남습니다)`)) return;
+      sel.forEach(c => { try { c._del(); } catch (e) {} });
+      $('upMsg').textContent = '지웠습니다. 화면을 새로 불러옵니다…';
+      setTimeout(() => location.reload(), 400);
+    };
+    window.upDraw = draw;
+    draw();
+  }
+})();
+
 /* ===== 📌 떠 있는 할 일 메모 창 ===== */
+/* 아래 mw 변수보다 먼저 실행되는 코드에서도 안전하게 읽기 위한 함수 */
+function mwPinId() { try { return mw.pin || ''; } catch (e) { return ''; } }
 const MW_KEY = 'gm-memo-win';
-let mw = Object.assign({ open: false, x: 24, y: 96, w: 300, h: 260, min: false, done: false, fade: false },
+let mw = Object.assign({ open: false, x: 24, y: 96, w: 300, h: 260, min: false, done: false, fade: false, pin: '' },
   (() => { try { return JSON.parse(localStorage.getItem(MW_KEY)) || {}; } catch (e) { return {}; } })());
 const mwSave = () => store(MW_KEY, mw);
 function mwClamp() {
@@ -3917,16 +4027,41 @@ function mwApply() {
   f.style.opacity = mw.fade ? '0.6' : '1';
   $('mmFloatBody').classList.toggle('hidden', !!mw.min);
   $('mmFloatGrip').classList.toggle('hidden', !!mw.min);
+  const one = mwPinned();
+  $('mmFloatForm').classList.toggle('hidden', !!one);
+  $('mmFloatFoot').classList.toggle('hidden', !!one);
+  $('mmFloatPinFoot').classList.toggle('hidden', !one);
   $('mmFloatList').style.height = mw.h + 'px';
   $('mmFloatDone').checked = !!mw.done;
 }
+/* 고정해 둔 메모 하나 (없으면 null) */
+function mwPinned() { return mw.pin ? (memos.find(m => m.id === mw.pin) || null) : null; }
+function mwPin(id) { mw.pin = mw.pin === id ? '' : id; mw.open = true; mw.min = false; mwSave(); mwApply(); mwRender(); renderMemos(); }
 function mwRender() {
   if (!$('mmFloat')) return;
   const t = ymd(now);
+  if (mw.pin && !memos.some(m => m.id === mw.pin)) mw.pin = '';
+  const one = mwPinned(), box = $('mmFloatList');
+  if (one) {   /* ── 메모 하나만 크게 고정해서 보여 주기 ── */
+    $('mmFloatCnt').textContent = '고정';
+    const dk = !!MDARK[one.color];
+    box.innerHTML = '';
+    const card = el('div', `rounded-lg p-3 h-full ${MC[one.color] || MC.y} ${one.done ? 'opacity-60' : ''}`);
+    const lab = el('label', 'flex items-start gap-2 cursor-pointer');
+    const cb = el('input'); cb.type = 'checkbox'; cb.checked = !!one.done; cb.className = 'mt-1 w-4 h-4 shrink-0';
+    cb.onchange = () => { one.done = cb.checked; store(MEMO_KEY, memos); renderMemos(); renderDash(); mwRender(); };
+    lab.append(cb, el('span', `text-sm whitespace-pre-wrap break-words ${one.done ? 'line-through' : ''}`, one.text));
+    card.append(lab);
+    const late = one.due && one.due < t && !one.done;
+    const meta = [one.cat ? `${CEMO[one.cat] || ''}${one.cat}` : '', one.due ? '마감 ' + one.due.slice(5).replace('-', '/') : ''].filter(Boolean).join(' · ');
+    if (meta) card.append(el('div', `mt-2 text-xs ${late ? (dk ? 'text-rose-300 font-bold' : 'text-red-600 font-bold') : mSub(one.color)}`, meta));
+    box.appendChild(card);
+    return;
+  }
   const list = memos.filter(m => mw.done || !m.done)
     .sort((a, b) => a.done - b.done || (a.due || '9').localeCompare(b.due || '9'));
   $('mmFloatCnt').textContent = `${memos.filter(m => !m.done).length}개 남음`;
-  const box = $('mmFloatList'); box.innerHTML = '';
+  box.innerHTML = '';
   if (!list.length) { box.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">🌱 할 일이 없습니다.</p>'; return; }
   list.forEach(m => {
     const dk = !!MDARK[m.color];
@@ -3938,10 +4073,13 @@ function mwRender() {
     const late = m.due && m.due < t && !m.done;
     const meta = [m.cat ? `${CEMO[m.cat] || ''}${m.cat}` : '', m.due ? '~' + m.due.slice(5).replace('-', '/') : ''].filter(Boolean).join(' · ');
     if (meta) body.append(el('div', `text-[11px] ${late ? (dk ? 'text-rose-300 font-bold' : 'text-red-600 font-bold') : mSub(m.color)}`, meta));
+    const pin = el('button', `text-xs shrink-0 ${dk ? 'text-slate-300 hover:text-amber-200' : 'text-slate-400 hover:text-amber-600'}`, '📌');
+    pin.type = 'button'; pin.title = '이 메모만 크게 고정하기';
+    pin.onclick = () => mwPin(m.id);
     const del = el('button', `text-xs shrink-0 ${dk ? 'text-slate-300 hover:text-rose-300' : 'text-slate-400 hover:text-red-600'}`, '✕');
     del.type = 'button'; del.title = '지우기';
     del.onclick = () => { if (!confirm('이 메모를 지울까요?')) return; memos = memos.filter(x => x !== m); store(MEMO_KEY, memos); renderMemos(); renderDash(); mwRender(); };
-    row.append(cb, body, del); box.appendChild(row);
+    row.append(cb, body, pin, del); box.appendChild(row);
   });
 }
 function mwOpen(on) { mw.open = on === undefined ? !mw.open : !!on; if (mw.open) mw.min = false; mwSave(); mwApply(); mwRender(); }
@@ -3974,6 +4112,8 @@ function mwOpen(on) { mw.open = on === undefined ? !mw.open : !!on; if (mw.open)
   $('mmFloatFade').onclick = () => { mw.fade = !mw.fade; mwSave(); mwApply(); };
   $('mmFloatDone').onchange = () => { mw.done = $('mmFloatDone').checked; mwSave(); mwRender(); };
   $('mmFloatGo').onclick = () => { const b = document.querySelector('[data-tab="memo"]'); if (b) b.click(); };
+  $('mmFloatUnpin').onclick = () => { mw.pin = ''; mwSave(); mwApply(); mwRender(); renderMemos(); };
+  $('mmFloatPinGo').onclick = () => { const b = document.querySelector('[data-tab="memo"]'); if (b) b.click(); };
   $('mmFloatForm').onsubmit = e => {
     e.preventDefault(); const tx = $('mmFloatText').value.trim(); if (!tx) return;
     memos.unshift({ id: uid(), text: tx, color: mmColor, cat: '', due: '', done: false, date: ymd(new Date()) });
@@ -4535,6 +4675,11 @@ $('chFile').addEventListener('change', async e => {
     if (!ch.files.includes(f.name)) ch.files.push(f.name); saveCh(); chMonth = ''; renderCh();
   } catch (err) { alert('불러오기 실패: ' + err.message); }
 });
+
+if ($('chClean')) $('chClean').onclick = () => {
+  $('dlg').showModal(); if (window.upDraw) upDraw();
+  setTimeout(() => { const u = $('upList'); if (u) u.scrollIntoView({ block: 'center' }); }, 60);
+};
 
 /* ===== 첫 화면 캘린더 (학사일정 + 자율·자치·동아리 + 내 일정) ===== */
 const NC_KEY = 'gm-neis-cache', HCLR = { '학사': ['🏫', 'bg-slate-200 text-slate-900'], '자율·자치': ['🌱', 'bg-sky-100 text-sky-900'], '동아리': ['🎨', 'bg-indigo-100 text-indigo-900'], '진로': ['🚀', 'bg-amber-100 text-amber-900'], '봉사': ['💚', 'bg-emerald-200 text-emerald-900'], '내 일정': ['⭐', 'bg-yellow-100 text-yellow-900'] };
