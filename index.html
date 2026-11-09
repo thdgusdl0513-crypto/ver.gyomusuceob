@@ -3850,7 +3850,8 @@ function gradeMerge(term, g, cls) {
   let add = 0, dup = 0;
   Object.keys(g.stu).forEach(n => {
     let key = n;
-    if (t.stu[key] && t.cls[key] && cls && t.cls[key] !== cls) { key = `${n}(${cls})`; dup++; }
+    /* 같은 이름이 이미 있는데 학급이 다르면(또는 예전 자료라 학급을 모르면) 이름 뒤에 학급을 붙여 구분 */
+    if (t.stu[key] && cls && t.cls[key] !== cls) { key = `${n}(${cls})`; dup++; }
     if (!t.stu[key]) add++;
     t.stu[key] = g.stu[n]; if (cls) t.cls[key] = cls;
   });
@@ -3873,7 +3874,7 @@ $('gFile').addEventListener('change', async e => {
       const term = g.term || '학기 미상', cls = findCls(rows, f.name);
       const r = gradeMerge(term, g, cls);
       curTerm = term;
-      done.push(`${cls || f.name.replace(/\.[^.]+$/, '')} ${Object.keys(g.stu).length}명`);
+      done.push(`${cls || f.name.replace(/\.[^.]+$/, '')} ${Object.keys(g.stu).length}명${r.dup ? ` (같은 이름 ${r.dup}명은 이름 뒤에 반을 붙였습니다)` : ''}`);
     } catch (err) { fail.push(`${f.name}: ${err.message}`); }
   }
   store(G_KEY, gAll); renderGrades();
