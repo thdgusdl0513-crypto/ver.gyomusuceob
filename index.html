@@ -5316,7 +5316,16 @@ $('seExAdd2').addEventListener('click', () => {
   const s = students.find(x => x.no === t || x.name === t); seat.excl.push(s ? { no: s.no, name: s.name } : (/^\d+$/.test(t) ? { no: t, name: '' } : { no: '', name: t })); $('seExTxt').value = ''; saveSeat(); renderSeat();
 });
 /* 자리 배치표: 가로(기본)로 종이에 꽉 차게 인쇄 / 그림으로 저장 */
-const seatTitle = () => `${cfg.cls || ''} 자리 배치표`.trim();
+/* 제목에 쓸 학급: 올린 명단에서 고른 반이 있으면 그 반, 없으면 자리 칸 학번에서 찾고, 그래도 없으면 설정의 우리 반 */
+function seatCls() {
+  if (seat.cls) return clsLabel(seat.cls);
+  const ks = seat.cells.map(c => { const i = noInfo(c.no); return i ? `${i.g}-${i.c}` : ''; }).filter(Boolean);
+  const uniq = [...new Set(ks)];
+  if (uniq.length === 1) return clsLabel(uniq[0]);
+  if (uniq.length > 1) return '';           /* 여러 반이 섞여 있으면 반 이름을 쓰지 않습니다 */
+  return cfg.cls || '';
+}
+const seatTitle = () => `${seatCls()} 자리 배치표`.trim();
 const seatRows = () => Math.max(1, Math.ceil(seat.cells.length / Math.max(1, seat.cols)));
 const seatText = c => { const nm = c.name || ''; if (!nm) return ''; return ($('seNo') && $('seNo').checked && c.no) ? `${c.no} ${nm}` : nm; };
 $('sePrint').addEventListener('click', () => {
@@ -5393,7 +5402,7 @@ $('seSaveImg').addEventListener('click', () => {
   cv.toBlob(bl => {
     if (!bl) { seMsg('그림으로 저장하지 못했습니다.', false); return; }
     const a = document.createElement('a'); a.href = URL.createObjectURL(bl);
-    a.download = `자리배치표_${ymd(now)}.png`; a.click();
+    a.download = `자리배치표_${(seatCls() || '').replace(/\s+/g, '') || '전체'}_${ymd(now)}.png`; a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 3000);
     seMsg('그림으로 저장했습니다. (다운로드 폴더)', true);
   }, 'image/png');
