@@ -578,7 +578,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <div id="recSubRow" class="hidden flex gap-2 flex-wrap items-center">
         <select id="recSub" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></select><button id="recSubDel" type="button" class="text-xs text-slate-400 hover:text-red-600">선택 삭제</button>
         <input id="recSubName" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button id="recSubAdd" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">추가</button>
-        <label class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap cursor-pointer bg-white">📂 명단 올리기<input id="recRostFile" type="file" accept=".xlsx,.xls,.csv" class="hidden"></label><button id="recRostDel" type="button" class="text-xs text-slate-400 hover:text-red-600">명단 지우기</button><span id="recRostInfo" class="text-xs text-slate-500 basis-full"></span>
+        <label class="border border-sky-400 bg-sky-50 hover:bg-sky-100 rounded-lg px-3 py-2 text-sm whitespace-nowrap cursor-pointer font-bold"><span id="recRostLabel">📂 이 과목 수강생 명단 올리기</span><input id="recRostFile" type="file" accept=".xlsx,.xls,.csv" class="hidden"></label><button id="recRostDel" type="button" class="text-xs text-slate-400 hover:text-red-600">명단 지우기</button><span id="recRostInfo" class="text-xs text-slate-500 basis-full"></span>
       </div>
     </div>
     <div id="recCh" class="hidden bg-white rounded-xl border border-slate-200 p-4 mt-5"></div>
@@ -587,7 +587,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <div class="bg-white rounded-xl border border-slate-200 p-5">
         <p id="recWho" class="font-bold mb-2"></p>
         <textarea id="recText" rows="12" disabled class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></textarea>
-        <div class="flex items-center gap-3 mt-2 flex-wrap"><span id="recCount" class="text-xs text-slate-500"></span><button id="recCopy" type="button" class="ml-auto border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">복사</button><button id="recAll" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">전체 복사 (연말용)</button><button id="recXlsx" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">📊 엑셀로 받기</button></div>
+        <div class="flex items-center gap-3 mt-2 flex-wrap"><span id="recCount" class="text-xs text-slate-500"></span><button id="recCopy" type="button" class="ml-auto border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">복사</button><button id="recAll" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">전체 복사 (연말용)</button><button id="recXlsxOne" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">📊 이 항목만 엑셀</button><button id="recXlsx" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">📊 전체 엑셀</button></div>
         <p id="recHint" class="text-xs text-emerald-600 mt-2"></p>
         <div class="mt-5 pt-4 border-t border-slate-200 space-y-2">
           <div class="font-bold text-sm">✨ AI로 초안 쓰기 <span class="font-normal text-xs text-slate-500">(요청문을 만들어 드려요 · 결과를 위 칸에 붙여넣기)</span></div>
@@ -628,6 +628,17 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           <textarea id="recAiBox" readonly rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-xs" placeholder="복사한 요청문이 여기에 표시됩니다. 사용하시는 AI 채팅창에 붙여넣고, AI가 써 준 글을 위의 큰 입력칸에 붙여넣어 다듬으세요."></textarea>
           <p id="recAiHint" class="text-xs text-emerald-600"></p>
           <p class="text-xs text-slate-500">AI 결과는 초안입니다. 사실과 다른 내용이 없는지, 학교의 생활기록부 기재요령에 맞는지 꼭 확인해 주세요. 이름을 빼도 메모 속 다른 개인정보는 그대로 전달되니 필요한 내용만 적으세요.</p>
+        </div>
+        <div class="mt-5 pt-4 border-t border-slate-200 space-y-2">
+          <div class="font-bold text-sm">📑 요청문 모음 <span class="font-normal text-xs text-slate-500">(메모를 적어 둔 학생들의 요청문을 한 번에 — AI 채팅창에 한 번만 붙여넣기)</span></div>
+          <div class="flex items-center gap-2 flex-wrap text-xs">
+            <button id="recBatchMake" type="button" class="bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg px-3 py-2">🧺 요청문 모으기</button>
+            <button id="recBatchCopy" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2 font-bold">📋 전체 복사</button>
+            <button id="recBatchTxt" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-2">📄 txt로 받기</button>
+            <span id="recBatchMsg" class="text-slate-600"></span>
+          </div>
+          <div id="recBatchList" class="space-y-1 max-h-56 overflow-y-auto"></div>
+          <textarea id="recBatchBox" readonly rows="6" class="hidden w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-xs"></textarea>
         </div>
       </div>
     </div>
@@ -4366,7 +4377,8 @@ $('recAll').addEventListener('click', async () => {
   $('recHint').textContent = !txt ? '작성된 내용이 없습니다.' : (await copyText(txt)) ? '작성한 전체 내용을 복사했습니다.' : '복사에 실패했습니다.';
 });
 
-function recExportXlsx() {
+/* 엑셀로 받기. only 가 참이면 지금 보고 있는 항목(과목)만 내려받습니다. */
+function recExportXlsx(only) {
   if (typeof XLSX === 'undefined') { $('recHint').textContent = '엑셀 도구를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'; return; }
   const who = (sid, type, sub) => {
     const s = students.find(y => y.id === sid); if (s) return { no: s.no, name: s.name };
@@ -4380,38 +4392,52 @@ function recExportXlsx() {
     by[type].push({ sub, no: w.no, name: w.name, txt });
   });
   const cmp = (a, b) => String(a.sub).localeCompare(String(b.sub), 'ko') || String(a.no).localeCompare(String(b.no), 'ko', { numeric: true });
+  const shName = t => String(t).replace(/[\[\]*?\/\\:]/g, ' ').slice(0, 31);
   const wb = XLSX.utils.book_new(); let total = 0;
-  { // 전체 학생 한 장: 학생 한 줄, 기록 종류·과목·동아리는 열
-    const cols = ['행특', '자율·자치'], pick = {};
-    const subs = [...new Set(by['교과세특'].map(x => x.sub))].sort((a, b) => a.localeCompare(b, 'ko')), clubs = [...new Set(by['동아리'].map(x => x.sub))].sort((a, b) => a.localeCompare(b, 'ko'));
-    subs.forEach(x => cols.push('교과세특·' + x)); clubs.forEach(x => cols.push('동아리·' + x));
-    const stu = new Map(); sorted().forEach(x => stu.set(String(x.no), { no: x.no, name: x.name, v: {} }));
-    const put = (x, col) => { const k = String(x.no); if (!stu.has(k)) stu.set(k, { no: x.no, name: x.name, v: {} }); stu.get(k).v[col] = x.txt; };
-    by['행특'].forEach(x => put(x, '행특')); by['자율·자치'].forEach(x => put(x, '자율·자치'));
-    by['교과세특'].forEach(x => put(x, '교과세특·' + x.sub)); by['동아리'].forEach(x => put(x, '동아리·' + x.sub));
-    const rows = [...stu.values()].sort((a, b) => String(a.no).localeCompare(String(b.no), 'ko', { numeric: true })).map(x => [x.no, x.name, ...cols.map(c => x.v[c] || '')]);
-    if (rows.length) {
-      const ws = XLSX.utils.aoa_to_sheet([['번호', '이름', ...cols], ...rows]);
-      ws['!cols'] = [{ wch: 8 }, { wch: 10 }, ...cols.map(() => ({ wch: 50 }))];
-      XLSX.utils.book_append_sheet(wb, ws, '전체(학생별)');
-    }
-  }
-  RTYPES.forEach(t => {
-    const L = by[t].sort(cmp); if (!L.length) return; total += L.length;
-    const sub = t === '교과세특' ? '과목' : t === '동아리' ? '동아리' : '';
-    const head = [...(sub ? [sub] : []), '번호', '이름', '내용', '글자수', '바이트(한글3)'];
-    const rows = L.map(x => [...(sub ? [x.sub] : []), x.no, x.name, x.txt, [...x.txt].length, bytesOf(x.txt)]);
+  const sheet = (title, list, withSub) => {
+    const L = list.sort(cmp); if (!L.length) return; total += L.length;
+    const head = [...(withSub ? ['과목·동아리'] : []), '번호', '이름', '내용', '글자수', '바이트(한글3)'];
+    const rows = L.map(x => [...(withSub ? [x.sub] : []), x.no, x.name, x.txt, [...x.txt].length, bytesOf(x.txt)]);
     const ws = XLSX.utils.aoa_to_sheet([head, ...rows]);
-    ws['!cols'] = [...(sub ? [{ wch: 14 }] : []), { wch: 8 }, { wch: 10 }, { wch: 90 }, { wch: 8 }, { wch: 12 }];
-    XLSX.utils.book_append_sheet(wb, ws, t.replace('·', ''));
-  });
-  if (!total) { $('recHint').textContent = '작성된 내용이 없습니다.'; return; }
+    ws['!cols'] = [...(withSub ? [{ wch: 14 }] : []), { wch: 8 }, { wch: 10 }, { wch: 90 }, { wch: 8 }, { wch: 12 }];
+    XLSX.utils.book_append_sheet(wb, ws, shName(title));
+  };
+  let fname = '기록작성';
+  if (only) {   /* 지금 보고 있는 항목만 */
+    const hs = hasSubT(), sub = hs ? recSub : '';
+    const list = by[recType].filter(x => !hs || x.sub === sub);
+    sheet(hs ? `${recType}·${sub}` : recType, list, false);
+    fname = `${recType.replace('·', '')}${hs && sub ? '_' + sub : ''}`;
+  } else {
+    { // 전체 학생 한 장: 학생 한 줄, 기록 종류·과목·동아리는 열
+      const cols = ['행특', '자율·자치'];
+      const subs = [...new Set(by['교과세특'].map(x => x.sub))].sort((a, b) => a.localeCompare(b, 'ko')), clubs = [...new Set(by['동아리'].map(x => x.sub))].sort((a, b) => a.localeCompare(b, 'ko'));
+      subs.forEach(x => cols.push('교과세특·' + x)); clubs.forEach(x => cols.push('동아리·' + x));
+      const stu = new Map(); sorted().forEach(x => stu.set(String(x.no), { no: x.no, name: x.name, v: {} }));
+      const put = (x, col) => { const k = String(x.no); if (!stu.has(k)) stu.set(k, { no: x.no, name: x.name, v: {} }); stu.get(k).v[col] = x.txt; };
+      by['행특'].forEach(x => put(x, '행특')); by['자율·자치'].forEach(x => put(x, '자율·자치'));
+      by['교과세특'].forEach(x => put(x, '교과세특·' + x.sub)); by['동아리'].forEach(x => put(x, '동아리·' + x.sub));
+      const rows = [...stu.values()].sort((a, b) => String(a.no).localeCompare(String(b.no), 'ko', { numeric: true })).map(x => [x.no, x.name, ...cols.map(c => x.v[c] || '')]);
+      if (rows.length) {
+        const ws = XLSX.utils.aoa_to_sheet([['번호', '이름', ...cols], ...rows]);
+        ws['!cols'] = [{ wch: 8 }, { wch: 10 }, ...cols.map(() => ({ wch: 50 }))];
+        XLSX.utils.book_append_sheet(wb, ws, '전체(학생별)');
+      }
+    }
+    sheet('행특', by['행특'], false);
+    sheet('자율자치', by['자율·자치'], false);
+    /* 교과세특·동아리는 과목(동아리)마다 시트를 따로 만듭니다 */
+    [...new Set(by['교과세특'].map(x => x.sub))].sort((a, b) => a.localeCompare(b, 'ko')).forEach(sb => sheet('세특·' + sb, by['교과세특'].filter(x => x.sub === sb), false));
+    [...new Set(by['동아리'].map(x => x.sub))].sort((a, b) => a.localeCompare(b, 'ko')).forEach(sb => sheet('동아리·' + sb, by['동아리'].filter(x => x.sub === sb), false));
+  }
+  if (!total) { $('recHint').textContent = only ? '이 항목에 작성된 내용이 없습니다.' : '작성된 내용이 없습니다.'; return; }
   const d = new Date(), pad = n => String(n).padStart(2, '0');
   const bl = new Blob([XLSX.write(wb, { type: 'array', bookType: 'xlsx' })], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), an = document.createElement('a');
-  an.href = URL.createObjectURL(bl); an.download = `기록작성_${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}.xlsx`; document.body.appendChild(an); an.click(); an.remove(); setTimeout(() => URL.revokeObjectURL(an.href), 4000);
+  an.href = URL.createObjectURL(bl); an.download = `${fname}_${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}.xlsx`; document.body.appendChild(an); an.click(); an.remove(); setTimeout(() => URL.revokeObjectURL(an.href), 4000);
   $('recHint').textContent = `엑셀로 저장했습니다. (${total}명분, 다운로드 폴더를 확인하세요)`;
 }
-$('recXlsx').addEventListener('click', recExportXlsx);
+$('recXlsx').addEventListener('click', () => recExportXlsx(false));
+$('recXlsxOne').addEventListener('click', () => recExportXlsx(true));
 /* ===== 기록 작성: 과목·동아리 명단(출석부) · 자율자치 일정 ===== */
 let recRost = (() => { const v = jl('gm-rec-rost'); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; })();
 const saveRecRost = () => store('gm-rec-rost', recRost);
@@ -4491,6 +4517,8 @@ function recAiLoad() {
   ['recAiMemo', 'recAiCtx', 'recAiBtn'].forEach(id => { $(id).disabled = !ok; });
   $('recAiMemo').value = v.m || ''; $('recAiCtx').value = v.c || ''; if (window.chMark) chMark();
   $('recAiCtxL').firstChild.textContent = recType === '교과세특' ? '수업 내용·단원·활동 (선택)' : recType === '동아리' ? '동아리 활동 내용 (선택)' : recType === '자율·자치' ? '자율활동 일정 (활동명(2026.8.24) 형태로)' : '활동·교과 맥락 (선택)';
+  if ($('recRostLabel')) $('recRostLabel').textContent = hasSubT() ? `📂 ${recSub ? `'${recSub}' ` : ''}${recType === '동아리' ? '부원' : '수강생'} 명단 올리기` : '📂 명단 올리기';
+  if (window.recBatchDraw) recBatchDraw();
   $('recAiCtx').placeholder = recType === '자율·자치' ? '예: 봉사활동소양교육(2026.8.24), 학급자치회의(2026.9.7) — 위 일정을 누르면 자동으로 들어갑니다' : '예: 모둠 프로젝트 수업, 학급 환경미화 활동 등';
   if (window.chMark) chMark();
 }
@@ -4498,18 +4526,13 @@ function recAiLoad() {
 const recAiSave = () => { if (!recStu || $('recText').disabled) return; recMemo[recKey(recStu)] = { m: $('recAiMemo').value, c: $('recAiCtx').value }; saveRecMemo(); };
 $('recAiMemo').addEventListener('input', recAiSave); $('recAiCtx').addEventListener('input', recAiSave);
 const REC_FOCUS = { '행특': '학생의 인성·태도·학교생활 전반의 모습을 종합해서 쓰기', '교과세특': '교과 역량(탐구·문제해결·의사소통·협업 등)이 드러나도록 수업 활동과 연결해서 쓰기', '자율·자치': '학급·학교 자치 활동에서의 역할, 기여, 성장이 드러나게 쓰기', '동아리': '동아리 활동에서의 역할, 참여 과정, 성장이 드러나게 쓰기' };
-function recAiBuild() {
-  const s = recPeople().find(x => x.id === recStu), memo = $('recAiMemo').value.trim();
-  if (!s) { alert('왼쪽에서 학생을 먼저 선택하세요.'); return; }
-  if (!memo) { alert('관찰·활동 메모를 먼저 적어 주세요. 메모가 구체적일수록 좋은 초안이 나옵니다.'); return; }
-  const hide = $('recAiHide').checked, n = Math.max(100, +$('recAiLen').value || 500), hs = hasSubT();
-  let m = memo, c = $('recAiCtx').value.trim();
-  if (hide) { const rp = t => { if (s.no) t = t.split(`${s.no}번`).join('학생').split(s.no).join(''); if (s.name) t = t.split(s.name).join('학생'); return t.replace(/학생\s*학생/g, '학생'); }; m = rp(m); c = rp(c); }
-  const txt = [
-    `당신은 고등학교 교사입니다. 아래 관찰 메모를 바탕으로 학교생활기록부 '${recType}' 항목의 문장을 작성해 주세요.`, '',
+/* 요청문에 들어가는 규칙 줄 (한 명용·여러 명용 공통) */
+function recRuleLines(n, hide, name) {
+  const hs = hasSubT();
+  return [
     `- 분량: 공백 포함 ${n}자 이내 (가능하면 ${Math.max(100, n - 60)}~${n}자)`,
     '- 문체: 학교생활기록부 서술형. 문장을 "~함.", "~임.", "~보임.", "~드러남."처럼 명사형·개조식으로 끝내기 (존댓말·"~했다" 금지)',
-    hide ? '- 학생 이름과 학번은 쓰지 않고 주어를 생략하기' : `- 학생 이름은 "${s.name}"으로 표기 가능`,
+    hide ? '- 학생 이름과 학번은 쓰지 않고 주어를 생략하기' : (name ? `- 학생 이름은 "${name}"으로 표기 가능` : '- 학생 이름을 써도 됩니다'),
     `- 초점: ${REC_FOCUS[recType] || ''}`,
     ...(recType === '자율·자치' ? [
       '- 아래 [맥락]에 적힌 활동은 "활동명(연.월.일)" 표기를 그대로 문장 앞에 넣어 쓰기. 예) 봉사활동소양교육(2026.8.24)을 통해 봉사의 의미를 ~함. / 학급자치회의(2026.9.7)에서 ~ 역할을 맡아 ~함.',
@@ -4519,7 +4542,26 @@ function recAiBuild() {
     '- 메모에 없는 활동·수치·수상·결과는 절대 지어내지 않기',
     '- 구체적인 활동, 역할, 변화와 성장 과정이 보이게 쓰고 "매우 뛰어남" 같은 추상적 칭찬 반복은 피하기',
     '- 교외 대회·수상, 공인어학시험, 자격증, 사교육 관련 표현, 특정 기관·상호명은 쓰지 않기',
-    '- 결과는 생활기록부에 바로 붙여넣을 본문만 출력 (제목·설명·글자수 안내 없이)', '',
+    '- 결과는 생활기록부에 바로 붙여넣을 본문만 출력 (제목·설명·글자수 안내 없이)'
+  ];
+}
+/* 이름·학번 가리기 */
+function recHideIn(t, s) {
+  let v = String(t || '');
+  if (s.no) v = v.split(`${s.no}번`).join('학생').split(String(s.no)).join('');
+  if (s.name) v = v.split(s.name).join('학생');
+  return v.replace(/학생\s*학생/g, '학생');
+}
+function recAiBuild() {
+  const s = recPeople().find(x => x.id === recStu), memo = $('recAiMemo').value.trim();
+  if (!s) { alert('왼쪽에서 학생을 먼저 선택하세요.'); return; }
+  if (!memo) { alert('관찰·활동 메모를 먼저 적어 주세요. 메모가 구체적일수록 좋은 초안이 나옵니다.'); return; }
+  const hide = $('recAiHide').checked, n = Math.max(100, +$('recAiLen').value || 500), hs = hasSubT();
+  let m = memo, c = $('recAiCtx').value.trim();
+  if (hide) { m = recHideIn(m, s); c = recHideIn(c, s); }
+  const txt = [
+    `당신은 고등학교 교사입니다. 아래 관찰 메모를 바탕으로 학교생활기록부 '${recType}' 항목의 문장을 작성해 주세요.`, '',
+    ...recRuleLines(n, hide, s.name), '',
     '[작성 정보]', `- 항목: ${recType}${hs && recSub ? ` (${recSub})` : ''}`, c ? `- 맥락: ${c}` : '', '', '[관찰 메모]', m
   ].filter((x, i, a) => x !== '' || a[i - 1] !== '').join('\n');
   $('recAiBox').value = txt;
@@ -4530,6 +4572,81 @@ $('recAiBtn').addEventListener('click', async () => {
   const txt = recAiBuild(); if (!txt) return;
   $('recAiHint').textContent = (await copyText(txt)) ? '요청문을 복사했습니다. AI 채팅창에 붙여넣고, 결과를 위의 큰 입력칸에 붙여넣으세요.' : '자동 복사에 실패했습니다. 아래 요청문을 직접 선택해 복사해 주세요.';
 });
+/* ===== 📑 요청문 모음: 학생별 요청문을 모아 한 번에 AI에 올리기 ===== */
+function recBatchItems() {
+  const n = Math.max(100, +$('recAiLen').value || 500), hide = $('recAiHide').checked, hs = hasSubT();
+  const out = [];
+  recPeople().forEach(s => {
+    const v = recMemo[recKey(s.id)] || {};
+    const m0 = String(v.m || '').trim(); if (!m0) return;              /* 메모가 있는 학생만 */
+    const c0 = String(v.c || '').trim();
+    const m = hide ? recHideIn(m0, s) : m0, c = hide ? recHideIn(c0, s) : c0;
+    out.push({ s: s, who: `${s.no} ${s.name}`.trim(), tag: hide ? `학생${out.length + 1}` : `${s.no} ${s.name}`.trim(), m: m, c: c, n: n, hide: hide, hs: hs });
+  });
+  return out;
+}
+/* 한 학생짜리 요청문 (개별 복사용) */
+function recOnePrompt(it) {
+  return [
+    `당신은 고등학교 교사입니다. 아래 관찰 메모를 바탕으로 학교생활기록부 '${recType}' 항목의 문장을 작성해 주세요.`, '',
+    ...recRuleLines(it.n, it.hide, it.hide ? '' : it.s.name), '',
+    '[작성 정보]', `- 항목: ${recType}${it.hs && recSub ? ` (${recSub})` : ''}`, it.c ? `- 맥락: ${it.c}` : '', '', '[관찰 메모]', it.m
+  ].filter((x, i, a) => x !== '' || a[i - 1] !== '').join('\n');
+}
+/* 여러 학생을 한 번에 (전체 복사용) */
+function recBatchPrompt(items) {
+  const n = items[0].n, hide = items[0].hide, hs = items[0].hs;
+  const head = [
+    `당신은 고등학교 교사입니다. 아래 학생 ${items.length}명 각각에 대해 학교생활기록부 '${recType}' 항목의 문장을 작성해 주세요.`, '',
+    ...recRuleLines(n, hide, ''),
+    `- 학생마다 따로 작성하고, 각 학생의 글 앞에 "[${items[0].tag}]"처럼 아래에 적힌 표시를 그대로 붙여 출력하기`,
+    '- 학생끼리 문장을 섞지 말고, 한 학생의 메모에 없는 내용을 다른 학생 글에 쓰지 않기', '',
+    `[작성 정보] 항목: ${recType}${hs && recSub ? ` (${recSub})` : ''}`, ''
+  ];
+  const body = items.map(it => [`### [${it.tag}]`, it.c ? `- 맥락: ${it.c}` : '', `- 관찰 메모: ${it.m}`].filter(Boolean).join('\n'));
+  return head.join('\n') + body.join('\n\n');
+}
+function recBatchDraw() {
+  const box = $('recBatchList'); if (!box) return;
+  const items = recBatchItems(); box.innerHTML = '';
+  const hs = hasSubT();
+  if (!items.length) {
+    box.innerHTML = `<p class="text-xs text-slate-500 py-2">관찰 메모를 적어 둔 학생이 없습니다. 학생을 고르고 메모를 적으면 여기에 모입니다.${hs && recSub ? ` (지금: ${recType}·${recSub})` : ''}</p>`;
+    $('recBatchBox').classList.add('hidden'); $('recBatchBox').value = ''; return;
+  }
+  items.forEach(it => {
+    const row = el('div', 'flex items-center gap-2 text-xs rounded-lg border border-slate-200 px-2 py-1.5');
+    row.append(el('span', 'font-bold w-28 shrink-0', it.who || it.tag),
+      el('span', 'flex-1 text-slate-600 truncate', it.m.slice(0, 60)),
+      el('span', 'text-slate-400 shrink-0', it.hide ? it.tag : ''));
+    const cp = el('button', 'border border-slate-300 bg-white hover:bg-slate-50 rounded px-2 py-1 shrink-0', '복사'); cp.type = 'button';
+    cp.onclick = async () => { const t = recOnePrompt(it); $('recBatchBox').classList.remove('hidden'); $('recBatchBox').value = t; $('recBatchMsg').textContent = (await copyText(t)) ? `${it.who || it.tag} 요청문을 복사했습니다.` : '복사 실패 — 아래 칸에서 직접 복사하세요.'; };
+    row.appendChild(cp); box.appendChild(row);
+  });
+  const t = recBatchPrompt(items);
+  $('recBatchBox').classList.remove('hidden'); $('recBatchBox').value = t;
+  $('recBatchMsg').textContent = `${items.length}명 · 약 ${t.length.toLocaleString()}자. 긴 요청문은 AI가 끊길 수 있으니 10명쯤씩 나눠 올리는 것이 안전합니다.`;
+  return t;
+}
+if ($('recBatchMake')) {
+  $('recBatchMake').addEventListener('click', () => recBatchDraw());
+  $('recBatchCopy').addEventListener('click', async () => {
+    const items = recBatchItems();
+    if (!items.length) { $('recBatchMsg').textContent = '메모를 적어 둔 학생이 없습니다.'; return; }
+    const t = recBatchPrompt(items); recBatchDraw();
+    $('recBatchMsg').textContent = (await copyText(t)) ? `${items.length}명분 요청문(${t.length.toLocaleString()}자)을 복사했습니다. AI 채팅창에 붙여넣으세요.` : '복사 실패 — 아래 칸에서 직접 복사하세요.';
+  });
+  $('recBatchTxt').addEventListener('click', () => {
+    const items = recBatchItems();
+    if (!items.length) { $('recBatchMsg').textContent = '메모를 적어 둔 학생이 없습니다.'; return; }
+    const t = recBatchPrompt(items), hs = hasSubT();
+    const bl = new Blob(['\ufeff' + t], { type: 'text/plain;charset=utf-8' }), a = document.createElement('a');
+    a.href = URL.createObjectURL(bl); a.download = `요청문_${recType.replace('·', '')}${hs && recSub ? '_' + recSub : ''}_${ymd(now)}.txt`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+    $('recBatchMsg').textContent = `txt로 저장했습니다. (${items.length}명분)`;
+  });
+}
+
 /* ===== Gemini 연동 (API 키) ===== */
 let gem = (() => { const v = jl('gm-gemini'); return { key: v.key || '', model: v.model || '', manual: !!v.manual }; })();
 const GEM_DEF = 'gemini-2.5-flash', saveGem = () => store('gm-gemini', gem);
