@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기 · 올린 자료 관리 · 메모 하나 고정 · 자리배치 가로 인쇄 · AI 초안 복사 · 자율활동 날짜 표기</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-11-09</p>
   </form>
 </div>
 
@@ -1123,7 +1123,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기 · 올린 자료 관리 · 메모 하나 고정 · 자리배치 가로 인쇄 · AI 초안 복사 · 자율활동 날짜 표기</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-11-09</p>
   </div>
 </dialog>
 
@@ -5001,6 +5001,19 @@ const schClean = v => String(v == null ? '' : v).replace(/_x000D_/g, '').replace
 const schLines = v => String(v || '').split(/\n| \/ /).map(s => s.trim()).filter(Boolean);
 const schFull = ab => { if (!ab) return ''; const c = Object.keys(sch.teachers).filter(n => n.startsWith(ab)); return c.length === 1 ? c[0] : ab; };
 const schFmt = (v, kind) => { const L = schLines(v); if (!L.length) return ['', '']; if (kind === 't') { const m = /^(\d)(\d{2})$/.exec(L[0]); return [m ? `${m[1]}-${+m[2]}반` : L[0], L.slice(1).join(' ')]; } return [L[0], [schFull(L[1] || ''), ...L.slice(2)].filter(Boolean).join(' ')]; };
+/* 학급 시간표 파일에 교사 이름이 없을 때, 올려 둔 교사별 시간표에서 그 반·그 시간을 맡은 선생님을 찾습니다. */
+function schTeacherOf(cls, k) {
+  const m = /^(\d+)-(\d+)$/.exec(String(cls || '')); if (!m) return [];
+  const g = +m[1], c = +m[2];
+  const forms = [`${g}${String(c).padStart(2, '0')}`, `${g}-${c}`, `${g}-${c}반`, `${g}학년${c}반`, `${g}${c}반`];
+  const hit = [];
+  Object.keys(sch.teachers || {}).forEach(tn => {
+    const ed = (schE.t || {})[tn] || {}, v = k in ed ? ed[k] : (sch.teachers[tn] || {})[k];
+    if (!v) return;
+    if (schLines(v).some(x => forms.includes(x.replace(/\s/g, '')))) hit.push(tn.split('\n')[0]);
+  });
+  return [...new Set(hit)];
+}
 function parseTeacherTT(rows) {
   const out = {}, per = {};
   for (let i = 0; i < rows.length; i++) {
@@ -5051,7 +5064,11 @@ function schGrid(kind, name, editing) {
     DAYN.forEach((n, d) => {
       const k = `${d}-${p}`, isE = k in ed, v = isE ? ed[k] : (cells[k] || '');
       if (editing) h += `<td class="p-0.5"><input data-k="${k}" value="${esc(schLines(v).join(' / '))}" aria-label="${n} ${p}교시" class="w-full px-1 py-1 text-xs text-center border border-slate-300 rounded ${isE ? 'bg-yellow-50' : 'bg-white'}"></td>`;
-      else { const [a, b] = schFmt(v, kind); h += `<td class="p-1.5 align-top ${isE ? 'bg-yellow-100' : d === td ? 'bg-sky-50' : ''}"${isE ? ' title="직접 수정한 칸"' : ''}><div class="font-bold">${esc(a)}</div><div class="text-xs text-slate-600">${esc(b)}</div></td>`; }
+      else {
+        const [a, b0] = schFmt(v, kind); let b = b0, auto = false;
+        if (kind === 'c' && a && !b) { const t = schTeacherOf(name, k); if (t.length) { b = t.join(', '); auto = true; } }   /* 교사명이 없으면 교사별 시간표에서 찾아 넣기 */
+        h += `<td class="p-1.5 align-top ${isE ? 'bg-yellow-100' : d === td ? 'bg-sky-50' : ''}"${isE ? ' title="직접 수정한 칸"' : auto ? ' title="교사별 시간표에서 찾은 담당 선생님"' : ''}><div class="font-bold">${esc(a)}</div><div class="text-xs ${auto ? 'text-sky-700' : 'text-slate-600'}">${esc(b)}</div></td>`;
+      }
     });
     h += '</tr>';
   }
