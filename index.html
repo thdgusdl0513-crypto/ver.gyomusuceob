@@ -581,7 +581,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
         <label class="border border-sky-400 bg-sky-50 hover:bg-sky-100 rounded-lg px-3 py-2 text-sm whitespace-nowrap cursor-pointer font-bold"><span id="recRostLabel">📂 이 과목 수강생 명단 올리기</span><input id="recRostFile" type="file" accept=".xlsx,.xls,.csv" class="hidden"></label><button id="recRostDel" type="button" class="text-xs text-slate-400 hover:text-red-600">명단 전체 지우기</button><span id="recRostInfo" class="text-xs text-slate-500 basis-full"></span>
         <div class="basis-full flex gap-2 flex-wrap items-center pt-1">
           <span class="text-xs text-slate-600">✍️ 직접 추가</span>
-          <input id="recRostNo" inputmode="numeric" maxlength="6" placeholder="학번 1704" class="w-28 border border-slate-300 rounded-lg px-2 py-1.5 bg-white text-sm">
+          <input id="recRostNo" maxlength="6" placeholder="학번 1704" class="w-28 border border-slate-300 rounded-lg px-2 py-1.5 bg-white text-sm">
           <input id="recRostNm" maxlength="20" placeholder="이름" class="w-32 border border-slate-300 rounded-lg px-2 py-1.5 bg-white text-sm">
           <button id="recRostAdd" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 text-sm font-bold">＋ 추가</button>
           <span id="recRostMsg" class="text-xs text-emerald-700"></span>
@@ -680,8 +680,8 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           </div>
           <div class="flex gap-3 flex-wrap" id="rsvDays"></div>
           <div class="grid grid-cols-3 gap-3">
-            <label>시작<input id="rsvStart" type="text" inputmode="numeric" maxlength="5" value="12:40" placeholder="13:00" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
-            <label>끝<input id="rsvEnd" type="text" inputmode="numeric" maxlength="5" value="13:00" placeholder="13:20" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
+            <label>시작<input id="rsvStart" type="text" maxlength="5" value="12:40" placeholder="13:00" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
+            <label>끝<input id="rsvEnd" type="text" maxlength="5" value="13:00" placeholder="13:20" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
             <label>이름<input id="rsvName" value="점심 상담" list="rsvNameList" class="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 bg-slate-50"></label>
             <datalist id="rsvNameList"><option value="점심 상담"><option value="방과후 상담"><option value="아침 상담"><option value="저녁 상담"><option value="야자 상담"><option value="쉬는 시간 상담"><option value="진로 상담"><option value="학습 상담"><option value="교우관계 상담"><option value="개인 상담"><option value="학부모 상담"><option value="전화 상담"><option value="면담"></datalist>
           </div>
@@ -4629,6 +4629,7 @@ if ($('recRostAdd')) {
     renderRec(); $('recRostMsg').textContent = `${no} ${nm} 추가 (${recSub} ${a.length}명)`; $('recRostNo').focus();
   };
   $('recRostAdd').addEventListener('click', add);
+  $('recRostNo').addEventListener('input', () => { const v = $('recRostNo').value.replace(/\D/g, ''); if (v !== $('recRostNo').value) $('recRostNo').value = v; });
   ['recRostNo', 'recRostNm'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); add(); } }));
 }
 
@@ -7122,7 +7123,7 @@ const SYNC_KEYS = [
   ['gm-staff', '교직원 연락처', () => (window.staffGet ? staffGet() : []), v => { if (window.staffSet) staffSet(v); }, 'stf'],
   ['gm-budget', '예산', () => bg, v => { bg = normBg(v); }, 'bg']
 ];
-const SYNC_GROUPS = [['stu', '👩‍🎓 학생 명단·기록, 상담, 조퇴·외출, 결석신고서 목록, 자리 배치', true], ['rec', '📝 작성한 세특·행특·동아리 기록', true], ['gr', '📊 성적 분석 자료', true], ['stf', '📇 교직원 연락처', true], ['bg', '💰 예산', false]];
+const SYNC_GROUPS = [['stu', '👩‍🎓 학생 명단·기록, 상담, 조퇴·외출, 결석신고서 목록, 자리 배치, 과목·동아리 명단', true], ['rec', '📝 작성한 세특·행특·동아리 기록', true], ['gr', '📊 성적 분석 자료', true], ['stf', '📇 교직원 연락처', true], ['bg', '💰 예산', false]];
 const syncOn = g => !g || !!syncCfg.opt[g];
 const hashStr = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0; return h.toString(36) + ':' + s.length; };
 const isEmptyVal = v => v == null || v === '' || (Array.isArray(v) ? v.length === 0 : typeof v === 'object' ? Object.values(v).every(isEmptyVal) : false);
