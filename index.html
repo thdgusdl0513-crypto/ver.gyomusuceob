@@ -3948,7 +3948,7 @@ $('mmForm').addEventListener('submit', e => {
   const RD = k => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
   const WR = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
   const RM = k => { try { localStorage.removeItem(k); } catch (e) {} };
-  const cnt = n => `${n.toLocaleString()}건`;
+  const cnt = n => `${(+n || 0).toLocaleString()}건`;
   /* 화면에 보여 줄 목록을 만듭니다. del()은 지우기만 하고, 끝나면 새로 고칩니다. */
   function sources() {
     const g = [];
@@ -3985,9 +3985,17 @@ $('mmForm').addEventListener('submit', e => {
     if (items.length) g.push({ t: '⏰ 시간표', items });
     /* 과목·동아리 명단 */
     const rr = RD('gm-rec-rost');
-    if (rr && Object.keys(rr).length) g.push({ t: '📝 기록 작성용 명단', items: Object.keys(rr).map(k => ({
-      id: 'rr|' + k, text: `${k.replace('|', ' · ')} (${cnt((rr[k] || []).length)})`,
-      del: () => { const o = RD('gm-rec-rost') || {}; delete o[k]; WR('gm-rec-rost', o); } })) });
+    if (rr && typeof rr === 'object') {        /* { 교과세특: { 사무관리: [...] }, 동아리: {...} } 두 단계 구조 */
+      const its = [];
+      Object.keys(rr).forEach(ty => {
+        const subs = rr[ty];
+        if (Array.isArray(subs)) { its.push({ id: 'rr|' + ty, text: `${ty} (${cnt(subs.length)})`, del: () => { const o = RD('gm-rec-rost') || {}; delete o[ty]; WR('gm-rec-rost', o); } }); return; }
+        if (subs && typeof subs === 'object') Object.keys(subs).forEach(sb => its.push({
+          id: `rr|${ty}|${sb}`, text: `${ty} · ${sb} (${cnt((subs[sb] || []).length)})`,
+          del: () => { const o = RD('gm-rec-rost') || {}; if (o[ty]) { delete o[ty][sb]; if (!Object.keys(o[ty]).length) delete o[ty]; } WR('gm-rec-rost', o); } }));
+      });
+      if (its.length) g.push({ t: '📝 기록 작성용 명단', items: its });
+    }
     /* 자리 배치 명단 */
     const sr = RD('gm-seat-roster');
     if (Array.isArray(sr) && sr.length) g.push({ t: '🪑 자리 배치용 명단', items: [{ id: 'seatros', text: `올린 명단 (${cnt(sr.length)})`, del: () => RM('gm-seat-roster') }] });
@@ -4000,7 +4008,9 @@ $('mmForm').addEventListener('submit', e => {
   }
   function draw() {
     const box = $('upList'); if (!box) return;
-    const g = sources(); box.innerHTML = '';
+    let g = [];
+    try { g = sources(); } catch (e) { box.innerHTML = `<p class="text-xs text-red-600 py-2">목록을 만들지 못했습니다: ${e.message}</p>`; return; }
+    box.innerHTML = '';
     if (!g.length) { box.innerHTML = '<p class="text-xs text-slate-500 py-3">파일로 올린 자료가 없습니다.</p>'; return; }
     g.forEach(grp => {
       const d = el('div', 'rounded-lg border border-slate-200 p-2.5');
@@ -4025,8 +4035,8 @@ $('mmForm').addEventListener('submit', e => {
       $('upMsg').textContent = '지웠습니다. 화면을 새로 불러옵니다…';
       setTimeout(() => location.reload(), 400);
     };
-    window.upDraw = draw;
-    draw();
+    window.upDraw = () => { try { draw(); } catch (e) {} };
+    upDraw();
   }
 })();
 
