@@ -4638,7 +4638,8 @@ if ($('recRostAdd')) {
 /* ===== 📑 요청문 모음: 학생별 요청문을 모아 한 번에 AI에 올리기 ===== */
 /* 체크 해제한 학생 목록·AI 설정을 저장해 두고 다른 기기와도 맞춥니다 */
 const RBO_KEY = 'gm-rec-batch-off', RAO_KEY = 'gm-rec-ai-opt';
-let recBatchOff = new Set((() => { try { const v = JSON.parse(localStorage.getItem(RBO_KEY)); return Array.isArray(v) ? v : []; } catch (e) { return []; } })());
+const recBatchLoad = () => { try { const v = JSON.parse(localStorage.getItem(RBO_KEY)); return Array.isArray(v) ? v : ((v && v.off) || []); } catch (e) { return []; } };
+let recBatchOff = new Set(recBatchLoad());          /* 체크 해제한 학생 */
 const recBatchSave = () => store(RBO_KEY, [...recBatchOff]);
 let recAiOpt = (() => { try { const v = JSON.parse(localStorage.getItem(RAO_KEY)) || {}; return { len: +v.len || 500, hide: v.hide !== false }; } catch (e) { return { len: 500, hide: true }; } })();
 const recAiOptSave = () => store(RAO_KEY, recAiOpt);
@@ -4700,8 +4701,15 @@ function recBatchDraw() {
       el('span', 'flex-1 text-slate-600 truncate', it.m.slice(0, 60)));
     const cp = el('button', 'border border-slate-300 bg-white hover:bg-slate-50 rounded px-2 py-1 shrink-0', '복사'); cp.type = 'button'; cp.title = '이 학생 요청문만 복사';
     cp.onclick = async () => { const t = recOnePrompt(it); $('recBatchBox').classList.remove('hidden'); $('recBatchBox').value = t; $('recBatchMsg').textContent = (await copyText(t)) ? `${it.who || it.tag} 요청문을 복사했습니다.` : '복사 실패 — 아래 칸에서 직접 복사하세요.'; };
-    const rm = el('button', 'text-slate-400 hover:text-red-600 shrink-0 px-1', '✕'); rm.type = 'button'; rm.title = '목록에서 빼기 (메모는 그대로 남습니다)';
-    rm.onclick = () => { recBatchOff.add(id); recBatchSave(); recBatchDraw(); };
+    const rm = el('button', 'text-slate-400 hover:text-red-600 shrink-0 px-1', '✕'); rm.type = 'button'; rm.title = '이 학생의 관찰 메모를 지웁니다 (작성한 기록 본문은 그대로)';
+    rm.onclick = () => {
+      if (!confirm(`${it.who || it.tag} 학생의 관찰 메모를 지울까요?\n요청문 목록에서 사라집니다. (작성한 기록 본문은 그대로 남습니다)`)) return;
+      delete recMemo[recKey(it.s.id)]; saveRecMemo();
+      recBatchOff.delete(id); recBatchSave();
+      if (recStu === it.s.id) { $('recAiMemo').value = ''; $('recAiCtx').value = ''; if (window.chMark) chMark(); }
+      renderRec();
+      $('recBatchMsg').textContent = `${it.who || it.tag} 관찰 메모를 지웠습니다.`;
+    };
     row.append(cp, rm); box.appendChild(row);
   });
   if (!items.length) {
@@ -4713,6 +4721,7 @@ function recBatchDraw() {
   $('recBatchMsg').textContent = `${all.length}명 중 ${items.length}명 선택 · 약 ${t.length.toLocaleString()}자. 긴 요청문은 AI가 끊길 수 있으니 10명쯤씩 나눠 올리는 것이 안전합니다.`;
   return t;
 }
+
 if ($('recBatchMake')) {
   $('recBatchMake').addEventListener('click', () => recBatchDraw());
   $('recBatchAll').addEventListener('click', () => { recBatchItems(true).forEach(it => recBatchOff.delete(recBatchId(it.s))); recBatchSave(); recBatchDraw(); });
@@ -7137,7 +7146,7 @@ const SYNC_KEYS = [
   ['gm-pass', '조퇴·외출 발급 기록', () => passes, v => { passes = Array.isArray(v) ? v : []; }, 'stu'],
   ['gm-rec-rost', '과목·동아리 명단(기록 작성)', () => recRost, v => { recRost = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }, 'stu'],
   ['gm-rec-memo', '생기부 관찰 메모·요청문 내용', () => recMemo, v => { recMemo = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }, 'rec'],
-  ['gm-rec-batch-off', '요청문 선택 상태', () => [...recBatchOff], v => { recBatchOff = new Set(Array.isArray(v) ? v : []); }, 'rec'],
+  ['gm-rec-batch-off', '요청문 선택 상태', () => [...recBatchOff], v => { recBatchOff = new Set(Array.isArray(v) ? v : ((v && v.off) || [])); }, 'rec'],
   ['gm-rec-ai-opt', '요청문 설정(분량·이름 빼기)', () => recAiOpt, v => { if (v && typeof v === 'object') { recAiOpt = { len: +v.len || 500, hide: v.hide !== false }; if (window.recAiOptUI) recAiOptUI(); } }, 'rec'],
   ['gm-recs', '작성한 기록(세특·행특 등)', () => recs, v => { recs = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }, 'rec'],
   ['gm-subj', '과목 목록', () => subjList, v => { subjList = Array.isArray(v) ? v : []; }, 'rec'],
