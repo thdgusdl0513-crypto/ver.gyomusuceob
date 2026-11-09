@@ -78,6 +78,19 @@
   .sc-doc .empty { color: #94a3b8; }
   .sc-doc .sign { margin-top: 26px; text-align: center; line-height: 2.1; }
   @media print { #printArea.sc-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 0 auto !important; } #printArea.sc-print .sc-doc { width: auto; padding: 0; box-shadow: none; } #printArea.sc-print h3 { break-after: avoid; page-break-after: avoid; } }
+  @media print {
+    #printArea.ex-print { width: 273mm !important; border: none !important; padding: 0 !important; margin: 0 auto !important; font-size: 9pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    #printArea.ex-print .bg-white, #printArea.ex-print .rounded-xl, #printArea.ex-print .border { border: none !important; box-shadow: none !important; padding: 0 !important; background: #fff !important; }
+    #printArea.ex-print > div, #printArea.ex-print table, #printArea.ex-print svg { break-inside: avoid; page-break-inside: avoid; }
+    #printArea.ex-print table { width: 100%; border-collapse: collapse; font-size: 8.5pt; margin: 0 0 4mm; }
+    #printArea.ex-print th, #printArea.ex-print td { border: 0.5pt solid #94a3b8; padding: 1.2mm 1.5mm; text-align: center; }
+    #printArea.ex-print th { background: #e2e8f0; }
+    #printArea.ex-print td.l, #printArea.ex-print th.l { text-align: left; }
+    #printArea.ex-print h3, #printArea.ex-print .font-bold { font-size: 10pt; margin: 0 0 1.5mm; }
+    #printArea.ex-print svg { width: 100% !important; max-width: none !important; height: 76mm !important; display: block; margin: 0 auto; }
+    #printArea.ex-print .overflow-x-auto, #printArea.ex-print .overflow-auto { overflow: visible !important; }
+    #printArea.ex-print .text-xs { font-size: 7.5pt; }
+  }
   @media print { #printArea.as-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 0 auto !important; font-size: 10pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; } #printArea.as-print table { width: 100%; border-collapse: collapse; } #printArea.as-print th, #printArea.as-print td { border: 1px solid #94a3b8; padding: 3px 6px; text-align: center; } #printArea.as-print th { background: #e2e8f0; } #printArea.as-print td.l { text-align: left; } }
   @media print { #printArea.abs-print { width: 190mm !important; border: none !important; padding: 0 !important; margin: 10mm auto 0 !important; } #printArea.abs-print img { max-width: 100%; max-height: 275mm; width: auto; height: auto; display: block; margin: 0 auto; } }
   @media print { #printArea.abs-multi img { break-after: page; page-break-after: always; } #printArea.abs-multi img:last-child { break-after: auto; page-break-after: auto; } }
@@ -3982,13 +3995,13 @@ function subjGroup(name) {
     if (typeof printReset === 'function') printReset();
     const c = (typeof cfg === 'object' && cfg) || {}, d = new Date();
     const pa = $('printArea');
-    pa.innerHTML = `<h2 style="text-align:center;font-size:15pt;font-weight:700;margin:0 0 2px">지필평가 비교</h2>
-      <p style="text-align:center;font-size:9.5pt;color:#475569;margin:0 0 10px">${esc([c.school || '', c.cls || ''].filter(Boolean).join(' '))} · ${esc($('exStu').value || '반 전체 평균')} · 출력 ${d.getFullYear()}.${d.getMonth() + 1}.${d.getDate()}</p>
+    pa.innerHTML = `<h2 style="text-align:center;font-size:14pt;font-weight:700;margin:0 0 1mm">지필평가 비교</h2>
+      <p style="text-align:center;font-size:9pt;color:#475569;margin:0 0 4mm">${esc([c.school || '', c.cls || ''].filter(Boolean).join(' '))} · ${esc($('exStu').value || '반 전체 평균')} · 출력 ${d.getFullYear()}.${d.getMonth() + 1}.${d.getDate()}</p>
       ${$('exOut').innerHTML}
       <p style="font-size:8.5pt;color:#64748b;margin-top:8px">※ 개인정보가 담겨 있으니 보관과 폐기에 유의하세요.</p>`;
-    pa.classList.add('as-print');
-    const pg = document.createElement('style'); pg.dataset.pg = '1'; pg.textContent = '@page{size:A4 landscape;margin:12mm}'; document.head.appendChild(pg);
-    const done = () => { pg.remove(); pa.classList.remove('as-print'); pa.innerHTML = ''; window.removeEventListener('afterprint', done); };
+    pa.classList.add('ex-print');
+    const pg = document.createElement('style'); pg.dataset.pg = '1'; pg.textContent = '@page{size:A4 landscape;margin:10mm}'; document.head.appendChild(pg);
+    const done = () => { pg.remove(); pa.classList.remove('ex-print'); pa.innerHTML = ''; window.removeEventListener('afterprint', done); };
     window.addEventListener('afterprint', done); window.print(); setTimeout(done, 60000);
   });
   $('exXlsx').addEventListener('click', () => {
