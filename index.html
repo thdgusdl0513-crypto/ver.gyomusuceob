@@ -578,7 +578,15 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <div id="recSubRow" class="hidden flex gap-2 flex-wrap items-center">
         <select id="recSub" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"></select><button id="recSubDel" type="button" class="text-xs text-slate-400 hover:text-red-600">선택 삭제</button>
         <input id="recSubName" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button id="recSubAdd" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">추가</button>
-        <label class="border border-sky-400 bg-sky-50 hover:bg-sky-100 rounded-lg px-3 py-2 text-sm whitespace-nowrap cursor-pointer font-bold"><span id="recRostLabel">📂 이 과목 수강생 명단 올리기</span><input id="recRostFile" type="file" accept=".xlsx,.xls,.csv" class="hidden"></label><button id="recRostDel" type="button" class="text-xs text-slate-400 hover:text-red-600">명단 지우기</button><span id="recRostInfo" class="text-xs text-slate-500 basis-full"></span>
+        <label class="border border-sky-400 bg-sky-50 hover:bg-sky-100 rounded-lg px-3 py-2 text-sm whitespace-nowrap cursor-pointer font-bold"><span id="recRostLabel">📂 이 과목 수강생 명단 올리기</span><input id="recRostFile" type="file" accept=".xlsx,.xls,.csv" class="hidden"></label><button id="recRostDel" type="button" class="text-xs text-slate-400 hover:text-red-600">명단 전체 지우기</button><span id="recRostInfo" class="text-xs text-slate-500 basis-full"></span>
+        <div class="basis-full flex gap-2 flex-wrap items-center pt-1">
+          <span class="text-xs text-slate-600">✍️ 직접 추가</span>
+          <input id="recRostNo" inputmode="numeric" maxlength="6" placeholder="학번 1704" class="w-28 border border-slate-300 rounded-lg px-2 py-1.5 bg-white text-sm">
+          <input id="recRostNm" maxlength="20" placeholder="이름" class="w-32 border border-slate-300 rounded-lg px-2 py-1.5 bg-white text-sm">
+          <button id="recRostAdd" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 text-sm font-bold">＋ 추가</button>
+          <span id="recRostMsg" class="text-xs text-emerald-700"></span>
+        </div>
+        <div id="recRostChips" class="basis-full flex gap-1.5 flex-wrap"></div>
       </div>
     </div>
     <div id="recCh" class="hidden bg-white rounded-xl border border-slate-200 p-4 mt-5"></div>
@@ -4490,7 +4498,7 @@ function chMark() {
     const c = b.querySelector('.chk'); if (c) c.textContent = on ? '✓' : '';
   });
 }
-{ const _rr2 = renderRec; renderRec = function () { _rr2(); recChRender(); const lst = hasSubT() && recSub && (recRost[recType] || {})[recSub]; $('recRostInfo').textContent = !hasSubT() ? '' : lst && lst.length ? `${recSub}: 올린 명단 ${lst.length}명이 왼쪽에 표시됩니다.` : '올린 명단이 없으면 내 반 학생이 표시됩니다. 출석부·동아리 명단(엑셀)을 올리면 그 학생들만 선택할 수 있어요.'; }; }
+{ const _rr2 = renderRec; renderRec = function () { _rr2(); recChRender(); const lst = hasSubT() && recSub && (recRost[recType] || {})[recSub]; $('recRostInfo').textContent = !hasSubT() ? '' : lst && lst.length ? `${recSub}: 명단 ${lst.length}명이 왼쪽에 표시됩니다.` : '명단이 없으면 내 반 학생이 표시됩니다. 엑셀로 올리거나 아래에서 학번·이름을 직접 추가하세요.'; if (window.recRostChips) recRostChips(); }; }
 $('recRostFile').addEventListener('change', async e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
   try {
@@ -4572,6 +4580,48 @@ $('recAiBtn').addEventListener('click', async () => {
   const txt = recAiBuild(); if (!txt) return;
   $('recAiHint').textContent = (await copyText(txt)) ? '요청문을 복사했습니다. AI 채팅창에 붙여넣고, 결과를 위의 큰 입력칸에 붙여넣으세요.' : '자동 복사에 실패했습니다. 아래 요청문을 직접 선택해 복사해 주세요.';
 });
+/* ===== 과목·동아리 명단: 학번·이름으로 직접 추가하기 ===== */
+function recRostArr() {
+  if (!hasSubT() || !recSub) return null;
+  recRost[recType] = recRost[recType] || {};
+  if (!Array.isArray(recRost[recType][recSub])) recRost[recType][recSub] = [];
+  return recRost[recType][recSub];
+}
+function recRostChips() {
+  const box = $('recRostChips'); if (!box) return;
+  box.innerHTML = '';
+  const arr = hasSubT() && recSub ? ((recRost[recType] || {})[recSub] || []) : [];
+  if (!hasSubT()) return;
+  arr.forEach((x, i) => {
+    const c = el('span', 'inline-flex items-center gap-1 text-xs rounded-full border border-slate-300 bg-white px-2 py-0.5');
+    c.append(el('span', '', `${x.no} ${x.name}`));
+    const d = el('button', 'text-slate-400 hover:text-red-600', '✕'); d.type = 'button'; d.title = '이 학생만 명단에서 빼기';
+    d.onclick = () => {
+      if (!confirm(`${x.no} ${x.name} 학생을 "${recSub}" 명단에서 뺄까요? (작성한 기록은 남습니다)`)) return;
+      const a = recRostArr(); a.splice(i, 1);
+      if (!a.length) delete recRost[recType][recSub];
+      saveRecRost(); if (recStu === 'r:' + x.no) recStu = ''; renderRec();
+    };
+    c.appendChild(d); box.appendChild(c);
+  });
+}
+if ($('recRostAdd')) {
+  const add = () => {
+    if (!hasSubT()) { alert('교과세특 또는 동아리를 먼저 고르세요.'); return; }
+    if (!recSub) { alert('과목(동아리)을 먼저 만들고 고르세요.'); return; }
+    const no = $('recRostNo').value.replace(/\D/g, ''), nm = nameNorm($('recRostNm').value);
+    if (!no || !nm) { $('recRostMsg').textContent = '학번과 이름을 모두 적어 주세요.'; return; }
+    const a = recRostArr();
+    if (a.some(x => String(x.no) === no)) { $('recRostMsg').textContent = `${no}번은 이미 명단에 있습니다.`; return; }
+    a.push({ no: no, name: nm });
+    a.sort((x, y) => String(x.no).localeCompare(String(y.no), 'ko', { numeric: true }));
+    saveRecRost(); $('recRostNo').value = ''; $('recRostNm').value = '';
+    renderRec(); $('recRostMsg').textContent = `${no} ${nm} 추가 (${recSub} ${a.length}명)`; $('recRostNo').focus();
+  };
+  $('recRostAdd').addEventListener('click', add);
+  ['recRostNo', 'recRostNm'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); add(); } }));
+}
+
 /* ===== 📑 요청문 모음: 학생별 요청문을 모아 한 번에 AI에 올리기 ===== */
 function recBatchItems() {
   const n = Math.max(100, +$('recAiLen').value || 500), hide = $('recAiHide').checked, hs = hasSubT();
