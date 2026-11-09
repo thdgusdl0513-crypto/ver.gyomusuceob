@@ -931,6 +931,18 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
         </div>
       </div>
       <div class="space-y-4">
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <div class="flex items-center gap-2 flex-wrap mb-2">
+            <h3 class="font-bold">📋 명단 <span id="plCount" class="text-xs font-normal text-slate-500"></span></h3>
+            <div class="ml-auto flex gap-1 items-center">
+              <input id="plAddNo" maxlength="8" placeholder="학번" class="w-20 border border-slate-300 rounded-lg px-2 py-1 bg-slate-50 text-xs">
+              <input id="plAddNm" maxlength="20" placeholder="이름" class="w-24 border border-slate-300 rounded-lg px-2 py-1 bg-slate-50 text-xs">
+              <input id="plAddSc" placeholder="점수" class="w-16 border border-slate-300 rounded-lg px-2 py-1 bg-slate-50 text-xs">
+              <button id="plAdd" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-2 py-1 text-xs font-bold">＋ 추가</button>
+            </div>
+          </div>
+          <div id="plRoster" class="max-h-72 overflow-y-auto"></div>
+        </div>
         <div id="plStat" class="bg-white rounded-xl border border-slate-200 p-5 hidden"></div>
         <div id="plOut" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
       </div>
@@ -4486,6 +4498,7 @@ function plDraw() {
     });
   };
   chip(place.apart, $('plApList'), 'apart'); chip(place.tog, $('plTgList'), 'tog');
+  plRoster();
   if (!place.res) { out.innerHTML = '<p class="text-sm text-slate-500 col-span-full">명단을 가져오고 "반 나누기"를 누르면 결과가 여기에 나옵니다.</p>'; stat.classList.add('hidden'); return; }
   const cls = Array.from({ length: place.n }, () => []);
   place.stu.forEach(s => { const k = place.res[s.no]; if (k != null && cls[k]) cls[k].push(s); });
@@ -4520,18 +4533,30 @@ if ($('plRun')) {
     $('plMsg').textContent = `${how} ${list.length}명을 불러왔습니다.`;
   };
   $('plFromGpa').addEventListener('click', () => {
-    const rows = (typeof gpaRows === 'function') ? gpaRows() : [];
-    if (!rows.length) { $('plMsg').textContent = '내신 계산 결과가 없습니다. 성적관리에서 일람표를 먼저 올려 주세요.'; return; }
-    const t0 = gpaTerms()[0];
-    setStu(rows.map(r => {
-      const base = String(r.name).replace(/\(\d+-\d+\)$/, '').trim(), cl = clsOf(t0, r.name);
-      /* 동명이인은 학급까지 맞춰 학번을 찾습니다 */
-      const key = no => { const m = /(\d+)학년\s*(\d+)반/.exec((stuInfo(no) || {}).cls || ''); return m ? `${+m[1]}-${+m[2]}` : ''; };
-      const same = students.filter(x => x.name === base);
-      const st = (cl && same.find(x => key(x.no) === cl)) || (same.length === 1 ? same[0] : null);
-      return { no: st ? st.no : (cl ? `${base}(${cl})` : base), name: base, sex: st ? plSex(st.sex) : '', score: +r.avg.toFixed(2), cls: cl };
-    }), '내신 결과에서');
+    const terms = Object.keys(gAll).sort();
+    if (!terms.length) { $('plMsg').textContent = '성적 자료가 없습니다. 성적관리에서 일람표를 먼저 올려 주세요.'; return; }
+    /* 반배치는 학급 필터·분석 제외와 상관없이 올린 성적의 모든 학생을 가져옵니다 */
+    const keepCls = gCls, keepEx = gex;
+    gCls = ''; gex = [];
+    let list = [];
+    try {
+      const names = new Set();
+      terms.forEach(t => Object.keys((gAll[t] || {}).stu || {}).forEach(n => names.add(n)));
+      const clsKey = no => { const m = /(\d+)학년\s*(\d+)반/.exec((stuInfo(no) || {}).cls || ''); return m ? `${+m[1]}-${+m[2]}` : ''; };
+      list = [...names].map(n => {
+        const base = String(n).replace(/\(\d+-\d+\)$/, '').trim();
+        let cl = ''; terms.forEach(t => { if (!cl) cl = clsOf(t, n); });
+        const same = students.filter(x => x.name === base);
+        const st = (cl && same.find(x => clsKey(x.no) === cl)) || (same.length === 1 ? same[0] : null);
+        const g = gpaOf(n);
+        return { no: st ? st.no : (cl ? `${base}(${cl})` : base), name: base, sex: st ? plSex(st.sex) : '',
+          score: g.avg == null ? null : +g.avg.toFixed(2), cls: cl };
+      }).sort((a, b) => String(a.cls).localeCompare(String(b.cls)) || String(a.no).localeCompare(String(b.no), 'ko', { numeric: true }));
+    } finally { gCls = keepCls; gex = keepEx; }
+    const noScore = list.filter(s => s.score == null).length;
+    setStu(list, '성적 자료에서');
     place.dir = 'asc'; plSave(); plDraw();
+    if (noScore) $('plMsg').textContent = `${list.length}명을 불러왔습니다. 그중 ${noScore}명은 석차등급이 없어 점수가 비어 있습니다 — 명단에서 직접 넣거나, 비워 두면 배치에서 빠집니다.`;
   });
   $('plFromStu').addEventListener('click', () => {
     if (!students.length) { $('plMsg').textContent = '학생 명단이 없습니다.'; return; }
@@ -4612,6 +4637,48 @@ if ($('plRun')) {
     window.addEventListener('afterprint', done); window.print(); setTimeout(done, 60000);
   });
   plDraw();
+}
+
+/* 불러온 명단을 표로 보여 주고 바로 고치기 */
+function plRoster() {
+  const box = $('plRoster'); if (!box) return;
+  const n = place.stu.length, ns = place.stu.filter(s => s.score == null).length;
+  $('plCount').textContent = n ? `${n}명${ns ? ` · 점수 없음 ${ns}명` : ''}` : '';
+  if (!n) { box.innerHTML = '<p class="text-sm text-slate-500 py-3">위에서 명단을 가져오거나, 오른쪽 위에서 직접 추가하세요.</p>'; return; }
+  box.innerHTML = `<table class="w-full text-sm"><thead class="text-slate-500 text-left sticky top-0 bg-white"><tr>${['이전 반', '학번', '이름', '성별', '점수', ''].map(t => `<th class="px-2 py-1 font-medium">${t}</th>`).join('')}</tr></thead><tbody id="plRows" class="divide-y divide-slate-100"></tbody></table>`;
+  const tb = $('plRows');
+  place.stu.forEach((s, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="px-2 py-1 text-slate-500 text-xs">${esc(s.cls || '-')}</td><td class="px-2 text-xs">${esc(String(s.no))}</td><td class="px-2 font-medium">${esc(s.name)}</td>`;
+    const td1 = document.createElement('td'); td1.className = 'px-2';
+    const sx = el('select', 'border border-slate-300 rounded px-1 py-0.5 text-xs bg-white');
+    ['', '남', '여'].forEach(v => { const o = el('option', '', v || '-'); o.value = v; sx.appendChild(o); });
+    sx.value = s.sex || ''; sx.onchange = () => { s.sex = sx.value; plSave(); };
+    td1.appendChild(sx);
+    const td2 = document.createElement('td'); td2.className = 'px-2';
+    const sc = el('input'); sc.type = 'number'; sc.step = '0.01'; sc.className = 'w-20 border border-slate-300 rounded px-1 py-0.5 text-xs text-right' + (s.score == null ? ' border-amber-400 bg-amber-50' : '');
+    sc.value = s.score == null ? '' : s.score;
+    sc.onchange = () => { const v = sc.value.trim(); s.score = v === '' ? null : +v; plSave(); plRoster(); };
+    td2.appendChild(sc);
+    const td3 = document.createElement('td'); td3.className = 'px-2 text-right';
+    const rm = el('button', 'text-slate-400 hover:text-red-600 text-xs', '✕'); rm.type = 'button'; rm.title = '명단에서 빼기';
+    rm.onclick = () => { place.stu.splice(i, 1); if (place.res) delete place.res[s.no]; plSave(); plDraw(); };
+    td3.appendChild(rm);
+    tr.append(td1, td2, td3); tb.appendChild(tr);
+  });
+}
+if ($('plAdd')) {
+  const addOne = () => {
+    const no = $('plAddNo').value.trim(), nm = nameNorm($('plAddNm').value), sc = $('plAddSc').value.trim();
+    if (!no || !nm) { $('plMsg').textContent = '학번과 이름을 적어 주세요.'; return; }
+    if (place.stu.some(s => String(s.no) === no)) { $('plMsg').textContent = `${no}번은 이미 명단에 있습니다.`; return; }
+    place.stu.push({ no: no, name: nm, sex: '', score: sc === '' ? null : +sc, cls: '' });
+    place.res = null; plSave(); plDraw();
+    $('plAddNo').value = ''; $('plAddNm').value = ''; $('plAddSc').value = ''; $('plAddNo').focus();
+    $('plMsg').textContent = `${nm} 추가 (${place.stu.length}명)`;
+  };
+  $('plAdd').addEventListener('click', addOne);
+  ['plAddNo', 'plAddNm', 'plAddSc'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addOne(); } }));
 }
 
 /* ===== 📌 떠 있는 할 일 메모 창 ===== */
