@@ -156,7 +156,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     <button id="lockCancel" type="button" class="hidden w-full text-sm text-slate-500">취소</button>
     <button id="lockSkip" type="button" class="hidden w-full text-xs text-slate-500 hover:text-slate-800">비밀번호 없이 사용</button>
     <button id="lockReset" type="button" class="hidden w-full text-xs text-slate-400 hover:text-red-600">비밀번호를 잊으셨나요? 초기화</button>
-    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기 · 올린 자료 관리 · 메모 하나 고정 · 자리배치 가로 인쇄</p>
+    <p class="text-xs text-center" style="color:#475569">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 결석계 묶음 · 명단 자유양식 · 비번 저장 · 기록 엑셀 · 학급시간표 v2 · 글씨+2pt · 넓은 화면 · 홈 접기 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기 · 올린 자료 관리 · 메모 하나 고정 · 자리배치 가로 인쇄 · AI 초안 복사</p>
   </form>
 </div>
 
@@ -624,7 +624,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
             <span id="recGemRun" class="text-xs text-slate-500"></span>
           </div>
           <textarea id="recAiOut" rows="6" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-white text-sm hidden" placeholder="AI가 쓴 초안이 여기에 나옵니다."></textarea>
-          <div id="recAiOutRow" class="hidden flex items-center gap-2 text-xs"><span id="recAiOutCnt" class="text-slate-500"></span><button id="recAiUse" type="button" class="ml-auto border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold">위 입력칸에 넣기</button></div>
+          <div id="recAiOutRow" class="hidden flex items-center gap-2 text-xs"><span id="recAiOutCnt" class="text-slate-500"></span><button id="recAiCopy" type="button" class="ml-auto border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold">📋 초안 복사</button><button id="recAiUse" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold">위 입력칸에 넣기</button></div>
           <textarea id="recAiBox" readonly rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-xs" placeholder="복사한 요청문이 여기에 표시됩니다. 사용하시는 AI 채팅창에 붙여넣고, AI가 써 준 글을 위의 큰 입력칸에 붙여넣어 다듬으세요."></textarea>
           <p id="recAiHint" class="text-xs text-emerald-600"></p>
           <p class="text-xs text-slate-500">AI 결과는 초안입니다. 사실과 다른 내용이 없는지, 학교의 생활기록부 기재요령에 맞는지 꼭 확인해 주세요. 이름을 빼도 메모 속 다른 개인정보는 그대로 전달되니 필요한 내용만 적으세요.</p>
@@ -1123,7 +1123,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
       <p class="text-xs text-slate-500 mb-2">프로그램을 열 때와 연동으로 내용을 받기 전에, <b>작성한 기록·관찰 메모·학생 명단·상담 기록</b>을 이 기기에 몰래 복사해 둡니다. 실수로 지워졌을 때 아래에서 되돌릴 수 있습니다.</p>
       <div id="snapList" class="space-y-2 text-sm"></div>
     </section>
-    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기 · 올린 자료 관리 · 메모 하나 고정 · 자리배치 가로 인쇄</p>
+    <p class="text-xs text-slate-500 text-center">버전 2026-10-02 · 홈 4분할 · 여러 줄 메모 · 메뉴 화살표 v2 · 인쇄 머리글 제거 · 학교 양식 업로드 · 화살표 v3 · 급식 v3 · 학교명 입력 · 상담 신청 · 생기부 AI · Gemini v3 · 명단·자율자치 · 성적 인쇄 · 기초조사서 팝업 · 학년도 조정 · 결석계 목록 보관 · 결석 현황 · 할 일 수정 · 상담 수정 · 인쇄 정리 · 발급 안내 · 전송 안내 · 테스트 인쇄 · Phomemo 전송 선택 · 공문 작성 · 학번 표시 · 메뉴 줄바꿈 · 공문 키 설정 · 소속 표기 · 사진 인쇄 · 자동 보관함 · 연동 표시 · 연동 상태표 · 기록 연동 버튼 · 등교일 기준 · 추천서 · 추천서 키 · 추천서 미리보기 · 교직원 연락처 · 추가 잠금 · 추천서 인적사항 · 학생 주소·생일 · 달력에 창체 · 지필평가 비교 · 상담 안내 문구 · 메모 색 13가지 · 외국인 이름 · 자리 떼어놓기 · 교과 묶음 · 품의 작성 · 상담 승인 메일 · 신청 페이지 9개 국어 · 상담 이름 번역 · 학부모 문자 AI · 상담-학생 연결 복구 · 메일 알림 · 예산 단가×개수 · 메모 띄우기 · 올린 자료 관리 · 메모 하나 고정 · 자리배치 가로 인쇄 · AI 초안 복사</p>
   </div>
 </dialog>
 
@@ -4584,6 +4584,11 @@ async function gemAsk(prompt, retried, tries, skip) {
     $('recGemBtn').disabled = $('recAiBtn').disabled;
   });
   $('recAiOut').addEventListener('input', () => { $('recAiOutCnt').textContent = `${$('recAiOut').value.length}자`; });
+  $('recAiCopy').addEventListener('click', async () => {
+    const t = $('recAiOut').value.trim();
+    if (!t) { $('recAiHint').textContent = '복사할 초안이 없습니다.'; return; }
+    $('recAiHint').textContent = (await copyText(t)) ? `초안 ${t.length}자를 복사했습니다. 나이스에 붙여넣으세요.` : '자동 복사에 실패했습니다. 초안을 직접 선택해 복사해 주세요.';
+  });
   $('recAiUse').addEventListener('click', () => {
     if ($('recText').disabled) return; const cur = $('recText').value.trim();
     if (cur && !confirm('위 입력칸에 이미 내용이 있습니다. AI 초안으로 바꿀까요? (취소하면 아래에 이어 붙입니다)')) $('recText').value = cur + '\n' + $('recAiOut').value;
