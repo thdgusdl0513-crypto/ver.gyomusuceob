@@ -564,6 +564,8 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
               <label class="flex items-center gap-1"><input type="checkbox" id="icsNeis" class="w-4 h-4" checked> 학사일정</label>
               <label class="flex items-center gap-1"><input type="checkbox" id="icsCh" class="w-4 h-4" checked> 창체 일정</label>
               <label class="flex items-center gap-1"><input type="checkbox" id="icsMe" class="w-4 h-4" checked> 내 일정</label>
+              <label class="flex items-center gap-1"><input type="checkbox" id="icsTodo" class="w-4 h-4" checked> 할 일(마감일 있는 것)</label>
+              <label class="flex items-center gap-1 text-slate-500"><input type="checkbox" id="icsDone" class="w-4 h-4"> 완료한 할 일도</label>
               <label class="flex items-center gap-1">기간<select id="icsRange" class="border border-slate-300 rounded px-2 py-1 bg-white"><option value="all">전체</option><option value="year">올해(1~12월)</option><option value="month">이번 달</option><option value="future">오늘 이후</option></select></label>
               <button id="icsSave" type="button" class="bg-[#0f2747] hover:bg-[#1b3a66] text-white rounded-lg px-3 py-1.5 font-bold">📥 .ics 파일 저장</button>
               <span id="icsMsg" class="text-slate-600"></span>
@@ -575,6 +577,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
               <li><b>캘린더에 추가</b>에서 넣을 캘린더를 고르고 <b>가져오기</b>를 누릅니다.</li>
             </ol>
             <p class="text-slate-600">💡 학교 일정만 따로 보고 싶으면, 구글 캘린더에서 <b>"학교일정"처럼 새 캘린더를 먼저 만들고</b> 거기로 가져오세요. 나중에 통째로 지우기 쉽습니다. 같은 파일을 두 번 가져오면 일정이 중복되지 않고 갱신됩니다.</p>
+            <p class="text-slate-600">할 일은 <b>마감일을 적어 둔 것</b>만 그 날짜의 종일 일정으로 들어갑니다. 마감일이 없는 할 일은 보낼 날짜가 없어 빠집니다.</p>
             <p class="text-slate-600">학사일정은 <b>나이스에서 불러온 달</b>만 들어갑니다. 여러 달을 넣으려면 달을 바꿔 가며 "나이스에서 불러오기"를 먼저 눌러 주세요.</p>
           </div>
         </details>
@@ -4470,6 +4473,16 @@ function icsBuild() {
   if ($('icsMe').checked) {
     try { (evs || []).forEach(e => { if (e.date && keep(e.date)) ev.push({ d: e.date, to: e.to || '', time: e.time || '', t: e.text, c: '내 일정', g: '' }); }); } catch (e) {}
   }
+  if ($('icsTodo') && $('icsTodo').checked) {        /* 마감일이 적힌 할 일 */
+    try {
+      (memos || []).forEach(m => {
+        if (!m.due || !keep(m.due)) return;
+        if (m.done && !$('icsDone').checked) return;
+        const one = String(m.text || '').split('\n')[0].slice(0, 80);
+        ev.push({ d: m.due, t: (m.done ? '✔ ' : '') + one, c: '할 일', g: [m.cat || '', String(m.text || '').split('\n').slice(1).join('\n')].filter(Boolean).join('\n') });
+      });
+    } catch (e) {}
+  }
   ev.sort((a, b) => a.d.localeCompare(b.d) || String(a.t).localeCompare(String(b.t)));
   if (!ev.length) return null;
   const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
@@ -4486,7 +4499,7 @@ function icsBuild() {
     } else {
       L.push(`DTSTART;VALUE=DATE:${icsDay(e.d)}`, `DTEND;VALUE=DATE:${icsNext(e.to && e.to > e.d ? e.to : e.d)}`);
     }
-    L.push(`SUMMARY:${icsEsc((e.c === '창체' ? '[창체] ' : e.c === '내 일정' ? '' : '[학사] ') + e.t)}`);
+    L.push(`SUMMARY:${icsEsc((e.c === '창체' ? '[창체] ' : e.c === '할 일' ? '[할 일] ' : e.c === '내 일정' ? '' : '[학사] ') + e.t)}`);
     if (e.g) L.push(`DESCRIPTION:${icsEsc(e.g)}`);
     L.push(`CATEGORIES:${icsEsc(e.c)}`, 'END:VEVENT');
   });
