@@ -782,6 +782,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
           <button id="carXlsx" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs font-bold">📊 엑셀 저장</button>
           <button id="carCopyAll" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs font-bold">📋 전체 복사</button>
           <button id="carAskAll" type="button" class="border border-slate-300 bg-white hover:bg-slate-50 rounded-lg px-3 py-1.5 text-xs font-bold">🤖 AI 요청문 전체 복사</button>
+          <button id="carClear" type="button" class="border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 rounded-lg px-3 py-1.5 text-xs font-bold">🧹 전체 초기화</button>
         </div>
         <p id="carMsg2" class="text-xs text-slate-500"></p>
         <div id="carList" class="space-y-2"></div>
@@ -5905,6 +5906,28 @@ async function carCopy(txt, what) {
   try { await navigator.clipboard.writeText(txt); carMsg(what + '을 복사했습니다.', true); }
   catch (e) { prompt('아래 내용을 복사해 쓰세요.', txt); }
 }
+async function carDel(c) {
+  if (!confirm(`${c.name}(${c.no}) 학생이 낸 진로 희망 내용을 지울까요?\n\n지우면 학생이 다시 제출할 수 있습니다.`)) return;
+  try {
+    const j = await rsvReq('POST', { action: 'carDel', no: c.no });
+    if (!j.ok) throw new Error(j.error || '실패');
+    rsvCache.careers = (rsvCache.careers || []).filter(x => String(x.no) !== String(c.no));
+    store(RSVC_KEY, rsvCache); renderCar();
+    carMsg(`${c.name} 학생 내용을 지웠습니다.`, true);
+  } catch (e) { carMsg('삭제 실패: ' + e.message); }
+}
+async function carClear() {
+  const n = (rsvCache.careers || []).length;
+  if (!n) return carMsg('제출한 학생이 없습니다.');
+  if (!confirm(`제출된 진로 희망 ${n}명 전체를 지울까요?\n\n되돌릴 수 없습니다. 필요하면 먼저 "📊 엑셀 저장"으로 받아 두세요.`)) return;
+  if (!confirm('정말 전체를 지웁니다. 계속할까요?')) return;
+  try {
+    const j = await rsvReq('POST', { action: 'carClear' });
+    if (!j.ok) throw new Error(j.error || '실패');
+    rsvCache.careers = []; store(RSVC_KEY, rsvCache); renderCar();
+    carMsg(`${n}명 전체를 지웠습니다. 이제 학생들이 처음부터 다시 낼 수 있습니다.`, true);
+  } catch (e) { carMsg('초기화 실패: ' + e.message); }
+}
 function renderCar() {
   const box = $('carList'); if (!box) return;
   const list = (rsvCache.careers || []).slice().sort((a, b) => String(a.no).localeCompare(String(b.no)));
@@ -5929,13 +5952,16 @@ function renderCar() {
     b1.type = 'button'; b1.onclick = () => carCopy(carLines(c), `${c.name} 학생 내용`);
     const b2 = el('button', 'px-3 py-1 rounded-lg text-xs font-bold border border-slate-300 bg-white', '🤖 AI 요청문');
     b2.type = 'button'; b2.onclick = () => carCopy(carPrompt([c]), `${c.name} 학생 AI 요청문`);
-    bs.append(b1, b2); d.appendChild(bs);
+    const b3 = el('button', 'px-3 py-1 rounded-lg text-xs font-bold border border-rose-200 bg-white text-rose-600 ml-auto', '🗑 삭제');
+    b3.type = 'button'; b3.onclick = () => carDel(c);
+    bs.append(b1, b2, b3); d.appendChild(bs);
     box.appendChild(d);
   });
 }
 (() => {
   if (!$('carList')) return;
   $('carRefresh').addEventListener('click', () => rsvRefresh());
+  $('carClear').addEventListener('click', carClear);
   $('carLink').addEventListener('click', async () => {
     if (!rsv.url || !rsv.page) { alert('위 "상담 신청 받기"에서 웹 앱 주소와 학생 신청 페이지 주소를 먼저 입력하세요.'); return; }
     const lg = $('rsvLang') ? $('rsvLang').value : '';
