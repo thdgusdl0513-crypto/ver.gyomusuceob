@@ -556,7 +556,28 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
     </div>
     <div class="grid gap-5 mt-5">
       <div class="bg-white rounded-xl border border-slate-200 p-5">
-        <div class="flex items-center gap-2 flex-wrap"><h2 class="font-bold text-lg mr-auto">🗓️ 학사일정</h2><input id="cMonth" type="month" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button id="cLoad" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">나이스에서 불러오기</button></div>
+        <div class="flex items-center gap-2 flex-wrap"><h2 class="font-bold text-lg mr-auto">🗓️ 학사일정</h2><input id="cMonth" type="month" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button id="cLoad" type="button" class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">나이스에서 불러오기</button><button id="icsBtn" type="button" class="border border-sky-400 bg-sky-50 hover:bg-sky-100 rounded-lg px-3 py-2 text-sm font-bold whitespace-nowrap">📅 구글 캘린더용 파일</button></div>
+        <details id="icsBox" class="hidden rounded-lg border border-sky-200 bg-sky-50 p-3 text-xs" open>
+          <summary class="font-bold cursor-pointer text-sm">📅 구글 캘린더로 보내기</summary>
+          <div class="mt-2 space-y-2">
+            <div class="flex flex-wrap gap-3 items-center">
+              <label class="flex items-center gap-1"><input type="checkbox" id="icsNeis" class="w-4 h-4" checked> 학사일정</label>
+              <label class="flex items-center gap-1"><input type="checkbox" id="icsCh" class="w-4 h-4" checked> 창체 일정</label>
+              <label class="flex items-center gap-1"><input type="checkbox" id="icsMe" class="w-4 h-4" checked> 내 일정</label>
+              <label class="flex items-center gap-1">기간<select id="icsRange" class="border border-slate-300 rounded px-2 py-1 bg-white"><option value="all">전체</option><option value="year">올해(1~12월)</option><option value="month">이번 달</option><option value="future">오늘 이후</option></select></label>
+              <button id="icsSave" type="button" class="bg-[#0f2747] hover:bg-[#1b3a66] text-white rounded-lg px-3 py-1.5 font-bold">📥 .ics 파일 저장</button>
+              <span id="icsMsg" class="text-slate-600"></span>
+            </div>
+            <ol class="list-decimal ml-4 space-y-0.5 text-slate-700">
+              <li>위 버튼으로 <b>.ics 파일</b>을 내려받습니다.</li>
+              <li>컴퓨터에서 <b>calendar.google.com</b> 접속 → 오른쪽 위 <b>⚙️ 설정</b>.</li>
+              <li>왼쪽 <b>가져오기/내보내기</b> → <b>가져오기</b> → 받은 .ics 파일 선택.</li>
+              <li><b>캘린더에 추가</b>에서 넣을 캘린더를 고르고 <b>가져오기</b>를 누릅니다.</li>
+            </ol>
+            <p class="text-slate-600">💡 학교 일정만 따로 보고 싶으면, 구글 캘린더에서 <b>"학교일정"처럼 새 캘린더를 먼저 만들고</b> 거기로 가져오세요. 나중에 통째로 지우기 쉽습니다. 같은 파일을 두 번 가져오면 일정이 중복되지 않고 갱신됩니다.</p>
+            <p class="text-slate-600">학사일정은 <b>나이스에서 불러온 달</b>만 들어갑니다. 여러 달을 넣으려면 달을 바꿔 가며 "나이스에서 불러오기"를 먼저 눌러 주세요.</p>
+          </div>
+        </details>
         <form id="cEvForm" class="flex gap-2 mt-3"><input id="evDate" type="date" required class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evEnd" type="date" title="종료일(여러 날일 때)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evTime" type="time" title="시간(선택)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evText" required placeholder="내 일정 추가" class="flex-1 min-w-0 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">추가</button></form>
         <label class="flex items-center gap-2 text-xs text-slate-600 mb-2"><input type="checkbox" id="cNoCh" class="w-4 h-4"> 창체 일정(자율·자치, 동아리, 진로, 봉사) 숨기기</label>
         <ul id="cList" class="mt-3 divide-y divide-slate-100 text-sm"></ul>
@@ -4425,6 +4446,64 @@ function statXlsx() {
   $('gpaMsg').textContent = `종합 통계를 저장했습니다. (시트 ${wb.SheetNames.length}장: ${wb.SheetNames.join(', ')})`;
 }
 if ($('statXlsx')) $('statXlsx').addEventListener('click', statXlsx);
+
+/* ===== 📅 구글 캘린더용 .ics 내보내기 ===== */
+function icsEsc(t) { return String(t == null ? '' : t).replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+function icsFold(line) {                       /* 한 줄 75바이트 제한 */
+  const out = []; let cur = '';
+  for (const ch of line) { if (new Blob([cur + ch]).size > 72) { out.push(cur); cur = ' ' + ch; } else cur += ch; }
+  out.push(cur); return out.join('\r\n');
+}
+const icsDay = d => String(d).replace(/-/g, '');
+const icsNext = d => { const x = new Date(d + 'T00:00:00'); x.setDate(x.getDate() + 1); return ymd(x).replace(/-/g, ''); };
+function icsBuild() {
+  const rg = $('icsRange').value, y = ymd(now).slice(0, 4), mo = $('cMonth').value || ymd(now).slice(0, 7), td = ymd(now);
+  const keep = d => rg === 'all' ? true : rg === 'year' ? String(d).startsWith(y) : rg === 'month' ? String(d).startsWith(mo) : d >= td;
+  const ev = [];
+  if ($('icsNeis').checked) {                  /* 나이스에서 불러와 저장해 둔 달 전체 */
+    try { Object.keys(neisCache || {}).forEach(k => (neisCache[k] || []).forEach(e => { if (e.date && keep(e.date)) ev.push({ d: e.date, t: e.text, c: '학사일정', g: e.tag || '' }); })); } catch (e) {}
+    try { (fetched || []).forEach(e => { if (e.date && keep(e.date) && !ev.some(x => x.d === e.date && x.t === e.text)) ev.push({ d: e.date, t: e.text, c: '학사일정', g: e.tag || '' }); }); } catch (e) {}
+  }
+  if ($('icsCh').checked) {
+    try { (ch.sheets[ch.sel] || []).forEach(e => { if (e.date && keep(e.date)) ev.push({ d: e.date, t: e.name, c: '창체', g: [e.area, e.per ? e.per + '교시' : '', e.dept].filter(Boolean).join(' · ') }); }); } catch (e) {}
+  }
+  if ($('icsMe').checked) {
+    try { (evs || []).forEach(e => { if (e.date && keep(e.date)) ev.push({ d: e.date, to: e.to || '', time: e.time || '', t: e.text, c: '내 일정', g: '' }); }); } catch (e) {}
+  }
+  ev.sort((a, b) => a.d.localeCompare(b.d) || String(a.t).localeCompare(String(b.t)));
+  if (!ev.length) return null;
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+  const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//songhyeon gyomusil//KO', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+    `X-WR-CALNAME:${icsEsc((cfg.school || '학교') + ' 일정')}`, 'X-WR-TIMEZONE:Asia/Seoul'];
+  ev.forEach((e, i) => {
+    const key = `${e.d}-${e.c}-${e.t}`.replace(/[^0-9A-Za-z가-힣-]/g, '');
+    let uid = 0; for (const c of key) uid = (uid * 31 + c.charCodeAt(0)) >>> 0;   /* 같은 일정은 같은 UID → 다시 가져와도 중복 안 됨 */
+    L.push('BEGIN:VEVENT', `UID:gm-${uid}-${icsDay(e.d)}@gyomusil`, `DTSTAMP:${stamp}`);
+    if (e.time && /^\d{1,2}:\d{2}$/.test(e.time)) {
+      const [h, m] = e.time.split(':').map(Number), s = `${icsDay(e.d)}T${pad(h)}${pad(m)}00`;
+      const eh = (h + 1) % 24, s2 = `${icsDay(e.d)}T${pad(eh)}${pad(m)}00`;
+      L.push(`DTSTART;TZID=Asia/Seoul:${s}`, `DTEND;TZID=Asia/Seoul:${s2}`);
+    } else {
+      L.push(`DTSTART;VALUE=DATE:${icsDay(e.d)}`, `DTEND;VALUE=DATE:${icsNext(e.to && e.to > e.d ? e.to : e.d)}`);
+    }
+    L.push(`SUMMARY:${icsEsc((e.c === '창체' ? '[창체] ' : e.c === '내 일정' ? '' : '[학사] ') + e.t)}`);
+    if (e.g) L.push(`DESCRIPTION:${icsEsc(e.g)}`);
+    L.push(`CATEGORIES:${icsEsc(e.c)}`, 'END:VEVENT');
+  });
+  L.push('END:VCALENDAR');
+  return { text: L.map(icsFold).join('\r\n') + '\r\n', n: ev.length };
+}
+if ($('icsBtn')) {
+  $('icsBtn').addEventListener('click', () => { $('icsBox').classList.toggle('hidden'); $('icsBox').open = true; });
+  $('icsSave').addEventListener('click', () => {
+    const r = icsBuild();
+    if (!r) { $('icsMsg').textContent = '내보낼 일정이 없습니다. 항목과 기간을 확인해 주세요.'; return; }
+    const bl = new Blob(['\ufeff' + r.text], { type: 'text/calendar;charset=utf-8' }), a = document.createElement('a');
+    a.href = URL.createObjectURL(bl); a.download = `학교일정_${ymd(now)}.ics`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    $('icsMsg').textContent = `일정 ${r.n}건을 저장했습니다. 다운로드 폴더를 확인하세요.`;
+  });
+}
 
 /* ===== 🧮 반배치 ===== */
 const PL_KEY = 'gm-place';
