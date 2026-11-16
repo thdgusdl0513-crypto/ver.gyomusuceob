@@ -592,6 +592,25 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
                   </div>
                 </details>
               </div>
+              <div class="pt-2 border-t border-emerald-200">
+                <div class="flex flex-wrap gap-2 items-center">
+                  <button id="wgtBtn" type="button" class="border border-emerald-300 bg-white rounded-lg px-3 py-1.5 font-bold">📱 홈화면 위젯 주소 보기</button>
+                  <span id="wgtMsg" class="text-slate-600"></span>
+                </div>
+                <div id="wgtBox" class="hidden space-y-1 mt-1">
+                  <div class="flex gap-2 items-center">
+                    <span class="w-20 shrink-0 font-bold">🍎 아이폰</span>
+                    <input id="wgtUrl" readonly class="flex-1 border border-emerald-300 rounded px-2 py-1 bg-white text-[11px]">
+                    <button id="wgtCopy" type="button" class="border border-emerald-300 bg-white rounded-lg px-2 py-1 font-bold whitespace-nowrap">📋 복사</button>
+                  </div>
+                  <div class="flex gap-2 items-center">
+                    <span class="w-20 shrink-0 font-bold">📗 갤럭시</span>
+                    <input id="wgtPage" readonly class="flex-1 border border-emerald-300 rounded px-2 py-1 bg-white text-[11px]">
+                    <button id="wgtPageCopy" type="button" class="border border-emerald-300 bg-white rounded-lg px-2 py-1 font-bold whitespace-nowrap">📋 복사</button>
+                  </div>
+                </div>
+                <p class="text-slate-600 mt-1">🍎 주소는 아이폰 <b>Scriptable</b> 위젯 코드에 넣고, 📗 주소는 갤럭시 크롬으로 열어 <b>홈 화면에 추가</b>하면 됩니다. <b>시간표·할 일 개수·다가오는 일정</b>만 나가고 학생 기록은 나가지 않습니다. 교시 시각은 연동 코드 맨 위 <b>PERIODS</b> 줄에서 고칩니다.</p>
+              </div>
             </div>
             <ol class="list-decimal ml-4 space-y-0.5 text-slate-700">
               <li class="text-slate-500">아래는 한 번만 가져오는 방법입니다(자동 갱신 안 됨).</li>
@@ -4610,6 +4629,29 @@ if ($('icsFeed')) {
   });
   document.addEventListener('DOMContentLoaded', () => { try { icsFeedDraw(); } catch (e) {} });
   setTimeout(() => { try { icsFeedDraw(); } catch (e) {} }, 0);
+}
+
+/* ===== 📱 홈화면 위젯 주소 ===== */
+if ($('wgtBtn')) {
+  $('wgtBtn').addEventListener('click', async () => {
+    if (!(syncCfg.url && syncCfg.token)) { alert('먼저 설정 ⚙️ → PC·휴대폰 연동을 설정해 주세요.'); return; }
+    $('wgtMsg').textContent = '가져오는 중…';
+    try {
+      const u = syncCfg.url.trim();
+      const r = await fetch(`${u}${u.includes('?') ? '&' : '?'}token=${encodeURIComponent(syncCfg.token)}&action=icsInfo&t=${Date.now()}`);
+      const j = JSON.parse(await r.text());
+      if (!j.ok || !j.widgetUrl) throw new Error(j.error || '주소를 받지 못했습니다. 연동 코드를 새 버전으로 다시 배포했는지 확인해 주세요.');
+      $('wgtUrl').value = j.widgetUrl; $('wgtPage').value = j.widgetPage || '(연동 코드를 최신으로 다시 배포해 주세요)';
+      $('wgtBox').classList.remove('hidden');
+      $('wgtMsg').textContent = '폰에 맞는 주소를 쓰세요.';
+    } catch (e) { $('wgtMsg').textContent = '실패: ' + e.message; }
+  });
+  const wgtCp = (id, what) => async () => {
+    try { await navigator.clipboard.writeText($(id).value); $('wgtMsg').textContent = what + ' 주소를 복사했습니다.'; }
+    catch (e) { $(id).select(); document.execCommand('copy'); $('wgtMsg').textContent = what + ' 주소를 복사했습니다.'; }
+  };
+  $('wgtCopy').addEventListener('click', wgtCp('wgtUrl', '아이폰 위젯'));
+  $('wgtPageCopy').addEventListener('click', wgtCp('wgtPage', '갤럭시 홈화면'));
 }
 
 /* ===== 🧮 반배치 ===== */
