@@ -648,7 +648,7 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
             <p class="text-slate-600">학사일정은 <b>나이스에서 불러온 달</b>만 들어갑니다. 여러 달을 넣으려면 달을 바꿔 가며 "나이스에서 불러오기"를 먼저 눌러 주세요.</p>
           </div>
         </details>
-        <form id="cEvForm" class="flex gap-2 mt-3"><input id="evDate" type="date" required class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evEnd" type="date" title="종료일(여러 날일 때)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evTime" type="time" title="시간(선택)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evText" required placeholder="내 일정 추가" class="flex-1 min-w-0 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">추가</button></form>
+        <form id="cEvForm" class="flex gap-2 mt-3"><input id="evDate" type="date" required class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evEnd" type="date" title="종료일(여러 날일 때)" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><input id="evTime" type="text" maxlength="5" placeholder="시간(선택)" title="시간(선택) · 930 처럼 적어도 됩니다" class="border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm w-24"><input id="evText" required placeholder="내 일정 추가" class="flex-1 min-w-0 border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-sm"><button class="border border-slate-300 hover:bg-slate-50 rounded-lg px-3 py-2 text-sm whitespace-nowrap">추가</button></form>
         <label class="flex items-center gap-2 text-xs text-slate-600 mb-2"><input type="checkbox" id="cNoCh" class="w-4 h-4"> 창체 일정(자율·자치, 동아리, 진로, 봉사) 숨기기</label>
         <ul id="cList" class="mt-3 divide-y divide-slate-100 text-sm"></ul>
         <p id="cEmpty" class="text-sm text-slate-500 py-6 text-center">표시할 일정이 없습니다.</p>
@@ -1181,8 +1181,8 @@ details.fold>summary::before{content:"▾";display:inline-block;width:1.2em;colo
             </div>
           </fieldset>
           <div class="grid grid-cols-2 gap-3">
-            <label class="text-sm">시작 시간<input id="pStart" type="time" required class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
-            <label class="text-sm">종료 시간 (선택)<input id="pEnd" type="time" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+            <label class="text-sm">시작 시간<input id="pStart" type="text" maxlength="5" required placeholder="09:30" title="930 처럼 적어도 됩니다" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
+            <label class="text-sm">종료 시간 (선택)<input id="pEnd" type="text" maxlength="5" placeholder="09:30" title="930 처럼 적어도 됩니다" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
           </div>
           <label class="text-sm block">담임(학년부장) 성함<input id="pTeacher" class="mt-1 w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"></label>
           <button id="pIssue" class="w-full bg-[#0f2747] hover:bg-[#1b3a66] text-white font-bold rounded-lg py-2.5">발급 및 인쇄하기</button>
@@ -3538,6 +3538,8 @@ $('btTest').addEventListener('click', btTestPrint);
 function pMsg(t) { const e = $('pMsg'); if (!e) return; e.textContent = t || ''; e.classList.toggle('hidden', !t); }
 $('pIssue').addEventListener('click', e => {
   if (!$('pStart').value) setNow();
+  ['pStart', 'pEnd'].forEach(id => { const v = timeFix($(id).value); if (v) $(id).value = v; });
+  if ($('pEnd').value.trim() && !timeFix($('pEnd').value)) { e.preventDefault(); alert('종료 시간을 알아보지 못했습니다. 930 또는 9:30 처럼 적어 주세요.'); $('pEnd').focus(); return; }
   const f = $('pForm'); if (f.checkValidity()) { pMsg(''); return; }
   e.preventDefault();
   const L = { pNo: '학번', pName: '이름', pStart: '시작 시간' };
@@ -4751,6 +4753,8 @@ if ($('wgtBtn')) {
   $('wgtPageCopy').addEventListener('click', wgtCp('wgtPage', '갤럭시 홈화면'));
 }
 
+bindTime(['evTime', 'pStart', 'pEnd']);
+
 /* ===== 🧮 반배치 ===== */
 const PL_KEY = 'gm-place';
 let place = (() => { try { const v = JSON.parse(localStorage.getItem(PL_KEY)) || {}; return { n: +v.n || 4, dir: v.dir || 'asc', sex: v.sex !== false, stu: Array.isArray(v.stu) ? v.stu : [], apart: Array.isArray(v.apart) ? v.apart : [], tog: Array.isArray(v.tog) ? v.tog : [], res: v.res && typeof v.res === 'object' ? v.res : null }; } catch (e) { return { n: 4, dir: 'asc', sex: true, stu: [], apart: [], tog: [], res: null }; } })();
@@ -5201,7 +5205,7 @@ $('cLoad').addEventListener('click', async () => {
     fetched = rows.map(r => ({ date: ymdOf(r.AA_YMD), text: r.EVENT_NM, tag: r.SBTR_DD_SC_NM })); neisCache[`${y}-${pad(m)}`] = fetched; store(NC_KEY, neisCache); say(`학사일정 ${fetched.length}건을 불러왔습니다.`, true); renderCal();
   } catch (e) { fail(e); }
 });
-$('cEvForm').addEventListener('submit', e => { e.preventDefault(); evs.push({ id: uid(), date: $('evDate').value, time: $('evTime').value, to: ($('evEnd').value > $('evDate').value ? $('evEnd').value : ''), text: $('evText').value.trim() }); store(EV_KEY, evs); $('evText').value = ''; $('evEnd').value = ''; renderCal(); renderHome(); });
+$('cEvForm').addEventListener('submit', e => { e.preventDefault(); evs.push({ id: uid(), date: $('evDate').value, time: timeFix($('evTime').value), to: ($('evEnd').value > $('evDate').value ? $('evEnd').value : ''), text: $('evText').value.trim() }); store(EV_KEY, evs); $('evText').value = ''; $('evEnd').value = ''; $('evTime').value = ''; renderCal(); renderHome(); });
 const DAYS = ['월', '화', '수', '목', '금'];
 function renderTT(rows, mon) {
   const cell = {}; let maxP = 0;
@@ -6209,20 +6213,8 @@ function renderCar() {
   const days = $('rsvDays'); '월화수목금'.split('').forEach((d, i) => { const l = el('label', 'flex items-center gap-1'); const c = el('input'); c.type = 'checkbox'; c.checked = true; c.dataset.d = i + 1; l.append(c, d); days.appendChild(l); });
   $('rsvFrom').value = ymd(now); $('rsvTo').value = ymd(now);
   /* 13:00 / 1300 / 130 / 9 처럼 쳐도 24시간제 HH:MM 으로 고쳐 줍니다. */
-  function tFix(v) {
-    const t = String(v == null ? '' : v).trim(); if (!t) return '';
-    let h, m;
-    const c = /^(\d{1,2})\s*[:.시]\s*(\d{1,2})?/.exec(t);
-    if (c) { h = +c[1]; m = +(c[2] || 0); }
-    else { const d = t.replace(/\D/g, ''); if (!d) return ''; if (d.length <= 2) { h = +d; m = 0; } else { h = +d.slice(0, d.length - 2); m = +d.slice(-2); } }
-    if (!(h >= 0 && h <= 23 && m >= 0 && m <= 59)) return '';
-    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
-  }
-  ['rsvStart', 'rsvEnd'].forEach(id => {
-    const t2 = $(id); if (!t2) return;
-    const fix = () => { const v = tFix(t2.value); if (v) t2.value = v; t2.classList.toggle('border-red-400', !!t2.value.trim() && !v); };
-    t2.addEventListener('blur', fix); t2.addEventListener('change', fix);
-  });
+  const tFix = timeFix;
+  bindTime(['rsvStart', 'rsvEnd']);
   $('rsvAdd').addEventListener('click', () => {
     const f = $('rsvFrom').value, t = $('rsvTo').value || f, s = tFix($('rsvStart').value), e = tFix($('rsvEnd').value), nm = $('rsvName').value.trim();
     if (s) $('rsvStart').value = s; if (e) $('rsvEnd').value = e;
@@ -6783,6 +6775,36 @@ $('seSaveImg').addEventListener('click', () => {
     seMsg('그림으로 저장했습니다. (다운로드 폴더)', true);
   }, 'image/png');
 });
+
+/* ===== ⏰ 시간 칸: 930, 9시30, 9:30 처럼 적어도 09:30 으로 맞춰 줍니다 ===== */
+function timeFix(v) {
+  const t = String(v == null ? '' : v).trim(); if (!t) return '';
+  let h, m;
+  const c = /^(\d{1,2})\s*[:.시]\s*(\d{1,2})?/.exec(t);
+  if (c) { h = +c[1]; m = +(c[2] || 0); }
+  else {
+    const d = t.replace(/\D/g, ''); if (!d) return '';
+    if (d.length <= 2) { h = +d; m = 0; } else { h = +d.slice(0, d.length - 2); m = +d.slice(-2); }
+  }
+  if (!(h >= 0 && h <= 23 && m >= 0 && m <= 59)) return '';
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+}
+function bindTime(ids) {
+  ids.forEach(id => {
+    const el = $(id); if (!el || el.dataset.tbound) return;
+    el.dataset.tbound = '1';
+    if (!el.placeholder) el.placeholder = '09:30';
+    const fix = () => {
+      const raw = el.value.trim(), v = timeFix(raw);
+      if (v) el.value = v;
+      el.classList.toggle('border-red-400', !!raw && !v);
+      el.title = raw && !v ? '시간을 알아보지 못했습니다. 930 또는 9:30 처럼 적어 주세요.' : '';
+    };
+    el.addEventListener('blur', fix);
+    el.addEventListener('change', fix);
+    el.addEventListener('keydown', e => { if (e.key === 'Enter') fix(); });
+  });
+}
 
 /* ===== 쉬는 날(주말·공휴일·휴업일) 계산 — 결석신고서와 결석 현황이 함께 씁니다 ===== */
 const OFF_FIXED = ['01-01', '03-01', '05-05', '06-06', '08-15', '10-03', '10-09', '12-25'];
