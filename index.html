@@ -5761,6 +5761,25 @@ async function gemFill() {
   ['recGemList', 'goGemList', 'scGemList', 'msGemList'].forEach(id => { const box = $(id); if (!box) return; box.innerHTML = ''; l.forEach(n => { const o = document.createElement('option'); o.value = n; box.appendChild(o); }); });
   return l;
 }
+/* 붐빌 때 갈아탈 가벼운 모델 후보 (가벼운 것부터) */
+let gemAltCache = null;
+async function gemAlts(model, tried) {
+  if (!gemAltCache) { gemAltCache = await gemList().catch(() => []); }
+  const ok = n => !/image|tts|audio|live|embed|vision|8b/i.test(n);
+  const fl = gemAltCache.filter(n => /^gemini-[\d.]+-flash/.test(n) && ok(n));
+  const ver = n => parseFloat((n.match(/^gemini-([\d.]+)/) || [])[1]) || 0;
+  const lite = fl.filter(n => /lite/.test(n)).sort((a, b) => ver(b) - ver(a));
+  const plain = fl.filter(n => !/lite/.test(n)).sort((a, b) => ver(b) - ver(a));
+  return plain.concat(lite).filter(n => n !== model && !(tried || []).includes(n)).slice(0, 3);
+}
+/* 구글이 "몇 초 뒤에 다시 오라"고 알려 주면 그 시간을 씁니다 */
+function gemWait(j, n) {
+  try {
+    const d = (j.error && j.error.details) || [];
+    for (const x of d) { const s = parseFloat(String(x.retryDelay || '').replace('s', '')); if (s > 0) return Math.min(60, s) * 1000; }
+  } catch (e) {}
+  return Math.min(20000, 2000 * Math.pow(1.8, n));
+}
 async function gemAsk(prompt, retried, tries, skip) {
   if (!gem.key) throw new Error('API 키가 없습니다. 위 "Gemini 연결 설정"에서 키를 입력하세요.');
   const model = (gem.model || GEM_DEF).trim(), parts = typeof prompt === 'string' ? [{ text: prompt }] : prompt;
@@ -5773,20 +5792,34 @@ async function gemAsk(prompt, retried, tries, skip) {
     const m = (j.error && j.error.message) || `오류 ${r.status}`;
     if (r.status === 404 && !retried) {
       const l = await gemFill().catch(() => []), pick = gemPick(l);
-      if (pick && pick !== model && !gem.manual) { gem.model = pick; saveGem(); gemUI(); gemMsg(`모델을 "${pick}"(으)로 자동 변경했습니다.`, true); return gemAsk(prompt, true, 0, skip); }
+      if (pick && pick !== model) { gem.model = pick; saveGem(); gemUI(); gemMsg(`모델을 "${pick}"(으)로 자동 변경했습니다.`, true); return gemAsk(prompt, true, 0, skip); }
     }
-    if ((r.status === 503 || r.status === 500 || /high demand|overloaded/i.test(m)) && (tries || 0) < 3) {
-      gemMsg(`구글 서버가 붐벼서 잠시 뒤 다시 시도합니다… (${(tries || 0) + 1}/3)`, true);
-      await new Promise(z => setTimeout(z, 2500 * ((tries || 0) + 1)));
-      return gemAsk(prompt, retried, (tries || 0) + 1, skip);
+    const busy = r.status === 503 || r.status === 500 || /high demand|overloaded|unavailable/i.test(m);
+    const quota = r.status === 429;
+    if (busy || quota) {
+      const n = tries || 0, tried = (skip || []).concat(model);
+      if (n < 4) {                                   /* ① 같은 모델로 잠시 뒤 다시 */
+        const w = gemWait(j, n);
+        gemMsg(`${quota ? '사용량이 몰려서' : '구글 서버가 붐벼서'} ${Math.round(w / 1000)}초 뒤 다시 시도합니다… (${n + 1}/4)`, true);
+        await new Promise(z => setTimeout(z, w));
+        return gemAsk(prompt, retried, n + 1, skip);
+      }
+      const alts = await gemAlts(model, tried);      /* ② 가벼운 모델로 갈아타기 */
+      if (alts.length) {
+        const alt = alts[0], old = gem.model;
+        gemMsg(`"${model}"이(가) 계속 붐빕니다. "${alt}"(으)로 바꿔서 해 봅니다.`, true);
+        gem.model = alt;
+        try {
+          const out = await gemAsk(prompt, true, 3, tried);   /* 바꾼 모델은 한 번만 더 기다려 봅니다 */
+          saveGem(); gemUI();
+          gemMsg(`"${alt}"로 끝냈습니다. 붐빌 때는 이 모델이 더 잘 됩니다. (설정에서 언제든 되돌릴 수 있어요)`, true);
+          return out;
+        } catch (e) { gem.model = old; throw e; }
+      }
+      throw new Error(quota
+        ? '오늘 이 키로 쓸 수 있는 양을 다 썼거나 요청이 너무 몰렸습니다. 몇 분 뒤에 다시 누르거나, 설정에서 모델을 flash-lite 로 바꿔 보세요.'
+        : '구글 AI 서버가 지금 매우 붐빕니다. 몇 분 뒤에 다시 눌러 주세요. (앱 오류가 아닙니다)');
     }
-    if (r.status === 503 || r.status === 500 || /high demand|overloaded/i.test(m)) {
-      const tried = (skip || []).concat(model), l = await gemList().catch(() => []);
-      const alt = l.filter(n => /^gemini-[\d.]+-flash/.test(n) && !/image|tts|audio|live|embed|exp|8b/i.test(n) && !tried.includes(n))[0];
-      if (alt && !gem.manual) { gemMsg(`"${model}"이(가) 붐벼서 "${alt}"(으)로 시도합니다.`, true); const old = gem.model; gem.model = alt; try { return await gemAsk(prompt, true, 0, tried); } catch (e) { gem.model = old; throw e; } }
-      throw new Error('구글 AI 서버가 지금 매우 붐빕니다. 몇 분 뒤에 다시 눌러 주세요. (앱 오류가 아닙니다)');
-    }
-    if (r.status === 429) throw new Error('무료 사용 한도를 넘었습니다. 잠시 뒤에 다시 시도해 주세요.');
     if (r.status === 400 && /API key/i.test(m)) throw new Error('API 키가 올바르지 않습니다. 키를 다시 확인해 주세요.');
     if (r.status === 403) throw new Error('이 키로는 사용할 수 없습니다. 키 설정이나 사용 지역·계정 제한을 확인해 주세요.');
     if (r.status === 404) throw new Error(`모델 "${model}"은(는) 이 키로 쓸 수 없습니다(이름이 바뀌었거나 종료됨). "모델 목록 불러오기"를 눌러 목록에서 고르거나, 모델 칸을 비우고 다시 테스트하면 자동으로 골라 줍니다.`);
